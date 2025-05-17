@@ -1,44 +1,44 @@
 package com.example.schoolapp.models;
 
 public class Schedule_subject {
-    private Integer id;
-    private Integer scheduleId;
-    private Integer subjectId;
+    private Integer schedule_subject_id;
+    private Integer schedule_id;
+    private Integer subject_id;
     private String day;
 
     public Schedule_subject() {
 
     }
 
-    public Schedule_subject(Integer id, Integer scheduleId, Integer subjectId, String day) {
-        this.id = id;
-        this.scheduleId = scheduleId;
-        this.subjectId = subjectId;
+    public Schedule_subject(Integer schedule_subject_id, Integer schedule_id, Integer subject_id, String day) {
+        this.schedule_subject_id = schedule_subject_id;
+        this.schedule_id = schedule_id;
+        this.subject_id = subject_id;
         this.day = day;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getSchedule_subject_id() {
+        return schedule_subject_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setSchedule_subject_id(Integer schedule_subject_id) {
+        this.schedule_subject_id = schedule_subject_id;
     }
 
-    public Integer getScheduleId() {
-        return scheduleId;
+    public Integer getSchedule_id() {
+        return schedule_id;
     }
 
-    public void setScheduleId(Integer scheduleId) {
-        this.scheduleId = scheduleId;
+    public void setSchedule_id(Integer schedule_id) {
+        this.schedule_id = schedule_id;
     }
 
-    public Integer getSubjectId() {
-        return subjectId;
+    public Integer getSubject_id() {
+        return subject_id;
     }
 
-    public void setSubjectId(Integer subjectId) {
-        this.subjectId = subjectId;
+    public void setSubject_id(Integer subject_id) {
+        this.subject_id = subject_id;
     }
 
     public String getDay() {
@@ -52,9 +52,9 @@ public class Schedule_subject {
     @Override
     public String toString() {
         return "Schedule_subject{" +
-                "id=" + id +
-                ", scheduleId=" + scheduleId +
-                ", subjectId=" + subjectId +
+                "id=" + schedule_subject_id +
+                ", scheduleId=" + schedule_id +
+                ", subjectId=" + subject_id +
                 ", day='" + day + '\'' +
                 '}';
     }

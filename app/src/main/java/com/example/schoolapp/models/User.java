@@ -3,7 +3,7 @@ package com.example.schoolapp.models;
 import java.time.LocalDate;
 
 public class User {
-    private Integer id;
+    private Integer user_id;
     private String firstName;
     private String lastName;
     private LocalDate birthDate;
@@ -15,8 +15,8 @@ public class User {
 
     }
 
-    public User(Integer id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role) {
-        this.id = id;
+    public User(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role) {
+        this.user_id = user_id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -25,12 +25,12 @@ public class User {
         this.role = role;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getUser_id() {
+        return user_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUser_id(Integer user_id) {
+        this.user_id = user_id;
     }
 
     public String getFirstName() {
@@ -84,7 +84,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "user_id=" + user_id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", birthDate=" + birthDate +

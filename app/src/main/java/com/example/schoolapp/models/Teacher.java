@@ -1,37 +1,32 @@
 package com.example.schoolapp.models;
 
-public class Teacher {
-    private Integer id;
-    private Integer userId;
+import java.time.LocalDate;
+
+public class Teacher extends User {
+    private Integer teacher_id;
     private String speciality;
-    private Integer scheduleId;
+    private Integer schedule_id;
 
     public Teacher() {
 
     }
 
-    public Teacher(Integer id, Integer userId, String speciality, Integer scheduleId) {
-        this.id = id;
-        this.userId = userId;
+    public Teacher(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, Integer teacher_id, String speciality, Integer schedule_id) {
+        super(user_id, firstName, lastName, birthDate, address, phone, role);
+        this.teacher_id = teacher_id;
+
         this.speciality = speciality;
-        this.scheduleId = scheduleId;
+        this.schedule_id = schedule_id;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getTeacher_id() {
+        return teacher_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setTeacher_id(Integer teacher_id) {
+        this.teacher_id = teacher_id;
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
 
     public String getSpeciality() {
         return speciality;
@@ -41,21 +36,21 @@ public class Teacher {
         this.speciality = speciality;
     }
 
-    public Integer getScheduleId() {
-        return scheduleId;
+    public Integer getSchedule_id() {
+        return schedule_id;
     }
 
-    public void setScheduleId(Integer scheduleId) {
-        this.scheduleId = scheduleId;
+    public void setSchedule_id(Integer schedule_id) {
+        this.schedule_id = schedule_id;
     }
 
     @Override
     public String toString() {
         return "Teacher{" +
-                "id=" + id +
-                ", userId=" + userId +
+                "teacher_id=" + teacher_id +
+                ", user_id=" + super.getUser_id() +
                 ", speciality='" + speciality + '\'' +
-                ", scheduleId=" + scheduleId +
+                ", scheduleId=" + schedule_id +
                 '}';
     }
 }

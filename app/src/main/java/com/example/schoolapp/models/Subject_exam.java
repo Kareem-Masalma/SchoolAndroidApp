@@ -3,8 +3,8 @@ package com.example.schoolapp.models;
 import java.time.LocalDate;
 
 public class Subject_exam {
-    private Integer subjectId;
-    private Integer examId;
+    private Integer subject_id;
+    private Integer exam_id;
     private LocalDate date;
     private Integer duration; // minutes
     private Float percentageOfGrade;
@@ -13,28 +13,28 @@ public class Subject_exam {
 
     }
 
-    public Subject_exam(Integer subjectId, Integer examId, LocalDate date, Integer duration, Float percentageOfGrade) {
-        this.subjectId = subjectId;
-        this.examId = examId;
+    public Subject_exam(Integer subject_id, Integer exam_id, LocalDate date, Integer duration, Float percentageOfGrade) {
+        this.subject_id = subject_id;
+        this.exam_id = exam_id;
         this.date = date;
         this.duration = duration;
         this.percentageOfGrade = percentageOfGrade;
     }
 
-    public Integer getSubjectId() {
-        return subjectId;
+    public Integer getSubject_id() {
+        return subject_id;
     }
 
-    public void setSubjectId(Integer subjectId) {
-        this.subjectId = subjectId;
+    public void setSubject_id(Integer subject_id) {
+        this.subject_id = subject_id;
     }
 
-    public Integer getExamId() {
-        return examId;
+    public Integer getExam_id() {
+        return exam_id;
     }
 
-    public void setExamId(Integer examId) {
-        this.examId = examId;
+    public void setExam_id(Integer exam_id) {
+        this.exam_id = exam_id;
     }
 
     public LocalDate getDate() {
@@ -64,8 +64,8 @@ public class Subject_exam {
     @Override
     public String toString() {
         return "Subject_exam{" +
-                "subjectId=" + subjectId +
-                ", examId=" + examId +
+                "subjectId=" + subject_id +
+                ", examId=" + exam_id +
                 ", date=" + date +
                 ", duration=" + duration +
                 ", percentageOfGrade=" + percentageOfGrade +

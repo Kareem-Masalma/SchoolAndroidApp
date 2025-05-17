@@ -1,8 +1,8 @@
 package com.example.schoolapp.models;
 
 public class Attendance_student {
-    private Integer attendanceId;
-    private Integer studentId;
+    private Integer attendance_id;
+    private Integer student_id;
     private Boolean attended;
     private String excuse;
 
@@ -10,27 +10,27 @@ public class Attendance_student {
 
     }
 
-    public Attendance_student(Integer attendanceId, Integer studentId, Boolean attended, String excuse) {
-        this.attendanceId = attendanceId;
-        this.studentId = studentId;
+    public Attendance_student(Integer attendance_id, Integer student_id, Boolean attended, String excuse) {
+        this.attendance_id = attendance_id;
+        this.student_id = student_id;
         this.attended = attended;
         this.excuse = excuse;
     }
 
-    public Integer getAttendanceId() {
-        return attendanceId;
+    public Integer getAttendance_id() {
+        return attendance_id;
     }
 
-    public void setAttendanceId(Integer attendanceId) {
-        this.attendanceId = attendanceId;
+    public void setAttendance_id(Integer attendance_id) {
+        this.attendance_id = attendance_id;
     }
 
-    public Integer getStudentId() {
-        return studentId;
+    public Integer getStudent_id() {
+        return student_id;
     }
 
-    public void setStudentId(Integer studentId) {
-        this.studentId = studentId;
+    public void setStudent_id(Integer student_id) {
+        this.student_id = student_id;
     }
 
     public Boolean getAttended() {
@@ -52,8 +52,8 @@ public class Attendance_student {
     @Override
     public String toString() {
         return "Attendance_student{" +
-                "attendanceId=" + attendanceId +
-                ", studentId=" + studentId +
+                "attendanceId=" + attendance_id +
+                ", studentId=" + student_id +
                 ", attended=" + attended +
                 ", excuse='" + excuse + '\'' +
                 '}';
