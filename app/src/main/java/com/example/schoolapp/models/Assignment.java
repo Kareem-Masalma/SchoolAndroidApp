@@ -1,24 +1,24 @@
 package com.example.schoolapp.models;
 
 public class Assignment {
-    private Integer id;
+    private Integer assignment_id;
     private String title;
 
     public Assignment() {
 
     }
 
-    public Assignment(Integer id, String title) {
-        this.id = id;
+    public Assignment(Integer assignment_id, String title) {
+        this.assignment_id = assignment_id;
         this.title = title;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getAssignment_id() {
+        return assignment_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setAssignment_id(Integer assignment_id) {
+        this.assignment_id = assignment_id;
     }
 
     public String getTitle() {
@@ -32,7 +32,7 @@ public class Assignment {
     @Override
     public String toString() {
         return "Assignment{" +
-                "id=" + id +
+                "id=" + assignment_id +
                 ", title='" + title + '\'' +
                 '}';
     }

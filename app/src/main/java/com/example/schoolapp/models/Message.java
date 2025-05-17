@@ -3,9 +3,9 @@ package com.example.schoolapp.models;
 import java.time.LocalDate;
 
 public class Message {
-    private Integer id;
-    private Integer fromId;
-    private Integer toId;
+    private Integer message_id;
+    private Integer from_user_id;
+    private Integer to_user_id;
     private String title;
     private String content;
     private LocalDate sentDate;
@@ -14,37 +14,37 @@ public class Message {
 
     }
 
-    public Message(Integer id, Integer fromId, Integer toId, String title, String content, LocalDate sentDate) {
-        this.id = id;
-        this.fromId = fromId;
-        this.toId = toId;
+    public Message(Integer message_id, Integer from_user_id, Integer to_user_id, String title, String content, LocalDate sentDate) {
+        this.message_id = message_id;
+        this.from_user_id = from_user_id;
+        this.to_user_id = to_user_id;
         this.title = title;
         this.content = content;
         this.sentDate = sentDate;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getMessage_id() {
+        return message_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setMessage_id(Integer message_id) {
+        this.message_id = message_id;
     }
 
-    public Integer getFromId() {
-        return fromId;
+    public Integer getFrom_user_id() {
+        return from_user_id;
     }
 
-    public void setFromId(Integer fromId) {
-        this.fromId = fromId;
+    public void setFrom_user_id(Integer from_user_id) {
+        this.from_user_id = from_user_id;
     }
 
-    public Integer getToId() {
-        return toId;
+    public Integer getTo_user_id() {
+        return to_user_id;
     }
 
-    public void setToId(Integer toId) {
-        this.toId = toId;
+    public void setTo_user_id(Integer to_user_id) {
+        this.to_user_id = to_user_id;
     }
 
     public String getTitle() {
@@ -74,9 +74,9 @@ public class Message {
     @Override
     public String toString() {
         return "Message{" +
-                "id=" + id +
-                ", fromId=" + fromId +
-                ", toId=" + toId +
+                "id=" + message_id +
+                ", fromId=" + from_user_id +
+                ", toId=" + to_user_id +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", sentDate=" + sentDate +

@@ -1,50 +1,44 @@
 package com.example.schoolapp.models;
 
-public class Student {
-    private Integer id;
-    private Integer userId;
-    private Integer classId;
+import java.time.LocalDate;
+
+public class Student extends User {
+    private Integer student_id;
+    private Integer class_id;
 
     public Student() {
 
     }
 
-    public Student(Integer id, Integer userId, Integer classId) {
-        this.id = id;
-        this.userId = userId;
-        this.classId = classId;
+    public Student(Integer student_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, Integer user_id, Integer class_id) {
+        super(user_id, firstName, lastName, birthDate, address, phone, role);
+        this.student_id = student_id;
+        this.class_id = class_id;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getStudent_id() {
+        return student_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setStudent_id(Integer student_id) {
+        this.student_id = student_id;
     }
 
-    public Integer getUserId() {
-        return userId;
+
+    public Integer getClass_id() {
+        return class_id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Integer getClassId() {
-        return classId;
-    }
-
-    public void setClassId(Integer classId) {
-        this.classId = classId;
+    public void setClass_id(Integer class_id) {
+        this.class_id = class_id;
     }
 
     @Override
     public String toString() {
         return "Student{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", classId=" + classId +
+                "student_id=" + student_id +
+                ", user_id=" + super.getUser_id() +
+                ", classId=" + class_id +
                 '}';
     }
 }

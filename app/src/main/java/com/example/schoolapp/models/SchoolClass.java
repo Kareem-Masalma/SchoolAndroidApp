@@ -1,28 +1,28 @@
 package com.example.schoolapp.models;
 
 public class SchoolClass { // we cant have a class name called 'Class' in java, that causes issues
-    private Integer id;
+    private Integer class_id;
     private String name;
-    private Integer managerId; // teacher.id
-    private Integer scheduleId;
+    private Integer manager_id; // teacher.id
+    private Integer schedule_id;
 
     public SchoolClass() {
 
     }
 
-    public SchoolClass(Integer id, String name, Integer managerId, Integer scheduleId) {
-        this.id = id;
+    public SchoolClass(Integer class_id, String name, Integer manager_id, Integer schedule_id) {
+        this.class_id = class_id;
         this.name = name;
-        this.managerId = managerId;
-        this.scheduleId = scheduleId;
+        this.manager_id = manager_id;
+        this.schedule_id = schedule_id;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getClass_id() {
+        return class_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setClass_id(Integer class_id) {
+        this.class_id = class_id;
     }
 
     public String getName() {
@@ -33,29 +33,29 @@ public class SchoolClass { // we cant have a class name called 'Class' in java, 
         this.name = name;
     }
 
-    public Integer getManagerId() {
-        return managerId;
+    public Integer getManager_id() {
+        return manager_id;
     }
 
-    public void setManagerId(Integer managerId) {
-        this.managerId = managerId;
+    public void setManager_id(Integer manager_id) {
+        this.manager_id = manager_id;
     }
 
-    public Integer getScheduleId() {
-        return scheduleId;
+    public Integer getSchedule_id() {
+        return schedule_id;
     }
 
-    public void setScheduleId(Integer scheduleId) {
-        this.scheduleId = scheduleId;
+    public void setSchedule_id(Integer schedule_id) {
+        this.schedule_id = schedule_id;
     }
 
     @Override
     public String toString() {
         return "SchoolClass{" +
-                "id=" + id +
+                "id=" + class_id +
                 ", name='" + name + '\'' +
-                ", managerId=" + managerId +
-                ", scheduleId=" + scheduleId +
+                ", managerId=" + manager_id +
+                ", scheduleId=" + schedule_id +
                 '}';
     }
 }

@@ -3,8 +3,8 @@ package com.example.schoolapp.models;
 import java.time.LocalDate;
 
 public class Subject_assignment {
-    private Integer subjectId;
-    private Integer assignmentId;
+    private Integer subject_id;
+    private Integer assignment_id;
     private LocalDate startDate;
     private LocalDate endDate;
     private Float percentageOfGrade;
@@ -13,28 +13,28 @@ public class Subject_assignment {
 
     }
 
-    public Subject_assignment(Integer subjectId, Integer assignmentId, LocalDate startDate, LocalDate endDate, Float percentageOfGrade) {
-        this.subjectId = subjectId;
-        this.assignmentId = assignmentId;
+    public Subject_assignment(Integer subject_id, Integer assignment_id, LocalDate startDate, LocalDate endDate, Float percentageOfGrade) {
+        this.subject_id = subject_id;
+        this.assignment_id = assignment_id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.percentageOfGrade = percentageOfGrade;
     }
 
-    public Integer getSubjectId() {
-        return subjectId;
+    public Integer getSubject_id() {
+        return subject_id;
     }
 
-    public void setSubjectId(Integer subjectId) {
-        this.subjectId = subjectId;
+    public void setSubject_id(Integer subject_id) {
+        this.subject_id = subject_id;
     }
 
-    public Integer getAssignmentId() {
-        return assignmentId;
+    public Integer getAssignment_id() {
+        return assignment_id;
     }
 
-    public void setAssignmentId(Integer assignmentId) {
-        this.assignmentId = assignmentId;
+    public void setAssignment_id(Integer assignment_id) {
+        this.assignment_id = assignment_id;
     }
 
     public LocalDate getStartDate() {
@@ -64,8 +64,8 @@ public class Subject_assignment {
     @Override
     public String toString() {
         return "Subject_assignment{" +
-                "subjectId=" + subjectId +
-                ", assignmentId=" + assignmentId +
+                "subjectId=" + subject_id +
+                ", assignmentId=" + assignment_id +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", percentageOfGrade=" + percentageOfGrade +

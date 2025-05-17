@@ -1,39 +1,33 @@
 package com.example.schoolapp.models;
 
-public class Registrar {
-    private Integer id;
-    private Integer userId;
+import java.time.LocalDate;
+
+public class Registrar extends User {
+    private Integer registrar_id;
 
     public Registrar() {
 
     }
 
-    public Registrar(Integer id, Integer userId) {
-        this.id = id;
-        this.userId = userId;
+    public Registrar(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, Integer registrar_id) {
+        super(user_id, firstName, lastName, birthDate, address, phone, role);
+        this.registrar_id = registrar_id;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getRegistrar_id() {
+        return registrar_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setRegistrar_id(Integer registrar_id) {
+        this.registrar_id = registrar_id;
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
 
     @Override
     public String toString() {
         return "Registrar{" +
-                "id=" + id +
-                ", userId=" + userId +
+                "registrar_id=" + registrar_id +
+                ", user_id=" + super.getUser_id() +
                 '}';
     }
 }

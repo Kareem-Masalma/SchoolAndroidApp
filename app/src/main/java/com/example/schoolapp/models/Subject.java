@@ -3,7 +3,7 @@ package com.example.schoolapp.models;
 import java.time.LocalTime;
 
 public class Subject {
-    private Integer id;
+    private Integer subject_id;
     private String title;
     private LocalTime startTime;
     private LocalTime endTime;
@@ -12,19 +12,19 @@ public class Subject {
 
     }
 
-    public Subject(Integer id, String title, LocalTime startTime, LocalTime endTime) {
-        this.id = id;
+    public Subject(Integer subject_id, String title, LocalTime startTime, LocalTime endTime) {
+        this.subject_id = subject_id;
         this.title = title;
         this.startTime = startTime;
         this.endTime = endTime;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getSubject_id() {
+        return subject_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setSubject_id(Integer subject_id) {
+        this.subject_id = subject_id;
     }
 
     public String getTitle() {
@@ -54,7 +54,7 @@ public class Subject {
     @Override
     public String toString() {
         return "Subject{" +
-                "id=" + id +
+                "id=" + subject_id +
                 ", title='" + title + '\'' +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
