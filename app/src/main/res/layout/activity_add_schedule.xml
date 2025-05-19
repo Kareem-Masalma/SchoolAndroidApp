@@ -33,18 +33,18 @@
             style="@style/SectionTitle" />
 
         <RadioGroup
-            android:id="@+id/roleRadioGroup"
+            android:id="@+id/rdRoles"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <RadioButton
-                android:id="@+id/radioStudent"
+                android:id="@+id/rdStudent"
                 style="@style/RoleRadioButton"
                 android:text="@string/student" />
 
             <RadioButton
-                android:id="@+id/radioTeacher"
+                android:id="@+id/rdTeacher"
                 style="@style/RoleRadioButton"
                 android:text="@string/teacher" />
         </RadioGroup>
@@ -57,7 +57,7 @@
         android:fillViewport="true">
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/scheduleContent"
+            android:id="@+id/svUsers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
