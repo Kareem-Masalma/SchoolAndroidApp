@@ -10,7 +10,6 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.schoolapp.models.Role;
 import com.example.schoolapp.models.Student;
-import com.example.schoolapp.models.Teacher;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StudentDA implements IStudentDA {
-    private RequestQueue queue;
+    private final RequestQueue queue;
     private final String BASE_URL = "http://localhost/phpmyadmin/index.php"; // change "student/" if needed
 
 
@@ -68,7 +67,7 @@ public class StudentDA implements IStudentDA {
                         JSONObject obj = response.getJSONObject(0);
                         Student student = new Student(
                                 obj.getInt("user_id"), obj.getString("first_name"),
-                                obj.getString("last_name"), LocalDate.parse("birth_date"),
+                                obj.getString("last_name"), LocalDate.parse(obj.getString("birth_date")),
                                 obj.getString("address"), obj.getString("phone"), Role.STUDENT,
                                 obj.getInt("class_id"));
                         students.add(student);
@@ -109,7 +108,7 @@ public class StudentDA implements IStudentDA {
     }
 
     public interface StudentListCallback {
-        void onSuccess(List<Student> teachers);
+        void onSuccess(List<Student> students);
 
         void onError(String error);
     }

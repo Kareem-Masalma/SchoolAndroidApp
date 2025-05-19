@@ -18,7 +18,7 @@ import java.util.*;
 
 public class TeacherDA implements ITeacherDA {
 
-    private RequestQueue queue;
+    private final RequestQueue queue;
 
     private final String BASE_URL = "http://localhost/phpmyadmin/index.php"; // change "school/" if needed
     private final Gson gson = new Gson();
@@ -37,7 +37,7 @@ public class TeacherDA implements ITeacherDA {
                     JSONObject obj = response.getJSONObject(0);
                     Teacher teacher = new Teacher(
                             obj.getInt("user_id"), obj.getString("first_name"),
-                            obj.getString("last_name"), LocalDate.parse("birth_date"),
+                            obj.getString("last_name"), LocalDate.parse(obj.getString("birth_date")),
                             obj.getString("address"), obj.getString("phone"), Role.TEACHER,
                             obj.getString("speciality"), obj.getInt("schedule_id"));
                     callback.onSuccess(teacher);

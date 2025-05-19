@@ -50,18 +50,11 @@
         </RadioGroup>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvUsers"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:fillViewport="true">
+        android:padding="16dp" />
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/svUsers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>
