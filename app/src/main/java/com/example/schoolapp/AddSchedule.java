@@ -11,6 +11,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.schoolapp.data_access.DAFactory;
+import com.example.schoolapp.data_access.TeacherDA;
+import com.example.schoolapp.models.Teacher;
+
+import java.util.List;
+
 public class AddSchedule extends AppCompatActivity {
 
 
@@ -41,9 +47,19 @@ public class AddSchedule extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton selectedRole = findViewById(checkedId);
                 String role = selectedRole.getText().toString();
-                if("Teacher".equals(role)) {
+                if ("Teacher".equals(role)) {
+                    DAFactory.getTeacherDA(AddSchedule.this).getAllTeachers(new TeacherDA.TeacherListCallback() {
+                        @Override
+                        public void onSuccess(List<Teacher> teachers) {
 
-                } else if("Student".equals(role)) {
+                        }
+
+                        @Override
+                        public void onError(String error) {
+
+                        }
+                    });
+                } else if ("Student".equals(role)) {
 
                 }
             }
