@@ -11,9 +11,8 @@ public class Teacher extends User {
 
     }
 
-    public Teacher(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, Integer teacher_id, String speciality, Integer schedule_id) {
+    public Teacher(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, String speciality, Integer schedule_id) {
         super(user_id, firstName, lastName, birthDate, address, phone, role);
-        this.teacher_id = teacher_id;
 
         this.speciality = speciality;
         this.schedule_id = schedule_id;
