@@ -1,8 +1,10 @@
 package com.example.schoolapp;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.widget.*;
+import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -10,6 +12,8 @@ import com.example.schoolapp.data_access.*;
 import com.example.schoolapp.models.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 
 public class AddTeacherActivity extends AppCompatActivity {
@@ -22,7 +26,7 @@ public class AddTeacherActivity extends AppCompatActivity {
     private final String[] specialties = {
             "Select Specialty", "Math", "Physics", "Chemistry", "Biology",
             "English", "Technology", "Science", "Arabic", "Religion",
-            "Programming", "Social Studies", "geography"
+            "Programming", "Social Studies", "Geography"
     };
 
     @Override
@@ -43,54 +47,35 @@ public class AddTeacherActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.btnAdd);
         btnCancel = findViewById(R.id.btnCancel);
 
+        // Spinner container click opens dropdown
         LinearLayout spinnerContainer = findViewById(R.id.spinnerContainer);
-
         spinnerContainer.setOnClickListener(v -> spinnerSpecialty.performClick());
-
 
         // Populate Spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, specialties);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSpecialty.setAdapter(adapter);
 
-
-
-        // Date picker for birth date field
-        editBirthDate.setOnClickListener(v -> {
-            Calendar calendar = Calendar.getInstance();
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH);
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-            DatePickerDialog dialog = new DatePickerDialog(
-                    this,
-                    (view, selectedYear, selectedMonth, selectedDay) -> {
-                        String dateString = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
-                        editBirthDate.setText(dateString);
-                    },
-                    year, month, day
-            );
-            dialog.show();
-        });
-        LinearLayout birthDateField = findViewById(R.id.birthDateField);
-        EditText editBirthDate = findViewById(R.id.editBirthDate);
-
-        birthDateField.setOnClickListener(v -> {
+        // Birth date click listener
+        View.OnClickListener openDatePicker = v -> {
             Calendar calendar = Calendar.getInstance();
             DatePickerDialog dialog = new DatePickerDialog(this,
                     (view, year, month, dayOfMonth) -> {
                         String date = year + "-" + (month + 1) + "-" + dayOfMonth;
                         editBirthDate.setText(date);
+                        editBirthDate.clearFocus();
                     },
                     calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH),
-                    calendar.get(Calendar.DAY_OF_MONTH)
-            );
+                    calendar.get(Calendar.DAY_OF_MONTH));
             dialog.show();
-        });
+        };
 
+        editBirthDate.setOnClickListener(openDatePicker);
+        LinearLayout birthDateField = findViewById(R.id.birthDateField);
+        birthDateField.setOnClickListener(openDatePicker);
 
-        // Handle Add button
+        // Add Teacher
         btnAdd.setOnClickListener(v -> {
             String firstName = editFirstName.getText().toString().trim();
             String lastName = editLastName.getText().toString().trim();
@@ -102,7 +87,7 @@ public class AddTeacherActivity extends AppCompatActivity {
 
             boolean valid = true;
 
-            // Reset previous errors
+            // Clear previous errors
             editFirstName.setError(null);
             editLastName.setError(null);
             editBirthDate.setError(null);
@@ -110,7 +95,7 @@ public class AddTeacherActivity extends AppCompatActivity {
             editAddress.setError(null);
             editPhone.setError(null);
 
-            // Validate empty fields
+            // Validate required fields
             if (firstName.isEmpty()) {
                 editFirstName.setError("Required");
                 valid = false;
@@ -122,7 +107,7 @@ public class AddTeacherActivity extends AppCompatActivity {
             }
 
             if (birthDateStr.isEmpty()) {
-                editBirthDate.setError("Required");
+                editBirthDate.setError("Required a valid date");
                 valid = false;
             }
 
@@ -146,45 +131,45 @@ public class AddTeacherActivity extends AppCompatActivity {
                 return;
             }
 
-            // Validate phone format
+            // Phone validation
             if (!phone.matches("^05\\d{8}$")) {
                 editPhone.setError("Phone must start with 05 and be 10 digits");
                 return;
             }
 
-            // Validate birth date is not in the future
+            // Birth date parsing and logic
             LocalDate birthDate;
             try {
-                birthDate = LocalDate.parse(birthDateStr);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
+                birthDate = LocalDate.parse(birthDateStr, formatter);
+
                 if (birthDate.isAfter(LocalDate.now())) {
                     editBirthDate.setError("Birth date cannot be in the future");
                     return;
                 }
-            } catch (Exception e) {
+            } catch (DateTimeParseException e) {
                 editBirthDate.setError("Invalid date format");
                 return;
             }
 
-            // Validate specialty selection
+            // Specialty check
             if (specialty.equals("Select Specialty")) {
                 Toast.makeText(this, "Please select a valid specialty", Toast.LENGTH_SHORT).show();
                 spinnerSpecialty.requestFocus();
                 return;
             }
 
-            // Construct Teacher object
+            // Create and send Teacher
             Role role = Role.TEACHER;
             Teacher teacher = new Teacher();
             teacher.setFirstName(firstName);
             teacher.setLastName(lastName);
             teacher.setBirthDate(birthDate);
-            teacher.setAddress(address);
+            teacher.setAddress(city + " " + address);
             teacher.setPhone(phone);
             teacher.setRole(role);
             teacher.setSpeciality(specialty);
-            // If your model has city, add: teacher.setCity(city);
 
-            // Send to DAO
             ITeacherDA teacherDA = new TeacherDA(this);
             teacherDA.addTeacher(teacher, new TeacherDA.BaseCallback() {
                 @Override
