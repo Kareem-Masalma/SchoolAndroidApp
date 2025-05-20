@@ -1,29 +1,20 @@
 package com.example.schoolapp.models;
 
+import androidx.annotation.NonNull;
+
 import java.time.LocalDate;
 
 public class Student extends User {
-    private Integer student_id;
     private Integer class_id;
 
     public Student() {
 
     }
 
-    public Student(Integer student_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, Integer user_id, Integer class_id) {
+    public Student(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, Integer class_id) {
         super(user_id, firstName, lastName, birthDate, address, phone, role);
-        this.student_id = student_id;
         this.class_id = class_id;
     }
-
-    public Integer getStudent_id() {
-        return student_id;
-    }
-
-    public void setStudent_id(Integer student_id) {
-        this.student_id = student_id;
-    }
-
 
     public Integer getClass_id() {
         return class_id;
@@ -33,10 +24,11 @@ public class Student extends User {
         this.class_id = class_id;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Student{" +
-                "student_id=" + student_id +
+                "student_id=" + getUser_id() +
                 ", user_id=" + super.getUser_id() +
                 ", classId=" + class_id +
                 '}';
