@@ -5,7 +5,7 @@ require_once "db.inc.php";
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET["id"])) {
         $id = $_GET["id"];
-        $sql = "SELECT * FROM student WHERE id = ?";
+        $sql = "SELECT * FROM student s, user u  WHERE id = ? AND s.student_id = u.id";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             echo json_encode(["error" => "Student not found"]);
         }
     } else {
-        $sql = "SELECT * FROM student";
+        $sql = "SELECT * FROM student s, user u WHERE s.student_id = u.id";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             $students = [];
