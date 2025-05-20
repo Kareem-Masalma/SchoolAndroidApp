@@ -7,6 +7,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.schoolapp.models.Role;
 import com.example.schoolapp.models.Student;
@@ -85,20 +86,103 @@ public class StudentDA implements IStudentDA {
         });
         queue.add(request);
     }
-
     @Override
     public void addStudent(Student student, BaseCallback callback) {
+        String url = BASE_URL + "addStudent.php";
+        try {
+            JSONObject body = new JSONObject();
+            body.put("first_name",  student.getFirstName());
+            body.put("last_name",   student.getLastName());
+            body.put("birth_date",  student.getBirthDate().toString());
+            body.put("address",     student.getAddress());
+            body.put("phone",       student.getPhone());
+            body.put("role",        student.getRole().name());
+            body.put("class_id",    student.getClass_id());
 
+            JsonObjectRequest req = new JsonObjectRequest(
+                    Request.Method.POST,
+                    url,
+                    body,
+                    response -> {
+                        // Expecting e.g. { "success": true, "message": "Added" }
+                        boolean ok = response.optBoolean("success", false);
+                        String msg = response.optString("message", "Unknown response");
+                        if (ok) {
+                            callback.onSuccess(msg);
+                        } else {
+                            callback.onError(msg);
+                        }
+                    },
+                    error -> {
+                        callback.onError(error.getMessage());
+                    }
+            );
+            queue.add(req);
+
+        } catch (JSONException e) {
+            callback.onError("Invalid JSON");
+        }
     }
 
     @Override
     public void updateStudent(Student student, BaseCallback callback) {
+        String url = BASE_URL + "updateStudent.php";
+        try {
+            JSONObject body = new JSONObject();
+            body.put("user_id",     student.getUser_id());
+            body.put("first_name",  student.getFirstName());
+            body.put("last_name",   student.getLastName());
+            body.put("birth_date",  student.getBirthDate().toString());
+            body.put("address",     student.getAddress());
+            body.put("phone",       student.getPhone());
+            body.put("role",        student.getRole().name());
+            body.put("class_id",    student.getClass_id());
 
+            JsonObjectRequest req = new JsonObjectRequest(
+                    Request.Method.PUT,
+                    url,
+                    body,
+                    response -> {
+                        boolean ok = response.optBoolean("success", false);
+                        String msg = response.optString("message", "Unknown response");
+                        if (ok) {
+                            callback.onSuccess(msg);
+                        } else {
+                            callback.onError(msg);
+                        }
+                    },
+                    error -> {
+                        callback.onError(error.getMessage());
+                    }
+            );
+            queue.add(req);
+
+        } catch (JSONException e) {
+            callback.onError("Invalid JSON");
+        }
     }
 
     @Override
     public void deleteStudent(int id, BaseCallback callback) {
-
+        String url = BASE_URL + "deleteStudent.php?id=" + id;
+        JsonObjectRequest req = new JsonObjectRequest(
+                Request.Method.DELETE,
+                url,
+                null,
+                response -> {
+                    boolean ok = response.optBoolean("success", false);
+                    String msg = response.optString("message", "Unknown response");
+                    if (ok) {
+                        callback.onSuccess(msg);
+                    } else {
+                        callback.onError(msg);
+                    }
+                },
+                error -> {
+                    callback.onError(error.getMessage());
+                }
+        );
+        queue.add(req);
     }
 
     public interface SingleStudentCallback {
