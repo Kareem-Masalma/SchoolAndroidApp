@@ -112,8 +112,7 @@ public class StudentDA implements IStudentDA {
 
     @Override
     public void updateStudent(Student student) {
-        String url = BASE_URL + "?id=" + student.getUser_id();
-        StringRequest request = new StringRequest(Request.Method.PUT, url, response -> Log.d("PUT_SUCCESS", response),
+        StringRequest request = new StringRequest(Request.Method.PUT, BASE_URL, response -> Log.d("PUT_SUCCESS", response),
                 error -> Log.e("PUT_ERROR", error.toString())) {
             @Override
             protected Map<String, String> getParams() {
@@ -133,8 +132,7 @@ public class StudentDA implements IStudentDA {
 
     @Override
     public void deleteStudent(int id) {
-        String url = BASE_URL + "?id=" + id;
-        StringRequest request = new StringRequest(Request.Method.DELETE, url, response -> Log.d("PUT_SUCCESS", response),
+        StringRequest request = new StringRequest(Request.Method.DELETE, BASE_URL, response -> Log.d("PUT_SUCCESS", response),
                 error -> Log.e("PUT_ERROR", error.toString())) {
 
             @Override
