@@ -1,12 +1,14 @@
 package com.example.schoolapp.data_access;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.schoolapp.models.Role;
 import com.example.schoolapp.models.Student;
@@ -17,11 +19,13 @@ import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StudentDA implements IStudentDA {
     private final RequestQueue queue;
-    private final String BASE_URL = "http://localhost/phpmyadmin/index.php"; // change "student/" if needed
+    private final String BASE_URL = "http://localhost/phpmyadmin/index.php/student.php";
 
 
     public StudentDA(Context context) {
@@ -30,7 +34,7 @@ public class StudentDA implements IStudentDA {
 
     @Override
     public void getStudentById(int id, SingleStudentCallback callback) {
-        String url = BASE_URL + "getStudent.php?id=" + id;
+        String url = BASE_URL + "?id=" + id;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -40,7 +44,7 @@ public class StudentDA implements IStudentDA {
                             obj.getInt("user_id"), obj.getString("first_name"),
                             obj.getString("last_name"), LocalDate.parse("birth_date"),
                             obj.getString("address"), obj.getString("phone"), Role.STUDENT,
-                            obj.getInt("class_id"));
+                            obj.getInt("class_id"), obj.getString("password"));
                     callback.onSuccess(student);
                 } catch (JSONException e) {
                     callback.onError("Student Not Found");
@@ -57,8 +61,7 @@ public class StudentDA implements IStudentDA {
 
     @Override
     public void getAllStudents(StudentListCallback callback) {
-        String url = BASE_URL + "addTeacher.php";
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, BASE_URL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 try {
@@ -69,7 +72,7 @@ public class StudentDA implements IStudentDA {
                                 obj.getInt("user_id"), obj.getString("first_name"),
                                 obj.getString("last_name"), LocalDate.parse(obj.getString("birth_date")),
                                 obj.getString("address"), obj.getString("phone"), Role.STUDENT,
-                                obj.getInt("class_id"));
+                                obj.getInt("class_id"), obj.getString("password"));
                         students.add(student);
                     }
                     callback.onSuccess(students);
@@ -87,17 +90,33 @@ public class StudentDA implements IStudentDA {
     }
 
     @Override
-    public void addStudent(Student student, BaseCallback callback) {
+    public void addStudent(Student student) {
+        StringRequest request = new StringRequest(Request.Method.POST, BASE_URL, response -> Log.d("POST_SUCCESS", response),
+                error -> Log.e("POST_ERROR", error.toString())) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("first_name", student.getFirstName());
+                params.put("last_name", student.getLastName());
+                params.put("birth_date", student.getBirthDate().toString());
+                params.put("address", student.getAddress());
+                params.put("phone", student.getPhone());
+                params.put("role", Role.STUDENT.toString());
+                params.put("class_id", student.getClass_id().toString());
+                return params;
+            }
+        };
+        queue.add(request);
+    }
+
+    @Override
+    public void updateStudent(Student student) {
 
     }
 
     @Override
-    public void updateStudent(Student student, BaseCallback callback) {
-
-    }
-
-    @Override
-    public void deleteStudent(int id, BaseCallback callback) {
+    public void deleteStudent(int id) {
 
     }
 

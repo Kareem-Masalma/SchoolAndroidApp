@@ -87,7 +87,7 @@ public class AddSchedule extends AppCompatActivity {
                             rvUsers.setAdapter(new StudentAdapter(students, new OnStudentClickListener() {
                                 @Override
                                 public void onStudentClick(Student student) {
-                                    Intent intent = new Intent(AddSchedule.this, AddStudentSchedule.class);
+                                    Intent intent = new Intent(AddSchedule.this, AddClassSchedule.class);
                                     Gson gson = new Gson();
                                     String studentString = gson.toJson(student);
                                     intent.putExtra(AddSchedule.STUDENT, studentString);

@@ -39,7 +39,8 @@ public class TeacherDA implements ITeacherDA {
                             obj.getInt("user_id"), obj.getString("first_name"),
                             obj.getString("last_name"), LocalDate.parse(obj.getString("birth_date")),
                             obj.getString("address"), obj.getString("phone"), Role.TEACHER,
-                            obj.getString("speciality"), obj.getInt("schedule_id"));
+                            obj.getString("speciality"), obj.getInt("schedule_id"),
+                            obj.getString("password"));
                     callback.onSuccess(teacher);
                 } catch (JSONException e) {
                     callback.onError("Teacher Not Found");
@@ -69,7 +70,8 @@ public class TeacherDA implements ITeacherDA {
                                 obj.getInt("user_id"), obj.getString("first_name"),
                                 obj.getString("last_name"), LocalDate.parse("birth_date"),
                                 obj.getString("address"), obj.getString("phone"), Role.TEACHER,
-                                obj.getString("speciality"), obj.getInt("schedule_id"));
+                                obj.getString("speciality"), obj.getInt("schedule_id"),
+                                obj.getString("password"));
                         teachers.add(teacher);
                     }
                     callback.onSuccess(teachers);

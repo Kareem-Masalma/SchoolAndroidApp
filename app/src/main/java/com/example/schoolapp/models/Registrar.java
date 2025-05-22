@@ -1,5 +1,7 @@
 package com.example.schoolapp.models;
 
+import androidx.annotation.NonNull;
+
 import java.time.LocalDate;
 
 public class Registrar extends User {
@@ -9,8 +11,8 @@ public class Registrar extends User {
 
     }
 
-    public Registrar(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, Integer registrar_id) {
-        super(user_id, firstName, lastName, birthDate, address, phone, role);
+    public Registrar(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, Integer registrar_id, String password) {
+        super(user_id, firstName, lastName, birthDate, address, phone, role, password);
         this.registrar_id = registrar_id;
     }
 
@@ -23,6 +25,7 @@ public class Registrar extends User {
     }
 
 
+    @NonNull
     @Override
     public String toString() {
         return "Registrar{" +
