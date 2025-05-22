@@ -5,7 +5,7 @@ require_once "db.inc.php";
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET["id"])) {
         $id = $_GET["id"];
-        $sql = "SELECT * FROM student s, user u  WHERE id = ? AND s.student_id = u.id";
+        $sql = "SELECT * FROM student s, users u  WHERE id = ? AND s.student_id = u.id";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             echo json_encode(["error" => "Student not found"]);
         }
     } else {
-        $sql = "SELECT * FROM student s, user u WHERE s.student_id = u.id";
+        $sql = "SELECT * FROM student s, users u WHERE s.student_id = u.id";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             $students = [];
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $role = $_POST["role"];
     $class_id = $_POST["class_id"];
 
-    $user_stmt = $conn->prepare("INSERT INTO user (first_name, last_name, birth_date, address, phone, role) VALUES (?, ?, ?, ?, ?, ?)");
+    $user_stmt = $conn->prepare("INSERT INTO users (first_name, last_name, birth_date, address, phone, role) VALUES (?, ?, ?, ?, ?, ?)");
     $user_stmt->bind_param("ssssss", $first_name, $last_name, $birth_date, $address, $phone, $role);
 
     if ($user_stmt->execute()) {
@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $role = $_PUT["role"];
     $class_id = $_PUT["class_id"];
 
-    $user_stmt = $conn->prepare("UPDATE user SET first_name=?, last_name=?, birth_date=?, address=?, phone=?, role=? WHERE id=?");
+    $user_stmt = $conn->prepare("UPDATE users SET first_name=?, last_name=?, birth_date=?, address=?, phone=?, role=? WHERE id=?");
     $user_stmt->bind_param("ssssssi", $first_name, $last_name, $birth_date, $address, $phone, $role, $id);
 
     if ($user_stmt->execute()) {
@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $stmt1 = $conn->prepare("DELETE FROM student WHERE student_id=?");
     $stmt1->bind_param("i", $id);
 
-    $stmt2 = $conn->prepare("DELETE FROM user WHERE id=?");
+    $stmt2 = $conn->prepare("DELETE FROM users WHERE id=?");
     $stmt2->bind_param("i", $id);
 
     if ($stmt1->execute() && $stmt2->execute()) {
