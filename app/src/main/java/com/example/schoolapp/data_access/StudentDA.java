@@ -4,11 +4,10 @@ import android.content.Context;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+
 import com.example.schoolapp.models.Role;
 import com.example.schoolapp.models.Student;
 
@@ -22,184 +21,143 @@ import java.util.List;
 
 public class StudentDA implements IStudentDA {
     private final RequestQueue queue;
-    private final String BASE_URL = "http://localhost/phpmyadmin/index.php"; // change "student/" if needed
+    private final String BASE = "http://10.0.0.11/androidBackend/student.php"; // the emulator needs the pc's local ip address,
+                                                                                // using localhost here won't work because it would refer to the emulator's internal ip
 
-
-    public StudentDA(Context context) {
-        queue = Volley.newRequestQueue(context);
+    public StudentDA(Context ctx) {
+        queue = Volley.newRequestQueue(ctx);
     }
 
     @Override
-    public void getStudentById(int id, SingleStudentCallback callback) {
-        String url = BASE_URL + "getStudent.php?id=" + id;
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                try {
-                    JSONObject obj = response.getJSONObject(0);
-                    Student student = new Student(
-                            obj.getInt("user_id"), obj.getString("first_name"),
-                            obj.getString("last_name"), LocalDate.parse("birth_date"),
-                            obj.getString("address"), obj.getString("phone"), Role.STUDENT,
-                            obj.getInt("class_id"));
-                    callback.onSuccess(student);
-                } catch (JSONException e) {
-                    callback.onError("Student Not Found");
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                callback.onError("Student Not Found");
-            }
-        });
-        queue.add(request);
-    }
-
-    @Override
-    public void getAllStudents(StudentListCallback callback) {
-        String url = BASE_URL + "addTeacher.php";
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                try {
-                    List<Student> students = new ArrayList<>();
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject obj = response.getJSONObject(0);
-                        Student student = new Student(
-                                obj.getInt("user_id"), obj.getString("first_name"),
-                                obj.getString("last_name"), LocalDate.parse(obj.getString("birth_date")),
-                                obj.getString("address"), obj.getString("phone"), Role.STUDENT,
-                                obj.getInt("class_id"));
-                        students.add(student);
-                    }
-                    callback.onSuccess(students);
-                } catch (JSONException e) {
-                    callback.onError("No students found");
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                callback.onError("No students found");
-            }
-        });
-        queue.add(request);
-    }
-    @Override
-    public void addStudent(Student student, BaseCallback callback) {
-        String url = BASE_URL + "addStudent.php";
-        try {
-            JSONObject body = new JSONObject();
-            body.put("first_name",  student.getFirstName());
-            body.put("last_name",   student.getLastName());
-            body.put("birth_date",  student.getBirthDate().toString());
-            body.put("address",     student.getAddress());
-            body.put("phone",       student.getPhone());
-            body.put("role",        student.getRole().name());
-            body.put("class_id",    student.getClass_id());
-
-            JsonObjectRequest req = new JsonObjectRequest(
-                    Request.Method.POST,
-                    url,
-                    body,
-                    response -> {
-                        // Expecting e.g. { "success": true, "message": "Added" }
-                        boolean ok = response.optBoolean("success", false);
-                        String msg = response.optString("message", "Unknown response");
-                        if (ok) {
-                            callback.onSuccess(msg);
-                        } else {
-                            callback.onError(msg);
-                        }
-                    },
-                    error -> {
-                        callback.onError(error.getMessage());
-                    }
-            );
-            queue.add(req);
-
-        } catch (JSONException e) {
-            callback.onError("Invalid JSON");
-        }
-    }
-
-    @Override
-    public void updateStudent(Student student, BaseCallback callback) {
-        String url = BASE_URL + "updateStudent.php";
-        try {
-            JSONObject body = new JSONObject();
-            body.put("user_id",     student.getUser_id());
-            body.put("first_name",  student.getFirstName());
-            body.put("last_name",   student.getLastName());
-            body.put("birth_date",  student.getBirthDate().toString());
-            body.put("address",     student.getAddress());
-            body.put("phone",       student.getPhone());
-            body.put("role",        student.getRole().name());
-            body.put("class_id",    student.getClass_id());
-
-            JsonObjectRequest req = new JsonObjectRequest(
-                    Request.Method.PUT,
-                    url,
-                    body,
-                    response -> {
-                        boolean ok = response.optBoolean("success", false);
-                        String msg = response.optString("message", "Unknown response");
-                        if (ok) {
-                            callback.onSuccess(msg);
-                        } else {
-                            callback.onError(msg);
-                        }
-                    },
-                    error -> {
-                        callback.onError(error.getMessage());
-                    }
-            );
-            queue.add(req);
-
-        } catch (JSONException e) {
-            callback.onError("Invalid JSON");
-        }
-    }
-
-    @Override
-    public void deleteStudent(int id, BaseCallback callback) {
-        String url = BASE_URL + "deleteStudent.php?id=" + id;
+    public void getStudentById(int userId, SingleStudentCallback cb) {
+        String url = BASE + "?user_id=" + userId;
         JsonObjectRequest req = new JsonObjectRequest(
-                Request.Method.DELETE,
-                url,
-                null,
-                response -> {
-                    boolean ok = response.optBoolean("success", false);
-                    String msg = response.optString("message", "Unknown response");
-                    if (ok) {
-                        callback.onSuccess(msg);
-                    } else {
-                        callback.onError(msg);
+                Request.Method.GET, url, null,
+                resp -> {
+                    try {
+                        cb.onSuccess(parseStudent(resp));
+                    } catch (JSONException ex) {
+                        cb.onError("Malformed data");
                     }
                 },
-                error -> {
-                    callback.onError(error.getMessage());
-                }
+                err -> cb.onError("Fetch failed")
         );
         queue.add(req);
     }
 
+    @Override
+    public void getAllStudents(StudentListCallback cb) {
+        JsonArrayRequest req = new JsonArrayRequest(
+                Request.Method.GET, BASE, null,
+                resp -> {
+                    try {
+                        List<Student> list = new ArrayList<>();
+                        for (int i = 0; i < resp.length(); i++) {
+                            list.add(parseStudent(resp.getJSONObject(i)));
+                        }
+                        cb.onSuccess(list);
+                    } catch (JSONException ex) {
+                        cb.onError("Malformed list");
+                    }
+                },
+                err -> cb.onError("Fetch failed")
+        );
+        queue.add(req);
+    }
+
+    @Override
+    public void addStudent(Student s, BaseCallback cb) {
+        try {
+            JSONObject b = new JSONObject();
+            b.put("first_name",  s.getFirstName());
+            b.put("last_name",   s.getLastName());
+            b.put("birth_date",  s.getBirthDate().toString());
+            b.put("address",     s.getAddress());
+            b.put("phone",       s.getPhone());
+            b.put("role",        s.getRole().name());
+            b.put("class_id",    s.getClass_id());
+
+            JsonObjectRequest req = new JsonObjectRequest(
+                    Request.Method.POST, BASE, b,
+                    resp -> handle(cb, resp),
+                    err -> cb.onError("Add failed")
+            );
+            queue.add(req);
+
+        } catch (JSONException ex) {
+            cb.onError("Invalid JSON");
+        }
+    }
+
+    @Override
+    public void updateStudent(Student s, BaseCallback cb) {
+        try {
+            JSONObject b = new JSONObject();
+            b.put("user_id",     s.getUser_id());
+            b.put("first_name",  s.getFirstName());
+            b.put("last_name",   s.getLastName());
+            b.put("birth_date",  s.getBirthDate().toString());
+            b.put("address",     s.getAddress());
+            b.put("phone",       s.getPhone());
+            b.put("role",        s.getRole().name());
+            b.put("class_id",    s.getClass_id());
+
+            JsonObjectRequest req = new JsonObjectRequest(
+                    Request.Method.PUT, BASE, b,
+                    resp -> handle(cb, resp),
+                    err -> cb.onError("Update failed")
+            );
+            queue.add(req);
+
+        } catch (JSONException ex) {
+            cb.onError("Invalid JSON");
+        }
+    }
+
+    @Override
+    public void deleteStudent(int userId, BaseCallback cb) {
+        String url = BASE + "?user_id=" + userId;
+        JsonObjectRequest req = new JsonObjectRequest(
+                Request.Method.DELETE, url, null,
+                resp -> handle(cb, resp),
+                err -> cb.onError("Delete failed")
+        );
+        queue.add(req);
+    }
+
+    // Helpers
+
+    private Student parseStudent(JSONObject o) throws JSONException {
+        return new Student(
+                o.getInt("user_id"),
+                o.getString("first_name"),
+                o.getString("last_name"),
+                LocalDate.parse(o.getString("birth_date")),
+                o.getString("address"),
+                o.getString("phone"),
+                Role.valueOf(o.getString("role")),
+                o.getInt("class_id")
+        );
+    }
+
+    private void handle(BaseCallback cb, JSONObject resp) {
+        boolean ok  = resp.optBoolean("success", false);
+        String  msg = resp.optString("message", ok ? "OK" : "Error");
+        if (ok) cb.onSuccess(msg);
+        else    cb.onError(msg);
+    }
+
+    // Callback interfaces (unchanged)
     public interface SingleStudentCallback {
-        void onSuccess(Student student);
-
-        void onError(String error);
+        void   onSuccess(Student s);
+        void   onError(String error);
     }
-
     public interface StudentListCallback {
-        void onSuccess(List<Student> students);
-
-        void onError(String error);
+        void   onSuccess(List<Student> list);
+        void   onError(String error);
     }
-
     public interface BaseCallback {
-        void onSuccess(String message);
-
-        void onError(String error);
+        void   onSuccess(String message);
+        void   onError(String error);
     }
 }

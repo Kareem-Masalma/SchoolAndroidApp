@@ -3,7 +3,6 @@ package com.example.schoolapp;
 import android.app.DatePickerDialog;
 import android.icu.util.Calendar;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -12,9 +11,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.schoolapp.data_access.IStudentDA;
 import com.example.schoolapp.data_access.StudentDA;
@@ -36,7 +32,7 @@ public class AddStudents extends AppCompatActivity {
     private TextInputEditText etAddress;
     private TextInputEditText etPhone;
     private Spinner          spinnerClass;
-    private Button           btnSave;
+    private Button           btnAdd;
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +41,7 @@ public class AddStudents extends AppCompatActivity {
         setContentView(R.layout.activity_add_students);
 
         setupViews();
-        setupSaveButton();
+        handleAddButton();
     }
 
     private void setupViews() {
@@ -55,7 +51,7 @@ public class AddStudents extends AppCompatActivity {
         etAddress     = findViewById(R.id.etAddress);
         etPhone       = findViewById(R.id.etPhone);
         spinnerClass  = findViewById(R.id.spinnerClassNum);
-        btnSave       = findViewById(R.id.btnSave);
+        btnAdd       = findViewById(R.id.btnAdd);
 
         etBirthDate.setOnClickListener(v -> {
             Calendar cal = Calendar.getInstance();
@@ -98,8 +94,8 @@ public class AddStudents extends AppCompatActivity {
     }
 
 
-    private void setupSaveButton() {
-        btnSave.setOnClickListener(v -> {
+    private void handleAddButton() {
+        btnAdd.setOnClickListener(v -> {
 
             String first_name  = etFirstName.getText().toString().trim();
             String last_name   = etLastName .getText().toString().trim();
@@ -107,6 +103,9 @@ public class AddStudents extends AppCompatActivity {
             String address   = etAddress   .getText().toString().trim();
             String phone  = etPhone     .getText().toString().trim();
             Integer class_id = Integer.valueOf((String) spinnerClass.getSelectedItem());
+
+
+            // TODO add an input check for date
 
             IStudentDA studentDA = StudentDAFactory.getStudentDA(this);
             Student student = new Student(0,first_name,last_name,birth_date,address,phone, Role.STUDENT,class_id);
