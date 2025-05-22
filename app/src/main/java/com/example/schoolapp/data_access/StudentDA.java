@@ -112,12 +112,39 @@ public class StudentDA implements IStudentDA {
 
     @Override
     public void updateStudent(Student student) {
-
+        String url = BASE_URL + "?id=" + student.getUser_id();
+        StringRequest request = new StringRequest(Request.Method.PUT, url, response -> Log.d("PUT_SUCCESS", response),
+                error -> Log.e("PUT_ERROR", error.toString())) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("first_name", student.getFirstName());
+                params.put("last_name", student.getLastName());
+                params.put("birth_date", student.getBirthDate().toString());
+                params.put("address", student.getAddress());
+                params.put("phone", student.getPhone());
+                params.put("role", Role.STUDENT.toString());
+                params.put("class_id", student.getClass_id().toString());
+                return params;
+            }
+        };
+        queue.add(request);
     }
 
     @Override
     public void deleteStudent(int id) {
+        String url = BASE_URL + "?id=" + id;
+        StringRequest request = new StringRequest(Request.Method.DELETE, url, response -> Log.d("PUT_SUCCESS", response),
+                error -> Log.e("PUT_ERROR", error.toString())) {
 
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("user_id", Integer.toString(id));
+                return params;
+            }
+        };
+        queue.add(request);
     }
 
     public interface SingleStudentCallback {
