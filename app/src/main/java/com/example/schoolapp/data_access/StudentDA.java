@@ -117,6 +117,7 @@ public class StudentDA implements IStudentDA {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
+                params.put("user_id", student.getUser_id().toString());
                 params.put("first_name", student.getFirstName());
                 params.put("last_name", student.getLastName());
                 params.put("birth_date", student.getBirthDate().toString());
@@ -132,8 +133,8 @@ public class StudentDA implements IStudentDA {
 
     @Override
     public void deleteStudent(int id) {
-        StringRequest request = new StringRequest(Request.Method.DELETE, BASE_URL, response -> Log.d("PUT_SUCCESS", response),
-                error -> Log.e("PUT_ERROR", error.toString())) {
+        StringRequest request = new StringRequest(Request.Method.DELETE, BASE_URL, response -> Log.d("DELETE_SUCCESS", response),
+                error -> Log.e("DELETE_ERROR", error.toString())) {
 
             @Override
             protected Map<String, String> getParams() {

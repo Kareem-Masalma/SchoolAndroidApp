@@ -2,34 +2,37 @@
 global $conn;
 require_once "db.inc.php";
 
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
+header("Content-Type: application/json");
+
+if ($_SERVER["REQUEST_METHOD"] === "GET") {
+
     if (isset($_GET["id"])) {
         $id = $_GET["id"];
-        $sql = "SELECT * FROM student s, users u  WHERE id = ? AND s.student_id = u.id";
+        $sql = "SELECT * FROM student s JOIN users u ON s.student_id = u.id WHERE u.id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            $student = $result->fetch_assoc();
-            echo json_encode($student);
-        } else {
-            echo json_encode(["error" => "Student not found"]);
+
+        $students = [];
+        while ($row = $result->fetch_assoc()) {
+            $students[] = $row;
         }
+
+        echo json_encode($students);
     } else {
-        $sql = "SELECT * FROM student s, users u WHERE s.student_id = u.id";
+        $sql = "SELECT * FROM student s JOIN users u ON s.student_id = u.id";
         $result = $conn->query($sql);
-        if ($result->num_rows > 0) {
-            $students = [];
-            while ($row = $result->fetch_assoc()) {
-                $students[] = $row;
-            }
-            echo json_encode($students);
-        } else {
-            echo json_encode([]);
+
+        $students = [];
+        while ($row = $result->fetch_assoc()) {
+            $students[] = $row;
         }
+
+        echo json_encode($students);
     }
-} else if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+} elseif ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $first_name = $_POST["first_name"];
     $last_name = $_POST["last_name"];
@@ -58,7 +61,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     } else {
         echo json_encode(["success" => false, "error" => "Failed to insert into users table"]);
     }
-} else if ($_SERVER["REQUEST_METHOD"] == "PUT") {
+
+} elseif ($_SERVER["REQUEST_METHOD"] === "PUT") {
+
     parse_str(file_get_contents("php://input"), $_PUT);
     $id = $_PUT["id"];
     $first_name = $_PUT["first_name"];
@@ -73,22 +78,22 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $user_stmt->bind_param("ssssssi", $first_name, $last_name, $birth_date, $address, $phone, $role, $id);
 
     if ($user_stmt->execute()) {
-        if ($class_id) {
-            $student_stmt = $conn->prepare("UPDATE student SET class_id=? WHERE student_id=?");
-            $student_stmt->bind_param("ii", $class_id, $id);
-            if ($student_stmt->execute()) {
-                echo json_encode(["success" => true, "message" => "Student updated successfully"]);
-            } else {
-                echo json_encode(["success" => false, "error" => "Failed to update students table"]);
-            }
-            $student_stmt->close();
-        } else {
+        $student_stmt = $conn->prepare("UPDATE student SET class_id=? WHERE student_id=?");
+        $student_stmt->bind_param("ii", $class_id, $id);
+
+        if ($student_stmt->execute()) {
             echo json_encode(["success" => true, "message" => "Student updated successfully"]);
+        } else {
+            echo json_encode(["success" => false, "error" => "Failed to update student table"]);
         }
+
+        $student_stmt->close();
     } else {
-        echo json_encode(["success" => false, "error" => "Failed to update users table"]);
+        echo json_encode(["success" => false, "error" => "Failed to update user"]);
     }
-} else if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
+
+} elseif ($_SERVER["REQUEST_METHOD"] === "DELETE") {
+
     parse_str(file_get_contents("php://input"), $_DELETE);
     $id = $_DELETE["id"];
 
