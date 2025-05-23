@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Intent intent = new Intent(MainActivity.this, AddTeacherActivity.class);
         //Intent intent = new Intent(MainActivity.this, AddSchedule.class);
-        //startActivity(intent);
+        Intent intent = new Intent(MainActivity.this, TakeAttendance.class);
+
+        startActivity(intent);
     }
 }

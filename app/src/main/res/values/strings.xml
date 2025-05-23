@@ -25,4 +25,5 @@
     <string name="student">Student</string>
     <string name="teacher">Teacher</string>
     <string name="select_role">Select Role</string>
+    <string name="class_attendance">Class Attendance</string>
 </resources>
