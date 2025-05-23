@@ -11,8 +11,8 @@ public class Registrar extends User {
 
     }
 
-    public Registrar(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, Integer registrar_id, String password) {
-        super(user_id, firstName, lastName, birthDate, address, phone, role, password);
+    public Registrar(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, Integer registrar_id) {
+        super(user_id, firstName, lastName, birthDate, address, phone, role);
         this.registrar_id = registrar_id;
     }
 

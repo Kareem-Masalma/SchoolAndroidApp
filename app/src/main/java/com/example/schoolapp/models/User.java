@@ -18,7 +18,7 @@ public class User {
 
     }
 
-    public User(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, String password) {
+    public User(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role) {
         this.user_id = user_id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -26,7 +26,6 @@ public class User {
         this.address = address;
         this.phone = phone;
         this.role = role;
-        this.password = password;
     }
 
     public Integer getUser_id() {
