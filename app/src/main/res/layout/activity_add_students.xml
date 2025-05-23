@@ -119,7 +119,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Class"
+            android:hint="Class (1st grade, 2nd grade, ... etc)"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_marginTop="8dp">
 
@@ -127,7 +127,7 @@
                 android:id="@+id/spinnerClassNum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="50dp"/>
+                android:minHeight="50dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
