@@ -20,6 +20,14 @@ public class Teacher extends User {
         this.schedule_id = schedule_id;
     }
 
+    public Teacher(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, String speciality, Integer schedule_id, String password) {
+        super(user_id, firstName, lastName, birthDate, address, phone, role, password);
+
+        this.speciality = speciality;
+        this.schedule_id = schedule_id;
+
+    }
+
     public Integer getTeacher_id() {
         return teacher_id;
     }
