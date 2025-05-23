@@ -1,6 +1,7 @@
 package com.example.schoolapp;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,23 +20,24 @@ import com.example.schoolapp.adapters.StudentAttendanceAdapter;
 import com.example.schoolapp.data_access.IStudentDA;
 import com.example.schoolapp.data_access.StudentDA;
 import com.example.schoolapp.data_access.StudentDAFactory;
+import com.example.schoolapp.models.SchoolClass;
 import com.example.schoolapp.models.Student;
+import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 public class TakeAttendance extends AppCompatActivity {
 
 
-    private TextView tvTitle;
-    private TextView tvClassLabel;
     private TextView tvClassName;
-    private TextView tvDateLabel;
     private EditText editLectureDate;
     private LinearLayout lectureDateField;
     private RecyclerView rvStudents;
     private Button btnCancel;
     private Button btnFinish;
+    private SchoolClass schoolClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,15 +46,21 @@ public class TakeAttendance extends AppCompatActivity {
         setContentView(R.layout.activity_take_atendance);
 
         setupViews();
+        getSchoolClass();
         setupRecyclerView();
         setupDatePicker();
     }
 
+    private void getSchoolClass() {
+        Intent intent = getIntent();
+        Gson gson = new Gson();
+        String json = intent.getStringExtra("schoolClass");
+        schoolClass = gson.fromJson(json, SchoolClass.class);
+        tvClassName.setText(schoolClass.getName());
+    }
+
     private void setupViews() {
-        tvTitle           = findViewById(R.id.tvTitle);
-        tvClassLabel      = findViewById(R.id.tvClassLabel);
         tvClassName       = findViewById(R.id.tvClassName);
-        tvDateLabel       = findViewById(R.id.tvDateLabel);
         editLectureDate   = findViewById(R.id.editLectureDate);
         lectureDateField  = findViewById(R.id.lectureDateField);
         rvStudents        = findViewById(R.id.rvStudents);
@@ -68,8 +76,14 @@ public class TakeAttendance extends AppCompatActivity {
             @Override
             public void onSuccess(List<Student> students) {
                 runOnUiThread(() -> {
-                    // TODO: Check if the student.class_id == schoolClass.class_id
-                    StudentAttendanceAdapter adapter = new StudentAttendanceAdapter(students);
+                    // check if the student.class_id == schoolClass.class_id
+                    List<Student> classStudents = new ArrayList<>();
+                    for(Student student : students){
+                        if(student.getClass_id() == schoolClass.getClass_id()){
+                            classStudents.add(student);
+                        }
+                    }
+                    StudentAttendanceAdapter adapter = new StudentAttendanceAdapter(classStudents);
                     rvStudents.setAdapter(adapter);
                     Toast.makeText(TakeAttendance.this, "Displayed all students successfully", Toast.LENGTH_SHORT).show();
                 });

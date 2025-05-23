@@ -5,7 +5,9 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="15dp"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:background="@color/row_light_blue"
+    android:layout_marginTop="15dp">
 
     <TextView
         android:id="@+id/tvStudentName"
@@ -18,5 +20,7 @@
     <CheckBox
         android:id="@+id/cbPresent"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:minWidth="50dp"
+        android:minHeight="50dp"/>
 </LinearLayout>
