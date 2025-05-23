@@ -20,7 +20,7 @@ public class TeacherDA implements ITeacherDA {
 
     private final RequestQueue queue;
 
-    private final String BASE_URL = "http://localhost/phpmyadmin/index.php"; // change "school/" if needed
+    private final String BASE_URL = "http://localhost/phpmyadmin/index.php";
     private final Gson gson = new Gson();
 
     public TeacherDA(Context context) {
@@ -29,7 +29,7 @@ public class TeacherDA implements ITeacherDA {
 
     @Override
     public void findTeacherById(int id, SingleTeacherCallback callback) {
-        String url = BASE_URL + "addTeacher.php?id=" + id;
+        String url = BASE_URL + "teacher.php?id=" + id;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -56,7 +56,8 @@ public class TeacherDA implements ITeacherDA {
 
     @Override
     public void getAllTeachers(TeacherListCallback callback) {
-        String url = BASE_URL + "addTeacher.php";
+        String url = BASE_URL + "teacher.php";
+
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -89,19 +90,19 @@ public class TeacherDA implements ITeacherDA {
 
     @Override
     public void addTeacher(Teacher teacher, BaseCallback callback) {
-//        String url = BASE_URL + "addTeacher.php";
+//        String url = BASE_URL + "teacher.php";
 //        postJson(url, teacher, callback);
     }
 
     @Override
     public void updateTeacher(Teacher teacher, BaseCallback callback) {
-//        String url = BASE_URL + "addTeacher.php";
+//        String url = BASE_URL + "teacher.php";
 //        postJson(url, teacher, callback);
     }
 
     @Override
     public void deleteTeacher(int id, BaseCallback callback) {
-//        String url = BASE_URL + "addTeacher.php";
+//        String url = BASE_URL + "teacher.php";
 //        Map<String, Integer> body = new HashMap<>();
 //        body.put("id", id);
 //        postJson(url, body, callback);
