@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">SchoolApp</string>
+    <string name="add_teacher">Add Teacher</string>
+    <string name="first_name">First Name:</string>
+    <string name="enter_first_name">Enter first name</string>
+    <string name="last_name">Last Name:</string>
+    <string name="enter_last_name">Enter last name</string>
+    <string name="birth_date">Birth Date:</string>
+    <string name="select_birth_date">Select birth date</string>
+    <string name="address">Address:</string>
+    <string name="enter_address">Enter address</string>
+    <string name="phone">Phone:</string>
+    <string name="enter_phone_number">Enter phone number</string>
+    <string name="specialty">Specialty:</string>
+    <string name="role">Role:</string>
+    <string name="Teacher">Teacher</string>
+    <string name="cancel">Cancel</string>
+    <string name="add">Add</string>
+    <string name="enter_city_name">Enter city name</string>
+    <string name="enter_phone_number_starts_05">Enter phone number starts (05)</string>
+    <string name="city">City</string>
+    <string name="calendar_icon">calendar_icon</string>
+    <string name="dropdown_icon">dropdown_icon</string>
+    <string name="add_schedule">Add Schedule</string>
+    <string name="student">Student</string>
+    <string name="teacher">Teacher</string>
+    <string name="select_role">Select Role</string>
 </resources>

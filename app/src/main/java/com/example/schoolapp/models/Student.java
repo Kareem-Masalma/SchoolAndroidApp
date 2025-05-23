@@ -1,50 +1,35 @@
 package com.example.schoolapp.models;
 
-public class Student {
-    private Integer id;
-    private Integer userId;
-    private Integer classId;
+import androidx.annotation.NonNull;
+
+import java.time.LocalDate;
+
+public class Student extends User {
+    private Integer class_id;
 
     public Student() {
 
     }
 
-    public Student(Integer id, Integer userId, Integer classId) {
-        this.id = id;
-        this.userId = userId;
-        this.classId = classId;
+    public Student(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, Integer class_id, String password) {
+        super(user_id, firstName, lastName, birthDate, address, phone, role, password);
+        this.class_id = class_id;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getClass_id() {
+        return class_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setClass_id(Integer class_id) {
+        this.class_id = class_id;
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Integer getClassId() {
-        return classId;
-    }
-
-    public void setClassId(Integer classId) {
-        this.classId = classId;
-    }
-
+    @NonNull
     @Override
     public String toString() {
         return "Student{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", classId=" + classId +
+                "user_id=" + getUser_id() +
+                ", classId=" + class_id +
                 '}';
     }
 }

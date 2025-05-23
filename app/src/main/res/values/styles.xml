@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+
+    <!-- Registrar Theme -->
+    <style name="AppTheme.Registrar" parent="AppTheme">
+        <item name="colorPrimary">@color/role_orange</item>
+        <item name="colorPrimaryVariant">@color/role_orange_dark</item>
+        <item name="colorSecondary">@color/secondary_orange</item>
+    </style>
+
+    <!-- Teacher Theme -->
+    <style name="AppTheme.Teacher" parent="AppTheme">
+        <item name="colorPrimary">@color/role_blue</item>
+        <item name="colorPrimaryVariant">@color/role_blue</item>
+        <item name="colorSecondary">@color/role_green</item> <!-- change if needed -->
+    </style>
+
+    <!-- Student Theme -->
+    <style name="AppTheme.Student" parent="AppTheme">
+        <item name="colorPrimary">@color/role_green</item>
+        <item name="colorPrimaryVariant">@color/role_green</item>
+        <item name="colorSecondary">@color/role_blue</item> <!-- change if needed -->
+    </style>
+
+    <!-- Component Styles -->
+    <style name="HeaderTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="SectionTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+    <style name="RoleRadioButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="FormEditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="FormLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- Registrar Button Style -->
+    <style name="ButtonPrimary.Registrar" parent="ButtonPrimary">
+        <item name="android:backgroundTint">@color/role_orange</item>
+    </style>
+
+    <!-- Teacher Button Style -->
+    <style name="ButtonPrimary.Teacher" parent="ButtonPrimary">
+        <item name="android:backgroundTint">@color/role_blue</item>
+    </style>
+
+    <!-- Student Button Style -->
+    <style name="ButtonPrimary.Student" parent="ButtonPrimary">
+        <item name="android:backgroundTint">@color/role_green</item>
+    </style>
+
+
+
+    <style name="ButtonPrimary">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
+
+    <style name="FormDateField" parent="FormEditText">
+        <item name="android:background">@drawable/edittext_border</item>
+        <item name="android:drawableEnd">@drawable/calendar</item> <!-- optional icon -->
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+    </style>
+
+
+    <style name="FormSpinner">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:background">@drawable/spinner_style_border</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:popupBackground">@android:color/white</item>
+    </style>
+</resources>
