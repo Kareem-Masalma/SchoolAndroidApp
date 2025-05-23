@@ -1,6 +1,7 @@
 package com.example.schoolapp.data_access;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -35,6 +36,7 @@ public class StudentDA implements IStudentDA {
                 Request.Method.GET, url, null,
                 resp -> {
                     try {
+                        Log.i("resp" , resp.toString());
                         cb.onSuccess(parseStudent(resp));
                     } catch (JSONException ex) {
                         cb.onError("Malformed data");
