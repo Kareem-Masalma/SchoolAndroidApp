@@ -19,6 +19,9 @@
             android:name=".AddStudents"
             android:exported="false" />
         <activity
+            android:name=".TakeAttendance"
+            android:exported="false" />
+        <activity
             android:name=".AddSchedule"
             android:exported="false" />
         <activity
