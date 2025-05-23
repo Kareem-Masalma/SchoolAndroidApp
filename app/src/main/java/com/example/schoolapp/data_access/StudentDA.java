@@ -1,10 +1,13 @@
 package com.example.schoolapp.data_access;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
+
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -17,12 +20,14 @@ import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StudentDA implements IStudentDA {
     private final RequestQueue queue;
     private final String BASE = "http://10.0.0.11/androidBackend/student.php"; // the emulator needs the pc's local ip address,
-                                                                                // using localhost here won't work because it would refer to the emulator's internal ip
+
 
     public StudentDA(Context ctx) {
         queue = Volley.newRequestQueue(ctx);
@@ -147,7 +152,7 @@ public class StudentDA implements IStudentDA {
         else    cb.onError(msg);
     }
 
-    // Callback interfaces (unchanged)
+
     public interface SingleStudentCallback {
         void   onSuccess(Student s);
         void   onError(String error);
