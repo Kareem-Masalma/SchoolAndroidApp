@@ -28,8 +28,7 @@ public class Student extends User {
     @Override
     public String toString() {
         return "Student{" +
-                "student_id=" + getUser_id() +
-                ", user_id=" + super.getUser_id() +
+                "user_id=" + getUser_id() +
                 ", classId=" + class_id +
                 '}';
     }
