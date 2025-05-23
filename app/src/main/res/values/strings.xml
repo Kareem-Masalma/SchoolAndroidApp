@@ -25,4 +25,20 @@
     <string name="student">Student</string>
     <string name="teacher">Teacher</string>
     <string name="select_role">Select Role</string>
+    <string name="add_subject">Add Subject</string>
+    <string name="subject_name">Subject Name</string>
+    <string name="enter_subject_name">Enter subject name</string>
+    <string name="assign_teacher">Assign Teacher</string>
+    <string name="assign_grade">Assign Grade</string>
+    <string name="assign_days">Assign Days</string>
+    <string name="m">M</string>
+    <string name="tu">Tu</string>
+    <string name="w">W</string>
+    <string name="th">Th</string>
+    <string name="f">F</string>
+    <string name="sa">Sa</string>
+    <string name="su">Su</string>
+    <string name="select_time">Select Time</string>
+    <string name="reset">Reset</string>
+    <string name="save">Save</string>
 </resources>

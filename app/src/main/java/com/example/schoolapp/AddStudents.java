@@ -108,7 +108,7 @@ public class AddStudents extends AppCompatActivity {
             // TODO add an input check for date
 
             IStudentDA studentDA = StudentDAFactory.getStudentDA(this);
-            Student student = new Student(0,first_name,last_name,birth_date,address,phone, Role.STUDENT,class_id);
+            Student student = new Student(0,first_name,last_name,birth_date,address,phone, Role.STUDENT,class_id, " ");
             studentDA.addStudent(student, new StudentDA.BaseCallback() {
                 @Override
                 public void onSuccess(String message) {
