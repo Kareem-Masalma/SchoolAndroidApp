@@ -17,7 +17,7 @@ import com.example.schoolapp.adapters.OnStudentClickListener;
 import com.example.schoolapp.adapters.StudentAdapter;
 import com.example.schoolapp.adapters.TeacherAdapter;
 import com.example.schoolapp.data_access.StudentDAFactory;
-import com.example.schoolapp.data_access.DATeacherFactory;
+import com.example.schoolapp.data_access.TeacherDAFactory;
 import com.example.schoolapp.data_access.StudentDA;
 import com.example.schoolapp.data_access.TeacherDA;
 import com.example.schoolapp.models.Student;
@@ -60,7 +60,7 @@ public class AddSchedule extends AppCompatActivity {
                 RadioButton selectedRole = findViewById(checkedId);
                 String role = selectedRole.getText().toString();
                 if ("Teacher".equals(role)) {
-                    DATeacherFactory.getTeacherDA(AddSchedule.this).getAllTeachers(new TeacherDA.TeacherListCallback() {
+                    TeacherDAFactory.getTeacherDA(AddSchedule.this).getAllTeachers(new TeacherDA.TeacherListCallback() {
                         @Override
                         public void onSuccess(List<Teacher> teachers) {
                             rvUsers.setAdapter(new TeacherAdapter(teachers, new TeacherAdapter.OnTeacherClickListener() {
