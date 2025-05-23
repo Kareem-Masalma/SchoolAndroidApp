@@ -38,7 +38,7 @@ public class TeacherDA implements ITeacherDA {
                     Teacher teacher = new Teacher(
                             obj.getInt("user_id"), obj.getString("first_name"),
                             obj.getString("last_name"), LocalDate.parse(obj.getString("birth_date")),
-                            obj.getString("address"), obj.getString("phone"), Role.TEACHER,
+                            obj.getString("address"), obj.getString("phone"), Role.teacher,
                             obj.getString("speciality"), obj.getInt("schedule_id"));
                     callback.onSuccess(teacher);
                 } catch (JSONException e) {
@@ -68,7 +68,7 @@ public class TeacherDA implements ITeacherDA {
                         Teacher teacher = new Teacher(
                                 obj.getInt("user_id"), obj.getString("first_name"),
                                 obj.getString("last_name"), LocalDate.parse("birth_date"),
-                                obj.getString("address"), obj.getString("phone"), Role.TEACHER,
+                                obj.getString("address"), obj.getString("phone"), Role.teacher,
                                 obj.getString("speciality"), obj.getInt("schedule_id"));
                         teachers.add(teacher);
                     }

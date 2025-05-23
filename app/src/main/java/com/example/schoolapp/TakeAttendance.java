@@ -8,16 +8,21 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.schoolapp.adapters.StudentAttendanceAdapter;
 import com.example.schoolapp.data_access.IStudentDA;
+import com.example.schoolapp.data_access.StudentDA;
 import com.example.schoolapp.data_access.StudentDAFactory;
+import com.example.schoolapp.models.Student;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class TakeAttendance extends AppCompatActivity {
 
@@ -57,10 +62,24 @@ public class TakeAttendance extends AppCompatActivity {
 
     private void setupRecyclerView() {
         rvStudents.setLayoutManager(new LinearLayoutManager(this));
-        // IStudentDA studentDA = StudentDAFactory.getStudentDA(this);
-        // List<Student> students = studentDA.getAllStudents();
-        // StudentAdapter adapter = new StudentAdapter(students);
-        // rvStudents.setAdapter(adapter);
+        IStudentDA studentDA = StudentDAFactory.getStudentDA(this);
+
+        studentDA.getAllStudents(new StudentDA.StudentListCallback() {
+            @Override
+            public void onSuccess(List<Student> students) {
+                runOnUiThread(() -> {
+                    // TODO: Check if the student.class_id == schoolClass.class_id
+                    StudentAttendanceAdapter adapter = new StudentAttendanceAdapter(students);
+                    rvStudents.setAdapter(adapter);
+                    Toast.makeText(TakeAttendance.this, "Displayed all students successfully", Toast.LENGTH_SHORT).show();
+                });
+            }
+
+            @Override
+            public void onError(String error) {
+                runOnUiThread(() -> Toast.makeText(TakeAttendance.this, "Failed to receive students: " + error, Toast.LENGTH_LONG).show());
+            }
+        });
     }
 
     private void setupDatePicker() {

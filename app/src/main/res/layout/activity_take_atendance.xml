@@ -97,7 +97,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
+    <!-- Column Labels -->
+    <LinearLayout
+        android:id="@+id/columnHeaders"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="15dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Name"
+            android:textStyle="bold"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Attended"
+            android:textStyle="bold"
+            android:textSize="14sp"/>
+    </LinearLayout>
 
     <!-- RecyclerView with border -->
     <androidx.recyclerview.widget.RecyclerView
@@ -109,7 +135,7 @@
         app:layout_constraintBottom_toTopOf="@+id/btnCancel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp" />
 
     <!-- Cancel -->
     <Button
