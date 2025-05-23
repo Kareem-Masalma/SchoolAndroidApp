@@ -3,7 +3,8 @@ package com.example.schoolapp.models;
 import java.time.LocalTime;
 
 public class Subject {
-    private Integer id;
+    private Integer subject_id;
+    private Integer class_id;
     private String title;
     private LocalTime startTime;
     private LocalTime endTime;
@@ -12,19 +13,28 @@ public class Subject {
 
     }
 
-    public Subject(Integer id, String title, LocalTime startTime, LocalTime endTime) {
-        this.id = id;
+    public Subject(Integer subject_id, Integer class_id, String title, LocalTime startTime, LocalTime endTime) {
+        this.subject_id = subject_id;
+        this.class_id = class_id;
         this.title = title;
         this.startTime = startTime;
         this.endTime = endTime;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getSubject_id() {
+        return subject_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setSubject_id(Integer subject_id) {
+        this.subject_id = subject_id;
+    }
+
+    public Integer getClass_id() {
+        return class_id;
+    }
+
+    public void setClass_id(Integer class_id) {
+        this.class_id = class_id;
     }
 
     public String getTitle() {
@@ -54,7 +64,8 @@ public class Subject {
     @Override
     public String toString() {
         return "Subject{" +
-                "id=" + id +
+                "subjectId=" + subject_id +
+                "classId=" + class_id +
                 ", title='" + title + '\'' +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
