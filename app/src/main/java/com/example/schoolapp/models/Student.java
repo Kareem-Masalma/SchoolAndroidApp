@@ -11,8 +11,8 @@ public class Student extends User {
 
     }
 
-    public Student(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, Integer class_id, String password) {
-        super(user_id, firstName, lastName, birthDate, address, phone, role, password);
+    public Student(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, Integer class_id) {
+        super(user_id, firstName, lastName, birthDate, address, phone, role);
         this.class_id = class_id;
     }
 

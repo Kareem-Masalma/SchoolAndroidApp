@@ -6,7 +6,7 @@ import com.example.schoolapp.models.Student;
 public interface IStudentDA {
     void getStudentById(int id, StudentDA.SingleStudentCallback callback);
     void getAllStudents(StudentDA.StudentListCallback callback);
-    void addStudent(Student student);
-    void updateStudent(Student student);
-    void deleteStudent(int id);
+    void addStudent(Student student, StudentDA.BaseCallback callback);
+    void updateStudent(Student student, StudentDA.BaseCallback callback);
+    void deleteStudent(int id, StudentDA.BaseCallback callback);
 }
