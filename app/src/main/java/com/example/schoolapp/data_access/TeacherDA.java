@@ -1,6 +1,7 @@
 package com.example.schoolapp.data_access;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.*;
 import com.android.volley.toolbox.*;
@@ -20,7 +21,7 @@ public class TeacherDA implements ITeacherDA {
 
     private final RequestQueue queue;
 
-    private final String BASE_URL = "http://localhost/phpmyadmin/index.php";
+    private final String BASE_URL = "http://localhost/phpmyadmin/index.php/teacher.php";
     private final Gson gson = new Gson();
 
     public TeacherDA(Context context) {
@@ -29,7 +30,7 @@ public class TeacherDA implements ITeacherDA {
 
     @Override
     public void findTeacherById(int id, SingleTeacherCallback callback) {
-        String url = BASE_URL + "teacher.php?id=" + id;
+        String url = BASE_URL + "?id=" + id;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -40,6 +41,7 @@ public class TeacherDA implements ITeacherDA {
                             obj.getString("last_name"), LocalDate.parse(obj.getString("birth_date")),
                             obj.getString("address"), obj.getString("phone"), Role.teacher,
                             obj.getString("speciality"), obj.getInt("schedule_id"));
+                    teacher.setPassword(obj.getString("password"));
                     callback.onSuccess(teacher);
                 } catch (JSONException e) {
                     callback.onError("Teacher Not Found");
@@ -56,9 +58,7 @@ public class TeacherDA implements ITeacherDA {
 
     @Override
     public void getAllTeachers(TeacherListCallback callback) {
-        String url = BASE_URL + "teacher.php";
-
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, BASE_URL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 try {
@@ -70,6 +70,7 @@ public class TeacherDA implements ITeacherDA {
                                 obj.getString("last_name"), LocalDate.parse("birth_date"),
                                 obj.getString("address"), obj.getString("phone"), Role.teacher,
                                 obj.getString("speciality"), obj.getInt("schedule_id"));
+                        teacher.setPassword(obj.getString("password"));
                         teachers.add(teacher);
                     }
                     callback.onSuccess(teachers);
@@ -89,23 +90,62 @@ public class TeacherDA implements ITeacherDA {
     }
 
     @Override
-    public void addTeacher(Teacher teacher, BaseCallback callback) {
-//        String url = BASE_URL + "teacher.php";
-//        postJson(url, teacher, callback);
+    public void addTeacher(Teacher teacher) {
+        StringRequest request = new StringRequest(Request.Method.POST, BASE_URL, response -> Log.d("POST_SUCCESS", response),
+                error -> Log.e("POST_ERROR", error.toString())) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("first_name", teacher.getFirstName());
+                params.put("last_name", teacher.getLastName());
+                params.put("birth_date", teacher.getBirthDate().toString());
+                params.put("address", teacher.getAddress());
+                params.put("phone", teacher.getPhone());
+                params.put("role", teacher.getRole().toString());
+                params.put("speciality", teacher.getSpeciality());
+                params.put("password" , teacher.getPassword());
+                return params;
+            }
+        };
+        queue.add(request);
     }
 
     @Override
-    public void updateTeacher(Teacher teacher, BaseCallback callback) {
-//        String url = BASE_URL + "teacher.php";
-//        postJson(url, teacher, callback);
+    public void updateTeacher(Teacher teacher) {
+        StringRequest request = new StringRequest(Request.Method.PUT, BASE_URL, response -> Log.d("PUT_SUCCESS", response),
+                error -> Log.e("PUT_ERROR", error.toString())) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("user_id", teacher.getTeacher_id().toString());
+                params.put("first_name", teacher.getFirstName());
+                params.put("last_name", teacher.getLastName());
+                params.put("birth_date", teacher.getBirthDate().toString());
+                params.put("address", teacher.getAddress());
+                params.put("phone", teacher.getPhone());
+                params.put("role", teacher.getRole().toString());
+                params.put("speciality", teacher.getSpeciality());
+                params.put("password" , teacher.getPassword());
+
+                return params;
+            }
+        };
+        queue.add(request);
     }
 
     @Override
-    public void deleteTeacher(int id, BaseCallback callback) {
-//        String url = BASE_URL + "teacher.php";
-//        Map<String, Integer> body = new HashMap<>();
-//        body.put("id", id);
-//        postJson(url, body, callback);
+    public void deleteTeacher(int id) {
+        StringRequest request = new StringRequest(Request.Method.DELETE, BASE_URL, response -> Log.d("PUT_SUCCESS", response),
+                error -> Log.e("PUT_ERROR", error.toString())) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("user_id", Integer.toString(id));
+                return params;
+            }
+        };
+        queue.add(request);
     }
 
     public interface SingleTeacherCallback {

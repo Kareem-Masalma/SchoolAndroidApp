@@ -171,20 +171,7 @@ public class AddTeacherActivity extends AppCompatActivity {
             teacher.setSpeciality(specialty);
 
             ITeacherDA teacherDA = new TeacherDA(this);
-            teacherDA.addTeacher(teacher, new TeacherDA.BaseCallback() {
-                @Override
-                public void onSuccess(String message) {
-                    runOnUiThread(() -> {
-                        Toast.makeText(AddTeacherActivity.this, "Teacher added", Toast.LENGTH_SHORT).show();
-                        finish();
-                    });
-                }
-
-                @Override
-                public void onError(String error) {
-                    runOnUiThread(() -> Toast.makeText(AddTeacherActivity.this, error, Toast.LENGTH_SHORT).show());
-                }
-            });
+            teacherDA.addTeacher(teacher);
         });
 
         // Cancel button

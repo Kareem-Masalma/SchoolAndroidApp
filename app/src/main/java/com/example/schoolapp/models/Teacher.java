@@ -1,5 +1,7 @@
 package com.example.schoolapp.models;
 
+import androidx.annotation.NonNull;
+
 import java.time.LocalDate;
 
 public class Teacher extends User {
@@ -43,6 +45,7 @@ public class Teacher extends User {
         this.schedule_id = schedule_id;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Teacher{" +
