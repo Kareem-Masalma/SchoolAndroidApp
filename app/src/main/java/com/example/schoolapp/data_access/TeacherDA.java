@@ -39,7 +39,7 @@ public class TeacherDA implements ITeacherDA {
                     Teacher teacher = new Teacher(
                             obj.getInt("user_id"), obj.getString("first_name"),
                             obj.getString("last_name"), LocalDate.parse(obj.getString("birth_date")),
-                            obj.getString("address"), obj.getString("phone"), Role.teacher,
+                            obj.getString("address"), obj.getString("phone"), Role.TEACHER,
                             obj.getString("speciality"), obj.getInt("schedule_id"));
                     teacher.setPassword(obj.getString("password"));
                     callback.onSuccess(teacher);
@@ -68,7 +68,7 @@ public class TeacherDA implements ITeacherDA {
                         Teacher teacher = new Teacher(
                                 obj.getInt("user_id"), obj.getString("first_name"),
                                 obj.getString("last_name"), LocalDate.parse("birth_date"),
-                                obj.getString("address"), obj.getString("phone"), Role.teacher,
+                                obj.getString("address"), obj.getString("phone"), Role.TEACHER,
                                 obj.getString("speciality"), obj.getInt("schedule_id"));
                         teacher.setPassword(obj.getString("password"));
                         teachers.add(teacher);

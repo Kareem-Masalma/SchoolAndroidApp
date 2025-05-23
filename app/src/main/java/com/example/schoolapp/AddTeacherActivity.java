@@ -160,7 +160,7 @@ public class AddTeacherActivity extends AppCompatActivity {
             }
 
             // Create and send Teacher
-            Role role = Role.teacher;
+            Role role = Role.TEACHER;
             Teacher teacher = new Teacher();
             teacher.setFirstName(firstName);
             teacher.setLastName(lastName);
