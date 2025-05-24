@@ -46,6 +46,7 @@ public class AddSchedule extends AppCompatActivity {
             return insets;
         });
         defineViews();
+        getUsers();
     }
 
     private void defineViews() {

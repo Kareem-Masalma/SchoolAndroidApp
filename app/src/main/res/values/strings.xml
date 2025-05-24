@@ -25,4 +25,11 @@
     <string name="student">Student</string>
     <string name="teacher">Teacher</string>
     <string name="select_role">Select Role</string>
+    <string name="teacher_name">Teacher Name:</string>
+    <string name="id">ID</string>
+    <string name="grade">Grade</string>
+    <string name="subject">Subject</string>
+    <string name="day">Day</string>
+    <string name="start_time">start_time_e_g_08_00</string>
+    <string name="end_time">end_time_e_g_09_00</string>
 </resources>
