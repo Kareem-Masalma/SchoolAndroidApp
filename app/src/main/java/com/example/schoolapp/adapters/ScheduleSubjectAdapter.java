@@ -49,7 +49,7 @@ public class ScheduleSubjectAdapter extends RecyclerView.Adapter<ScheduleSubject
             tvDay = itemView.findViewById(R.id.tvDay);
             tvStartTime = itemView.findViewById(R.id.tvStartTime);
             tvEndTime = itemView.findViewById(R.id.tvEndTime);
-            tvSubjectId = itemView.findViewById(R.id.tvSubject);
+            tvSubjectId = itemView.findViewById(R.id.tvSubjectId);
             tvClassId = itemView.findViewById(R.id.tvGrade);
         }
     }

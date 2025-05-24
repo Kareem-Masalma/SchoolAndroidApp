@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:text="@string/subject_id_1" />
 
-    <TextView android:id="@+id/tvClassId"
+    <TextView android:id="@+id/tvGrade"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/class_id_1" />
