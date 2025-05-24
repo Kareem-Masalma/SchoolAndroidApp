@@ -37,6 +37,8 @@ public class TakeAttendance extends AppCompatActivity {
     private RecyclerView rvStudents;
     private Button btnCancel;
     private Button btnFinish;
+
+    // this class expects an intent that contains a SchoolClass object
     private SchoolClass schoolClass;
 
     @Override
@@ -47,8 +49,19 @@ public class TakeAttendance extends AppCompatActivity {
 
         setupViews();
         getSchoolClass();
-        setupRecyclerView();
+//        setupRecyclerView();
         setupDatePicker();
+        handleBtnFinish();
+        handleBtnCancel();
+    }
+
+    private void handleBtnCancel() {
+        btnCancel.setOnClickListener(e->{
+            finish();
+        });
+    }
+
+    private void handleBtnFinish() {
     }
 
     private void getSchoolClass() {
@@ -104,6 +117,7 @@ public class TakeAttendance extends AppCompatActivity {
                         String date = year + "-" + String.format("%02d", month + 1) + "-" + String.format("%02d", dayOfMonth);
                         editLectureDate.setText(date);
                         editLectureDate.clearFocus();
+                        setupRecyclerView();
                     },
                     calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH),
