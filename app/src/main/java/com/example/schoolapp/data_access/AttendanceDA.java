@@ -61,17 +61,35 @@ public class AttendanceDA implements IAttendanceDA {
             JSONObject b = new JSONObject();
             b.put("date", a.getDate().toString());
             b.put("class_id", a.getClassId());
+
             JsonObjectRequest req = new JsonObjectRequest(
-                    Request.Method.POST, BASE, b,
-                    resp -> handle(cb, resp),
-                    err -> cb.onError("Add failed")
+                    Request.Method.POST,
+                    BASE,
+                    b,
+                    resp -> {
+                        boolean ok = resp.optBoolean("success", false);
+                        if (ok) {
+                            // parse the newly-inserted ID from the JSON payload
+                            int newId = resp.optInt("attendance_id", -1);
+                            if (newId > 0) {
+                                cb.onSuccess(String.valueOf(newId));
+                            } else {
+                                cb.onError("Created but no ID returned");
+                            }
+                        } else {
+                            // your PHP returns 'error' on failure
+                            cb.onError(resp.optString("error", "Unknown error"));
+                        }
+                    },
+                    err -> cb.onError("Add failed: " + err.getMessage())
             );
+
             queue.add(req);
+
         } catch (JSONException ex) {
             cb.onError("Invalid JSON");
         }
     }
-
     @Override
     public void updateAttendance(Attendance a, BaseCallback cb) {
         try {

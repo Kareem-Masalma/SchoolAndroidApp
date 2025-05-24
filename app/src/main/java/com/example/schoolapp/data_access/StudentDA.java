@@ -139,7 +139,9 @@ public class StudentDA implements IStudentDA {
                 o.getString("phone"),
                 Role.valueOf(o.getString("role")),
                 o.getInt("class_id"));
-                student.setPassword(o.getString("password"));
+
+      // the GET request does not return the password
+//                student.setPassword(o.getString("password"));
         return student;
     }
 

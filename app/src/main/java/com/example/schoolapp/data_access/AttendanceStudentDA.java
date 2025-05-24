@@ -55,7 +55,7 @@ public class AttendanceStudentDA implements IAttendanceStudentDA {
     }
 
     @Override
-    public void addAttendanceStudent(Attendance_student as, BaseCallback cb) {
+    public void addAttendanceStudent(Attendance_student as, IAttendanceStudentDA.BaseCallback cb) {
         try {
             JSONObject b = new JSONObject();
             b.put("attendance_id", as.getAttendance_id());
@@ -72,7 +72,7 @@ public class AttendanceStudentDA implements IAttendanceStudentDA {
     }
 
     @Override
-    public void updateAttendanceStudent(Attendance_student as, BaseCallback cb) {
+    public void updateAttendanceStudent(Attendance_student as, IAttendanceStudentDA.BaseCallback cb) {
         try {
             JSONObject b = new JSONObject();
             b.put("attendance_id", as.getAttendance_id());
@@ -89,7 +89,7 @@ public class AttendanceStudentDA implements IAttendanceStudentDA {
     }
 
     @Override
-    public void deleteAttendanceStudent(int attendanceId, int studentId, BaseCallback cb) {
+    public void deleteAttendanceStudent(int attendanceId, int studentId, IAttendanceStudentDA.BaseCallback cb) {
         String url = BASE + "?attendance_id=" + attendanceId + "&student_id=" + studentId;
         JsonObjectRequest req = new JsonObjectRequest(
                 Request.Method.DELETE, url, null,
