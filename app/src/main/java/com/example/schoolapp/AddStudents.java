@@ -31,9 +31,14 @@ public class AddStudents extends AppCompatActivity {
     private TextInputEditText etBirthDate;
     private TextInputEditText etAddress;
     private TextInputEditText etPhone;
-    private Spinner          spinnerClass;
-    private Button           btnAdd;
+    private TextInputEditText etInitialPassword;
+
+    private Spinner spinnerClass;
+    private Button btnAdd;
+    private Button btnCancel;
+
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,22 +47,31 @@ public class AddStudents extends AppCompatActivity {
 
         setupViews();
         handleAddButton();
+        handleCancelButton();
+    }
+
+    private void handleCancelButton() {
+        btnCancel.setOnClickListener(e -> {
+            finish();
+        });
     }
 
     private void setupViews() {
-        etFirstName   = findViewById(R.id.etFirstName);
-        etLastName    = findViewById(R.id.etLastName);
-        etBirthDate   = findViewById(R.id.etBirthDate);
-        etAddress     = findViewById(R.id.etAddress);
-        etPhone       = findViewById(R.id.etPhone);
-        spinnerClass  = findViewById(R.id.spinnerClassNum);
-        btnAdd       = findViewById(R.id.btnAdd);
+        etFirstName = findViewById(R.id.etFirstName);
+        etLastName = findViewById(R.id.etLastName);
+        etBirthDate = findViewById(R.id.etBirthDate);
+        etAddress = findViewById(R.id.etAddress);
+        etPhone = findViewById(R.id.etPhone);
+        spinnerClass = findViewById(R.id.spinnerClassNum);
+        btnAdd = findViewById(R.id.btnAdd);
+        btnCancel = findViewById(R.id.btnCancel);
+        etInitialPassword = findViewById(R.id.etInitialPassword);
 
         etBirthDate.setOnClickListener(v -> {
             Calendar cal = Calendar.getInstance();
-            int year  = cal.get(Calendar.YEAR);
+            int year = cal.get(Calendar.YEAR);
             int month = cal.get(Calendar.MONTH);
-            int day   = cal.get(Calendar.DAY_OF_MONTH);
+            int day = cal.get(Calendar.DAY_OF_MONTH);
 
             new DatePickerDialog(
                     AddStudents.this,
@@ -97,16 +111,17 @@ public class AddStudents extends AppCompatActivity {
     private void handleAddButton() {
         btnAdd.setOnClickListener(v -> {
 
-            String first_name  = etFirstName.getText().toString().trim();
-            String last_name   = etLastName .getText().toString().trim();
-            LocalDate birth_date  = LocalDate.parse(etBirthDate.getText().toString());
-            String address   = etAddress   .getText().toString().trim();
-            String phone  = etPhone     .getText().toString().trim();
+            String first_name = etFirstName.getText().toString().trim();
+            String last_name = etLastName.getText().toString().trim();
+            LocalDate birth_date = LocalDate.parse(etBirthDate.getText().toString());
+            String address = etAddress.getText().toString().trim();
+            String phone = etPhone.getText().toString().trim();
             Integer class_id = Integer.valueOf((String) spinnerClass.getSelectedItem());
-
+            String initialPassword = etInitialPassword.getText().toString().trim();
 
             IStudentDA studentDA = StudentDAFactory.getStudentDA(this);
-            Student student = new Student(0,first_name,last_name,birth_date,address,phone, Role.STUDENT,class_id);
+            Student student = new Student(0, first_name, last_name, birth_date, address, phone, Role.STUDENT, class_id, initialPassword);
+
             studentDA.addStudent(student, new StudentDA.BaseCallback() {
                 @Override
                 public void onSuccess(String message) {

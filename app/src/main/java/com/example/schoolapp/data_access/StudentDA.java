@@ -74,7 +74,7 @@ public class StudentDA implements IStudentDA {
             b.put("birth_date",  s.getBirthDate().toString());
             b.put("address",     s.getAddress());
             b.put("phone",       s.getPhone());
-            b.put("role",        s.getRole().name());
+            b.put("role",        Role.STUDENT);
             b.put("class_id",    s.getClass_id());
             b.put("password" , s.getPassword());
             JsonObjectRequest req = new JsonObjectRequest(
