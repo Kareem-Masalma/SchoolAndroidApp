@@ -1,4 +1,5 @@
 <?php
+global $conn;
 header('Content-Type: application/json; charset=utf-8');
 // CORS (adjust origin as needed)
 header('Access-Control-Allow-Origin: *');
