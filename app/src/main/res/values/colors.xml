@@ -2,7 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="grey">#808080</color>
     <color name="role_orange">#FFA500</color>
     <color name="role_blue">#2196F3</color>
     <color name="role_green">#4CAF50</color>
+    <color name="role_orange_dark">#CC8400</color> <!-- for primaryVariant -->
+    <color name="secondary_orange">#FFD180</color> <!-- secondary color -->
 </resources>
