@@ -1,5 +1,7 @@
 package com.example.schoolapp.models;
 
+import androidx.annotation.NonNull;
+
 import java.time.LocalDate;
 
 public class Registrar extends User {
@@ -23,6 +25,7 @@ public class Registrar extends User {
     }
 
 
+    @NonNull
     @Override
     public String toString() {
         return "Registrar{" +

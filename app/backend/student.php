@@ -138,11 +138,6 @@ try {
         $stmt->bind_param("i", $uid);
         $stmt->execute();
 
-        // Delete from users
-        $stmt = $conn->prepare("DELETE FROM users WHERE user_id = ?");
-        $stmt->bind_param("i", $uid);
-        $stmt->execute();
-
         echo json_encode([
             'success' => true,
             'message' => 'Student deleted'
@@ -151,6 +146,7 @@ try {
         http_response_code(405);
         echo json_encode(['error' => 'Method not allowed']);
     }
+
 } catch (Exception $ex) {
     http_response_code(400);
     echo json_encode([

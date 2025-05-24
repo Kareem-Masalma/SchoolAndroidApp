@@ -1,5 +1,7 @@
 package com.example.schoolapp.models;
 
+import androidx.annotation.NonNull;
+
 import java.time.LocalDate;
 
 public class User {
@@ -10,6 +12,7 @@ public class User {
     private String address;
     private String phone;
     private Role role;
+    private String password;
 
     public User() {
 
@@ -23,6 +26,17 @@ public class User {
         this.address = address;
         this.phone = phone;
         this.role = role;
+    }
+
+    public User(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, String password) {
+        this.user_id = user_id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.address = address;
+        this.phone = phone;
+        this.role = role;
+        this.password = password;
     }
 
     public Integer getUser_id() {
@@ -81,6 +95,15 @@ public class User {
         this.role = role;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @NonNull
     @Override
     public String toString() {
         return "User{" +
