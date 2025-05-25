@@ -39,9 +39,9 @@
             android:orientation="vertical">
 
             <RadioButton
-                android:id="@+id/rdStudent"
+                android:id="@+id/rdClass"
                 style="@style/RoleRadioButton"
-                android:text="@string/student" />
+                android:text="@string/Class" />
 
             <RadioButton
                 android:id="@+id/rdTeacher"
