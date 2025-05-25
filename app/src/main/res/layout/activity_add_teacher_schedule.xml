@@ -39,6 +39,7 @@
 
         <TextView
             style="@style/SectionTitle"
+            android:id="@+id/tvTeacher"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -46,6 +47,7 @@
 
         <TextView
             style="@style/SectionTitle"
+            android:id="@+id/tvId"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -130,13 +132,13 @@
             android:layout_marginStart="16dp" />
       </LinearLayout>
 
-      <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/rvScheduleItems"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="32dp"
-          android:layout_marginBottom="16dp"
-          android:padding="8dp" />
+<!--      <androidx.recyclerview.widget.RecyclerView-->
+<!--          android:id="@+id/rvScheduleItems"-->
+<!--          android:layout_width="match_parent"-->
+<!--          android:layout_height="wrap_content"-->
+<!--          android:layout_marginTop="32dp"-->
+<!--          android:layout_marginBottom="16dp"-->
+<!--          android:padding="8dp" />-->
     </LinearLayout>
   </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>

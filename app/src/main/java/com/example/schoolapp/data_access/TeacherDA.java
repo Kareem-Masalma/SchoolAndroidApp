@@ -117,7 +117,7 @@ public class TeacherDA implements ITeacherDA {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("user_id", teacher.getTeacher_id().toString());
+                params.put("user_id", teacher.getUser_id().toString());
                 params.put("first_name", teacher.getFirstName());
                 params.put("last_name", teacher.getLastName());
                 params.put("birth_date", teacher.getBirthDate().toString());

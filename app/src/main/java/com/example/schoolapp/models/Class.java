@@ -1,5 +1,7 @@
 package com.example.schoolapp.models;
 
+import androidx.annotation.NonNull;
+
 public class Class {
     private int classId;
     private String className;
@@ -53,5 +55,11 @@ public class Class {
 
     public void setScheduleId(int scheduleId) {
         this.scheduleId = scheduleId;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return className;
     }
 }
