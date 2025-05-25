@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schoolapp.adapters.OnStudentClickListener;
@@ -38,7 +39,7 @@ public class AddSchedule extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        EdgeToEdge.enable((AppCompatActivity) this);
         setContentView(R.layout.activity_add_schedule);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -46,6 +47,7 @@ public class AddSchedule extends AppCompatActivity {
             return insets;
         });
         defineViews();
+        getUsers();
     }
 
     private void defineViews() {
@@ -63,6 +65,7 @@ public class AddSchedule extends AppCompatActivity {
                     TeacherDAFactory.getTeacherDA(AddSchedule.this).getAllTeachers(new TeacherDA.TeacherListCallback() {
                         @Override
                         public void onSuccess(List<Teacher> teachers) {
+                            rvUsers.setLayoutManager(new LinearLayoutManager(AddSchedule.this));
                             rvUsers.setAdapter(new TeacherAdapter(teachers, new TeacherAdapter.OnTeacherClickListener() {
                                 @Override
                                 public void onTeacherClick(Teacher teacher) {
@@ -84,6 +87,7 @@ public class AddSchedule extends AppCompatActivity {
                     StudentDAFactory.getStudentDA(AddSchedule.this).getAllStudents(new StudentDA.StudentListCallback() {
                         @Override
                         public void onSuccess(List<Student> students) {
+                            rvUsers.setLayoutManager(new LinearLayoutManager(AddSchedule.this));
                             rvUsers.setAdapter(new StudentAdapter(students, new OnStudentClickListener() {
                                 @Override
                                 public void onStudentClick(Student student) {

@@ -25,6 +25,18 @@
     <string name="student">Student</string>
     <string name="teacher">Teacher</string>
     <string name="select_role">Select Role</string>
+    <string name="teacher_name">Teacher Name:</string>
+    <string name="id">ID</string>
+    <string name="grade">Grade</string>
+    <string name="subject">Subject</string>
+    <string name="day">Day</string>
+    <string name="start_time">start_time_e_g_08_00</string>
+    <string name="end_time">end_time_e_g_09_00</string>
+    <string name="day_monday">Day: Monday</string>
+    <string name="start_08_00">Start: 08:00</string>
+    <string name="end_09_00">End: 09:00</string>
+    <string name="subject_id_1">Subject ID: 1</string>
+    <string name="class_id_1">Class ID: 1</string>
     <string name="password">Password</string>
     <string name="enter_password_at_least_8_charachters">Enter password at least 8 charachters</string>
 </resources>
