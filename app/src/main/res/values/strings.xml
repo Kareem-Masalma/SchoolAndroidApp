@@ -26,19 +26,20 @@
     <string name="teacher">Teacher</string>
     <string name="select_role">Select Role</string>
     <string name="add_subject">Add Subject</string>
-    <string name="subject_name">Subject Name</string>
-    <string name="enter_subject_name">Enter subject name</string>
-    <string name="assign_teacher">Assign Teacher</string>
-    <string name="assign_grade">Assign Grade</string>
-    <string name="assign_days">Assign Days</string>
-    <string name="m">M</string>
-    <string name="tu">Tu</string>
-    <string name="w">W</string>
-    <string name="th">Th</string>
-    <string name="f">F</string>
-    <string name="sa">Sa</string>
-    <string name="su">Su</string>
-    <string name="select_time">Select Time</string>
-    <string name="reset">Reset</string>
+    <string name="subject_name">Subject Name:</string>
+    <string name="enter_subject_name">Enter Subject Name</string>
+    <string name="assign_grade">Assign Grade:</string>
+    <string name="assign_days">Assign Days:</string>
+    <string name="monday">M</string>
+    <string name="tuesday">Tu</string>
+    <string name="wednesday">W</string>
+    <string name="thursday">Th</string>
+    <string name="friday">F</string>
+    <string name="saturday">Sa</string>
+    <string name="sunday">Su</string>
+    <string name="start_time">Start Time:</string>
+    <string name="end_time">End Time:</string>
     <string name="save">Save</string>
+    <string name="cancle">cancle</string>
+
 </resources>

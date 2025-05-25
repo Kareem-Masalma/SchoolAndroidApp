@@ -45,20 +45,6 @@
                 android:hint="@string/enter_subject_name" />
 
             <TextView
-                android:id="@+id/assignTeacherTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="@string/assign_teacher"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <Spinner
-                android:id="@+id/assignTeacherSP"
-                android:layout_width="match_parent"
-                android:layout_height="51dp" />
-
-            <TextView
                 android:id="@+id/assignGradeTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -90,7 +76,7 @@
                     android:id="@+id/mondayCB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/m"
+                    android:text="@string/monday"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -98,7 +84,7 @@
                     android:id="@+id/tuesdayCB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/tu"
+                    android:text="@string/tuesday"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -106,7 +92,7 @@
                     android:id="@+id/wednesdayCB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/w"
+                    android:text="@string/wednesday"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -114,7 +100,7 @@
                     android:id="@+id/thursdayCB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/th"
+                    android:text="@string/thursday"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -122,7 +108,7 @@
                     android:id="@+id/fridayCB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/f"
+                    android:text="@string/friday"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -130,7 +116,7 @@
                     android:id="@+id/saturdayCB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/sa"
+                    android:text="@string/saturday"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -138,37 +124,59 @@
                     android:id="@+id/sundayCB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/su"
+                    android:text="@string/sunday"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/selectTimeTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="@string/select_time"
-                android:textSize="20sp"
-                android:textStyle="bold" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/startTimeTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/start_time"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/startTimeSP"
-                    android:layout_width="190dp"
+                    android:layout_width="0dp"
                     android:layout_height="61dp"
-                    android:layout_marginEnd="16dp" />
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/endTimeTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/end_time"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/endTimeSP"
-                    android:layout_width="190dp"
-                    android:layout_height="61dp" />
-
+                    android:layout_width="0dp"
+                    android:layout_height="61dp"
+                    android:layout_weight="1" />
             </LinearLayout>
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -177,21 +185,22 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/resetBT"
+                    android:id="@+id/cancleBT"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginTop="24dp"
                     android:backgroundTint="#FFA500"
-                    android:text="@string/reset" />
+                    android:text="@string/cancle" />
 
                 <Button
-                    android:id="@+id/saveBT"
+                    android:id="@+id/addBT"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:backgroundTint="#FFA500"
-                    android:text="@string/save" />
+                    android:text="Add" />
+
             </LinearLayout>
 
         </LinearLayout>
