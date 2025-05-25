@@ -36,6 +36,7 @@ public class StudentDA implements IStudentDA {
                 Request.Method.GET, url, null,
                 resp -> {
                     try {
+                        Log.i("resp" , resp.toString());
                         cb.onSuccess(parseStudent(resp));
                     } catch (JSONException ex) {
                         cb.onError("Malformed data");
@@ -55,7 +56,6 @@ public class StudentDA implements IStudentDA {
                         List<Student> list = new ArrayList<>();
                         for (int i = 0; i < resp.length(); i++) {
                             list.add(parseStudent(resp.getJSONObject(i)));
-                            Log.d("Student", "Test: " + resp.getJSONObject(i).toString());
                         }
                         cb.onSuccess(list);
                     } catch (JSONException ex) {
@@ -71,14 +71,14 @@ public class StudentDA implements IStudentDA {
     public void addStudent(Student s, BaseCallback cb) {
         try {
             JSONObject b = new JSONObject();
-            b.put("first_name", s.getFirstName());
-            b.put("last_name", s.getLastName());
-            b.put("birth_date", s.getBirthDate().toString());
-            b.put("address", s.getAddress());
-            b.put("phone", s.getPhone());
-            b.put("role", Role.STUDENT);
-            b.put("class_id", s.getClass_id());
-            b.put("password", s.getPassword());
+            b.put("first_name",  s.getFirstName());
+            b.put("last_name",   s.getLastName());
+            b.put("birth_date",  s.getBirthDate().toString());
+            b.put("address",     s.getAddress());
+            b.put("phone",       s.getPhone());
+            b.put("role",        Role.STUDENT);
+            b.put("class_id",    s.getClass_id());
+            b.put("password" , s.getPassword());
             JsonObjectRequest req = new JsonObjectRequest(
                     Request.Method.POST, BASE, b,
                     resp -> handle(cb, resp),
@@ -95,15 +95,15 @@ public class StudentDA implements IStudentDA {
     public void updateStudent(Student s, BaseCallback cb) {
         try {
             JSONObject b = new JSONObject();
-            b.put("user_id", s.getUser_id());
-            b.put("first_name", s.getFirstName());
-            b.put("last_name", s.getLastName());
-            b.put("birth_date", s.getBirthDate().toString());
-            b.put("address", s.getAddress());
-            b.put("phone", s.getPhone());
-            b.put("role", s.getRole().name());
-            b.put("class_id", s.getClass_id());
-            b.put("password", s.getPassword());
+            b.put("user_id",     s.getUser_id());
+            b.put("first_name",  s.getFirstName());
+            b.put("last_name",   s.getLastName());
+            b.put("birth_date",  s.getBirthDate().toString());
+            b.put("address",     s.getAddress());
+            b.put("phone",       s.getPhone());
+            b.put("role",        s.getRole().name());
+            b.put("class_id",    s.getClass_id());
+            b.put("password" , s.getPassword());
             JsonObjectRequest req = new JsonObjectRequest(
                     Request.Method.PUT, BASE, b,
                     resp -> handle(cb, resp),
@@ -130,40 +130,39 @@ public class StudentDA implements IStudentDA {
     // Helpers
 
     private Student parseStudent(JSONObject o) throws JSONException {
-        return new Student(
-                Integer.parseInt(o.getString("user_id")),
+      Student  student =  new Student(
+                o.getInt("user_id"),
                 o.getString("first_name"),
                 o.getString("last_name"),
                 LocalDate.parse(o.getString("birth_date")),
                 o.getString("address"),
                 o.getString("phone"),
                 Role.valueOf(o.getString("role")),
-                Integer.parseInt(o.getString("class_id")));
+                o.getInt("class_id"));
+
+      // the GET request does not return the password
+//                student.setPassword(o.getString("password"));
+        return student;
     }
 
     private void handle(BaseCallback cb, JSONObject resp) {
-        boolean ok = resp.optBoolean("success", false);
-        String msg = resp.optString("message", ok ? "OK" : "Error");
+        boolean ok  = resp.optBoolean("success", false);
+        String  msg = resp.optString("message", ok ? "OK" : "Error");
         if (ok) cb.onSuccess(msg);
-        else cb.onError(msg);
+        else    cb.onError(msg);
     }
 
 
     public interface SingleStudentCallback {
-        void onSuccess(Student s);
-
-        void onError(String error);
+        void   onSuccess(Student s);
+        void   onError(String error);
     }
-
     public interface StudentListCallback {
-        void onSuccess(List<Student> list);
-
-        void onError(String error);
+        void   onSuccess(List<Student> list);
+        void   onError(String error);
     }
-
     public interface BaseCallback {
-        void onSuccess(String message);
-
-        void onError(String error);
+        void   onSuccess(String message);
+        void   onError(String error);
     }
 }

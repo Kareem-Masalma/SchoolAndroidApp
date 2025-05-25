@@ -37,4 +37,6 @@
     <string name="end_09_00">End: 09:00</string>
     <string name="subject_id_1">Subject ID: 1</string>
     <string name="class_id_1">Class ID: 1</string>
+    <string name="password">Password</string>
+    <string name="enter_password_at_least_8_charachters">Enter password at least 8 charachters</string>
 </resources>

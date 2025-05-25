@@ -65,6 +65,7 @@ public class AddSchedule extends AppCompatActivity {
                     TeacherDAFactory.getTeacherDA(AddSchedule.this).getAllTeachers(new TeacherDA.TeacherListCallback() {
                         @Override
                         public void onSuccess(List<Teacher> teachers) {
+                            rvUsers.setLayoutManager(new LinearLayoutManager(AddSchedule.this));
                             rvUsers.setAdapter(new TeacherAdapter(teachers, new TeacherAdapter.OnTeacherClickListener() {
                                 @Override
                                 public void onTeacherClick(Teacher teacher) {

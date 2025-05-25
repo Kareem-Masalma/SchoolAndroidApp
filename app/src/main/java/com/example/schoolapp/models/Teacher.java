@@ -13,6 +13,12 @@ public class Teacher extends User {
 
     }
 
+    public Teacher(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, String speciality) {
+        super(user_id, firstName, lastName, birthDate, address, phone, role);
+
+        this.speciality = speciality;
+    }
+
     public Teacher(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, String speciality, Integer schedule_id) {
         super(user_id, firstName, lastName, birthDate, address, phone, role);
 

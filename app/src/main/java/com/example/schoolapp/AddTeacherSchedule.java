@@ -43,6 +43,6 @@ public class AddTeacherSchedule extends AppCompatActivity {
         this.spGrade = findViewById(R.id.spGrade);
         this.spDay = findViewById(R.id.spDay);
         this.etEndTime = findViewById(R.id.etEndTime);
-        this.svSchedule = findViewById(R.id.rvScheduleItems);
+//        this.svSchedule = findViewById(R.id.rvScheduleItems);
     }
 }
