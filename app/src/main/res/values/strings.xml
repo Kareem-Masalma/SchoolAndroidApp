@@ -25,4 +25,6 @@
     <string name="student">Student</string>
     <string name="teacher">Teacher</string>
     <string name="select_role">Select Role</string>
+    <string name="password">Password</string>
+    <string name="enter_password_at_least_8_charachters">Enter password at least 8 charachters</string>
 </resources>

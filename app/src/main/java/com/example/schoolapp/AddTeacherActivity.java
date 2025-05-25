@@ -20,6 +20,7 @@ public class AddTeacherActivity extends AppCompatActivity {
 
     private EditText editFirstName, editLastName, editBirthDate, editCity, editAddress, editPhone;
     private Spinner spinnerSpecialty;
+    private EditText editPassword;
     private TextView textRole;
     private Button btnAdd, btnCancel;
 
@@ -43,6 +44,7 @@ public class AddTeacherActivity extends AppCompatActivity {
         editAddress = findViewById(R.id.editAddress);
         editPhone = findViewById(R.id.editPhone);
         spinnerSpecialty = findViewById(R.id.spinnerSpecialty);
+        editPassword = findViewById(R.id.editPassword);
         textRole = findViewById(R.id.textRole);
         btnAdd = findViewById(R.id.btnAdd);
         btnCancel = findViewById(R.id.btnCancel);
@@ -84,6 +86,7 @@ public class AddTeacherActivity extends AppCompatActivity {
             String address = editAddress.getText().toString().trim();
             String phone = editPhone.getText().toString().trim();
             String specialty = spinnerSpecialty.getSelectedItem().toString();
+            String password = editPassword.getText().toString().trim();
 
             boolean valid = true;
 
@@ -94,6 +97,7 @@ public class AddTeacherActivity extends AppCompatActivity {
             editCity.setError(null);
             editAddress.setError(null);
             editPhone.setError(null);
+            editPassword.setError(null);
 
             // Validate required fields
             if (firstName.isEmpty()) {
@@ -125,6 +129,16 @@ public class AddTeacherActivity extends AppCompatActivity {
                 editPhone.setError("Required");
                 valid = false;
             }
+
+            // Add password validation
+            if (password.isEmpty()) {
+                editPassword.setError("Required");
+                valid = false;
+            } else if (password.length() < 8) {
+                editPassword.setError("Password must be at least 8 characters");
+                valid = false;
+            }
+
 
             if (!valid) {
                 Toast.makeText(this, "Please fill all required fields", Toast.LENGTH_SHORT).show();
@@ -169,6 +183,7 @@ public class AddTeacherActivity extends AppCompatActivity {
             teacher.setPhone(phone);
             teacher.setRole(role);
             teacher.setSpeciality(specialty);
+            teacher.setPassword(password);
 
             ITeacherDA teacherDA = new TeacherDA(this);
             teacherDA.addTeacher(teacher);
