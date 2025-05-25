@@ -16,6 +16,10 @@ public class Attendance {
         this.date = date;
         this.classId = classId;
     }
+    public Attendance(LocalDate date, Integer classId) {
+        this.date = date;
+        this.classId = classId;
+    }
 
     public Integer getAttendance_id() {
         return attendance_id;

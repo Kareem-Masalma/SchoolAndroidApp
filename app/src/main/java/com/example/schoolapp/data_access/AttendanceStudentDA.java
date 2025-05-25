@@ -16,7 +16,7 @@ import java.util.List;
 
 public class AttendanceStudentDA implements IAttendanceStudentDA {
     private final RequestQueue queue;
-    private final String BASE = "http://10.0.0.11/androidBackend/attendance_student.php";
+    private final String BASE = "http://10.0.0.14/androidBackend/attendance_student.php";
 
     public AttendanceStudentDA(Context ctx) {
         this.queue = Volley.newRequestQueue(ctx);
@@ -31,7 +31,8 @@ public class AttendanceStudentDA implements IAttendanceStudentDA {
                     try { cb.onSuccess(parse(resp)); }
                     catch (JSONException ex) { cb.onError("Malformed data"); }
                 },
-                err -> cb.onError("Fetch failed")
+                err -> cb.onError("Fetch failed: " + err.getMessage())
+
         );
         queue.add(req);
     }
@@ -49,7 +50,8 @@ public class AttendanceStudentDA implements IAttendanceStudentDA {
                         cb.onSuccess(list);
                     } catch (JSONException ex) { cb.onError("Malformed list"); }
                 },
-                err -> cb.onError("Fetch failed")
+                err -> cb.onError("Fetch failed: " + err.getMessage())
+
         );
         queue.add(req);
     }
@@ -65,7 +67,8 @@ public class AttendanceStudentDA implements IAttendanceStudentDA {
             JsonObjectRequest req = new JsonObjectRequest(
                     Request.Method.POST, BASE, b,
                     resp -> handle(cb, resp),
-                    err -> cb.onError("Add failed")
+                    err -> cb.onError("Add failed: " + err.getMessage())
+
             );
             queue.add(req);
         } catch (JSONException ex) { cb.onError("Invalid JSON"); }
@@ -82,7 +85,8 @@ public class AttendanceStudentDA implements IAttendanceStudentDA {
             JsonObjectRequest req = new JsonObjectRequest(
                     Request.Method.PUT, BASE, b,
                     resp -> handle(cb, resp),
-                    err -> cb.onError("Update failed")
+                    err -> cb.onError("Update failed: " + err.getMessage())
+
             );
             queue.add(req);
         } catch (JSONException ex) { cb.onError("Invalid JSON"); }
@@ -94,7 +98,8 @@ public class AttendanceStudentDA implements IAttendanceStudentDA {
         JsonObjectRequest req = new JsonObjectRequest(
                 Request.Method.DELETE, url, null,
                 resp -> handle(cb, resp),
-                err -> cb.onError("Delete failed")
+                err -> cb.onError("Delete failed: " + err.getMessage())
+
         );
         queue.add(req);
     }

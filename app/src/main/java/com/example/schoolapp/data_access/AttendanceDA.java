@@ -17,7 +17,7 @@ import java.util.List;
 
 public class AttendanceDA implements IAttendanceDA {
     private final RequestQueue queue;
-    private final String BASE = "http://10.0.0.11/androidBackend/attendance.php";
+    private final String BASE = "http://10.0.0.14/androidBackend/attendance.php";
 
     public AttendanceDA(Context ctx) {
         this.queue = Volley.newRequestQueue(ctx);
@@ -32,7 +32,8 @@ public class AttendanceDA implements IAttendanceDA {
                     try { cb.onSuccess(parse(resp)); }
                     catch (JSONException ex) { cb.onError("Malformed data"); }
                 },
-                err -> cb.onError("Fetch failed")
+                err -> cb.onError("Fetch failed: " + err.getMessage())
+
         );
         queue.add(req);
     }
@@ -50,7 +51,7 @@ public class AttendanceDA implements IAttendanceDA {
                         cb.onSuccess(list);
                     } catch (JSONException ex) { cb.onError("Malformed list"); }
                 },
-                err -> cb.onError("Fetch failed")
+                err -> cb.onError("Fetch failed: " + err.getMessage())
         );
         queue.add(req);
     }
@@ -100,7 +101,7 @@ public class AttendanceDA implements IAttendanceDA {
             JsonObjectRequest req = new JsonObjectRequest(
                     Request.Method.PUT, BASE, b,
                     resp -> handle(cb, resp),
-                    err -> cb.onError("Update failed")
+                    err -> cb.onError("Update failed: " + err.getMessage())
             );
             queue.add(req);
         } catch (JSONException ex) {
@@ -114,7 +115,7 @@ public class AttendanceDA implements IAttendanceDA {
         JsonObjectRequest req = new JsonObjectRequest(
                 Request.Method.DELETE, url, null,
                 resp -> handle(cb, resp),
-                err -> cb.onError("Delete failed")
+                err -> cb.onError("Delete failed: " + err.getMessage())
         );
         queue.add(req);
     }

@@ -33,6 +33,7 @@ public class StudentAttendanceAdapter extends RecyclerView.Adapter<StudentAttend
     public void onBindViewHolder(@NonNull StudentViewHolder holder, int position) {
         Student student = studentList.get(position);
         holder.tvStudentName.setText(student.getFirstName() + " " + student.getLastName());
+        holder.tvStudentId.setText(String.valueOf(student.getUser_id()));
 //        holder.cbPresent.setChecked(student.isPresent());
 
         holder.cbPresent.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -46,11 +47,13 @@ public class StudentAttendanceAdapter extends RecyclerView.Adapter<StudentAttend
     }
 
     public static class StudentViewHolder extends RecyclerView.ViewHolder {
+        public TextView tvStudentId;
         TextView tvStudentName;
-        CheckBox cbPresent;
+        public CheckBox cbPresent;
 
         public StudentViewHolder(@NonNull View itemView) {
             super(itemView);
+            tvStudentId = itemView.findViewById(R.id.tvStudentId);
             tvStudentName = itemView.findViewById(R.id.tvStudentName);
             cbPresent = itemView.findViewById(R.id.cbPresent);
         }
