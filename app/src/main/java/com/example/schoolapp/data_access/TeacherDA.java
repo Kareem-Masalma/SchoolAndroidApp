@@ -21,7 +21,7 @@ public class TeacherDA implements ITeacherDA {
 
     private final RequestQueue queue;
 
-    private final String BASE_URL = "http://localhost/phpmyadmin/index.php/teacher.php";
+    private final String BASE_URL = "http://192.168.1.102/school/teacher.php";
     private final Gson gson = new Gson();
 
     public TeacherDA(Context context) {
@@ -36,6 +36,7 @@ public class TeacherDA implements ITeacherDA {
             public void onResponse(JSONArray response) {
                 try {
                     JSONObject obj = response.getJSONObject(0);
+                    Log.d("Teacher", obj.toString());
                     Teacher teacher = new Teacher(
                             obj.getInt("user_id"), obj.getString("first_name"),
                             obj.getString("last_name"), LocalDate.parse(obj.getString("birth_date")),
@@ -64,7 +65,8 @@ public class TeacherDA implements ITeacherDA {
                 try {
                     List<Teacher> teachers = new ArrayList<>();
                     for (int i = 0; i < response.length(); i++) {
-                        JSONObject obj = response.getJSONObject(0);
+                        JSONObject obj = response.getJSONObject(i);
+                        Log.d("Teacher", obj.toString());
                         Teacher teacher = new Teacher(
                                 obj.getInt("user_id"), obj.getString("first_name"),
                                 obj.getString("last_name"), LocalDate.parse("birth_date"),
