@@ -2,92 +2,176 @@
 global $conn;
 require_once "db.inc.php";
 
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET["id"])) {
-        $id = $_GET["id"];
-        $sql = "SELECT * FROM teacher t, users u WHERE u.id = ? AND t.teacher_id = u.id";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        echo json_encode($result->fetch_assoc() ?: ["error" => "Teacher not found"]);
-    } else {
-        $sql = "SELECT * FROM teacher t, users u WHERE t.teacher_id = u.id";
-        $result = $conn->query($sql);
-        $teachers = [];
-        while ($row = $result->fetch_assoc()) {
-            $teachers[] = $row;
-        }
-        echo json_encode($teachers);
-    }
-}
+// Headers
+header('Content-Type: application/json; charset=utf-8');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
 
-else if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $first_name = $_POST["first_name"];
-    $last_name = $_POST["last_name"];
-    $birth_date = $_POST["birth_date"];
-    $address = $_POST["address"];
-    $phone = $_POST["phone"];
-    $role = $_POST["role"];
-    $speciality = $_POST["speciality"];
+$method = $_SERVER['REQUEST_METHOD'];
+$input  = json_decode(file_get_contents('php://input'), true);
 
-    $user_stmt = $conn->prepare("INSERT INTO users (first_name, last_name, birth_date, address, phone, role) VALUES (?, ?, ?, ?, ?, ?)");
-    $user_stmt->bind_param("ssssss", $first_name, $last_name, $birth_date, $address, $phone, $role);
+try {
+    if ($method === 'GET') {
+        if (isset($_GET['user_id'])) {
+            $uid = (int)$_GET['user_id'];
+            $sql = "
+        SELECT
+          u.user_id,
+          u.first_name,
+          u.last_name,
+          u.birth_date,
+          u.address,
+          u.phone,
+          u.role,
+          u.password,
+          t.speciality
+        FROM users u
+        JOIN teacher t ON t.user_id = u.user_id
+        WHERE u.user_id = ?
+      ";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('i', $uid);
+            $stmt->execute();
+            $row = $stmt->get_result()->fetch_assoc();
 
-    if ($user_stmt->execute()) {
-        $user_id = $conn->insert_id;
-        $teacher_stmt = $conn->prepare("INSERT INTO teacher (teacher_id, department) VALUES (?, ?)");
-        $teacher_stmt->bind_param("is", $user_id, $speciality);
-        echo json_encode($teacher_stmt->execute()
-            ? ["success" => true, "message" => "Teacher added successfully"]
-            : ["success" => false, "error" => "Failed to insert into teacher table"]);
-        $teacher_stmt->close();
-    } else {
-        echo json_encode(["success" => false, "error" => "Failed to insert into user table"]);
-    }
-}
+            if (!$row) {
+                http_response_code(404);
+                echo json_encode(['error' => 'Teacher not found']);
+            } else {
+                echo json_encode($row);
+            }
 
-else if ($_SERVER["REQUEST_METHOD"] == "PUT") {
-    parse_str(file_get_contents("php://input"), $_PUT);
-    $id = $_PUT["id"];
-    $first_name = $_PUT["first_name"];
-    $last_name = $_PUT["last_name"];
-    $birth_date = $_PUT["birth_date"];
-    $address = $_PUT["address"];
-    $phone = $_PUT["phone"];
-    $role = $_PUT["role"];
-    $speciality = $_PUT["speciality"];
-
-    $user_stmt = $conn->prepare("UPDATE users SET first_name=?, last_name=?, birth_date=?, address=?, phone=?, role=? WHERE id=?");
-    $user_stmt->bind_param("ssssssi", $first_name, $last_name, $birth_date, $address, $phone, $role, $id);
-
-    if ($user_stmt->execute()) {
-        if (!empty($speciality)) {
-            $teacher_stmt = $conn->prepare("UPDATE teacher SET department=? WHERE teacher_id=?");
-            $teacher_stmt->bind_param("si", $speciality, $id);
-            echo json_encode($teacher_stmt->execute()
-                ? ["success" => true, "message" => "Teacher updated successfully"]
-                : ["success" => false, "error" => "Failed to update teacher table"]);
-            $teacher_stmt->close();
         } else {
-            echo json_encode(["success" => true, "message" => "Teacher updated successfully"]);
+            $sql = "
+        SELECT
+          u.user_id,
+          u.first_name,
+          u.last_name,
+          u.birth_date,
+          u.address,
+          u.phone,
+          u.role,
+          u.password,
+          t.speciality
+        FROM users u
+        JOIN teacher t ON t.user_id = u.user_id
+      ";
+            $result = $conn->query($sql);
+            $teachers = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+            echo json_encode($teachers);
         }
+
+    } elseif ($method === 'POST') {
+        foreach (['first_name', 'last_name', 'birth_date', 'address', 'phone', 'role', 'password', 'speciality'] as $key) {
+            if (empty($input[$key])) {
+                throw new Exception("Missing field: $key");
+            }
+        }
+
+        // Insert into users
+        $stmt = $conn->prepare("
+      INSERT INTO users (first_name, last_name, birth_date, address, phone, role, password)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    ");
+        $stmt->bind_param(
+            "sssssss",
+            $input['first_name'],
+            $input['last_name'],
+            $input['birth_date'],
+            $input['address'],
+            $input['phone'],
+            $input['role'],
+            $input['password']
+        );
+        $stmt->execute();
+        $uid = $conn->insert_id;
+
+        // Insert into teacher
+        $stmt = $conn->prepare("INSERT INTO teacher (user_id, speciality) VALUES (?, ?)");
+        $stmt->bind_param("is", $uid, $input['speciality']);
+        $stmt->execute();
+
+        http_response_code(201);
+        echo json_encode([
+            'success' => true,
+            'message' => 'Teacher added',
+            'user_id' => $uid
+        ]);
+
+    } elseif ($method === 'PUT') {
+        if (empty($input['user_id'])) {
+            throw new Exception("Missing user_id");
+        }
+        $uid = (int)$input['user_id'];
+
+        // Update users
+        $stmt = $conn->prepare("
+      UPDATE users
+      SET first_name = ?, last_name = ?, birth_date = ?, address = ?, phone = ?, role = ?, password = ?
+      WHERE user_id = ?
+    ");
+        $stmt->bind_param(
+            "sssssssi",
+            $input['first_name'],
+            $input['last_name'],
+            $input['birth_date'],
+            $input['address'],
+            $input['phone'],
+            $input['role'],
+            $input['password'],
+            $uid
+        );
+        $stmt->execute();
+
+        // Update teacher speciality
+        if (isset($input['speciality'])) {
+            $stmt = $conn->prepare("UPDATE teacher SET speciality = ? WHERE user_id = ?");
+            $stmt->bind_param("si", $input['speciality'], $uid);
+            $stmt->execute();
+        }
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Teacher updated'
+        ]);
+
+    } elseif ($method === 'DELETE') {
+        if (empty($_GET['user_id'])) {
+            throw new Exception("Missing user_id");
+        }
+        $uid = (int)$_GET['user_id'];
+
+        $conn->begin_transaction();
+
+        $stmt = $conn->prepare("DELETE FROM teacher WHERE user_id = ?");
+        $stmt->bind_param("i", $uid);
+        $stmt->execute();
+
+        $stmt = $conn->prepare("DELETE FROM users WHERE user_id = ?");
+        $stmt->bind_param("i", $uid);
+        $stmt->execute();
+
+        $conn->commit();
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Teacher deleted'
+        ]);
+
     } else {
-        echo json_encode(["success" => false, "error" => "Failed to update user table"]);
+        http_response_code(405);
+        echo json_encode(['error' => 'Method not allowed']);
     }
-}
 
-else if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
-    parse_str(file_get_contents("php://input"), $_DELETE);
-    $id = $_DELETE["id"];
-
-    $stmt1 = $conn->prepare("DELETE FROM teacher WHERE teacher_id=?");
-    $stmt1->bind_param("i", $id);
-    $stmt2 = $conn->prepare("DELETE FROM users WHERE id=?");
-    $stmt2->bind_param("i", $id);
-
-    echo json_encode(($stmt1->execute() && $stmt2->execute())
-        ? ["success" => true, "message" => "Teacher deleted successfully"]
-        : ["success" => false, "error" => "Failed to delete teacher"]);
+} catch (Exception $ex) {
+    if ($conn->in_transaction) {
+        $conn->rollback();
+    }
+    http_response_code(400);
+    echo json_encode([
+        'success' => false,
+        'error'   => $ex->getMessage()
+    ]);
 }
 ?>
