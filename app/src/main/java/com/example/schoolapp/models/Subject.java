@@ -1,24 +1,18 @@
 package com.example.schoolapp.models;
 
-import java.time.LocalTime;
-
 public class Subject {
     private Integer subject_id;
     private Integer class_id;
     private String title;
-    private LocalTime startTime;
-    private LocalTime endTime;
 
     public Subject() {
 
     }
 
-    public Subject(Integer subject_id, Integer class_id, String title, LocalTime startTime, LocalTime endTime) {
+    public Subject(Integer subject_id, Integer class_id, String title) {
         this.subject_id = subject_id;
         this.class_id = class_id;
         this.title = title;
-        this.startTime = startTime;
-        this.endTime = endTime;
     }
 
     public Integer getSubject_id() {
@@ -45,21 +39,6 @@ public class Subject {
         this.title = title;
     }
 
-    public LocalTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public LocalTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
-    }
 
     @Override
     public String toString() {
@@ -67,8 +46,6 @@ public class Subject {
                 "subjectId=" + subject_id +
                 "classId=" + class_id +
                 ", title='" + title + '\'' +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
                 '}';
     }
 }

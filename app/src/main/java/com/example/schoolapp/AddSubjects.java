@@ -20,9 +20,6 @@ public class AddSubjects extends AppCompatActivity {
 
     private EditText subNameET;
     private Spinner assignGradeSP;
-    private CheckBox mondayCB, tuesdayCB, wednesdayCB, thursdayCB, fridayCB, saturdayCB, sundayCB;
-    private Spinner startTimeSP;
-    private Spinner endTimeSP;
     private Button cancleBT;
     private Button addBT;
 
@@ -39,43 +36,10 @@ public class AddSubjects extends AppCompatActivity {
         subNameET = findViewById(R.id.subNameET);
         assignGradeSP = findViewById(R.id.assignGradeSP);
 
-        mondayCB = findViewById(R.id.mondayCB);
-        tuesdayCB = findViewById(R.id.tuesdayCB);
-        wednesdayCB = findViewById(R.id.wednesdayCB);
-        thursdayCB = findViewById(R.id.thursdayCB);
-        fridayCB = findViewById(R.id.fridayCB);
-        saturdayCB = findViewById(R.id.saturdayCB);
-        sundayCB = findViewById(R.id.sundayCB);
-
-        startTimeSP = findViewById(R.id.startTimeSP);
-        endTimeSP = findViewById(R.id.endTimeSP);
-
         cancleBT = findViewById(R.id.cancleBT);
         addBT = findViewById(R.id.addBT);
 
-        setupTimeSP();
         setupGradeSP();
-    }
-
-    private void setupTimeSP(){
-        List<String> times = generateTime();
-
-        ArrayAdapter<String> timeAdapter = new ArrayAdapter<>
-                (this, android.R.layout.simple_spinner_item, times);
-
-        timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        startTimeSP.setAdapter(timeAdapter);
-        endTimeSP.setAdapter(timeAdapter);
-    }
-
-    private List<String> generateTime() {
-        List<String> times = new ArrayList<>();
-        for (int hour = 7; hour <= 17; hour++) {
-            for (int min = 0; min < 60; min += 15) {
-                times.add(String.format("%02d:%02d:00", hour, min));
-            }
-        }
-        return times;
     }
 
     private void setupGradeSP(){

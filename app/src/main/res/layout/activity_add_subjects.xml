@@ -4,207 +4,71 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
     android:padding="16dp">
+
 
     <TextView
         android:id="@+id/subjectsTitleTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="31dp"
         android:layout_marginBottom="28dp"
         android:text="@string/add_subject"
         android:textSize="24sp"
         android:textStyle="bold" />
 
-    <ScrollView
-        android:id="@+id/subjectsSV"
+    <TextView
+        android:id="@+id/subNameTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/subject_name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp" />
+
+    <EditText
+        android:id="@+id/subNameET"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginBottom="45dp">
+        android:layout_height="61dp"
+        android:hint="@string/enter_subject_name" />
 
-        <LinearLayout
-            android:id="@+id/subjectsSVLL"
-            android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/assignGradeTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/assign_grade"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/assignGradeSP"
+        android:layout_width="match_parent"
+        android:layout_height="51dp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="24dp">
+
+        <Button
+            android:id="@+id/cancleBT"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="#FFA500"
+            android:text="@string/cancel_sub" />
 
-            <TextView
-                android:id="@+id/subNameTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/subject_name"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/subNameET"
-                android:layout_width="match_parent"
-                android:layout_height="61dp"
-                android:hint="@string/enter_subject_name" />
-
-            <TextView
-                android:id="@+id/assignGradeTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="@string/assign_grade"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <Spinner
-                android:id="@+id/assignGradeSP"
-                android:layout_width="match_parent"
-                android:layout_height="51dp" />
-
-            <TextView
-                android:id="@+id/assignDaysTF"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="@string/assign_days"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/mondayCB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/monday"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <CheckBox
-                    android:id="@+id/tuesdayCB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tuesday"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <CheckBox
-                    android:id="@+id/wednesdayCB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/wednesday"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <CheckBox
-                    android:id="@+id/thursdayCB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/thursday"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <CheckBox
-                    android:id="@+id/fridayCB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/friday"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <CheckBox
-                    android:id="@+id/saturdayCB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/saturday"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <CheckBox
-                    android:id="@+id/sundayCB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/sunday"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/startTimeTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/start_time"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <Spinner
-                    android:id="@+id/startTimeSP"
-                    android:layout_width="0dp"
-                    android:layout_height="61dp"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/endTimeTV"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/end_time"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <Spinner
-                    android:id="@+id/endTimeSP"
-                    android:layout_width="0dp"
-                    android:layout_height="61dp"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/cancleBT"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginTop="24dp"
-                    android:backgroundTint="#FFA500"
-                    android:text="@string/cancle" />
-
-                <Button
-                    android:id="@+id/addBT"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:backgroundTint="#FFA500"
-                    android:text="Add" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-    </ScrollView>
+        <Button
+            android:id="@+id/addBT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FFA500"
+            android:text="@string/add_sub" />
+    </LinearLayout>
 
 </LinearLayout>
-
