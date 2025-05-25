@@ -9,10 +9,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import com.example.schoolapp.models.Role;
-import com.example.schoolapp.models.Student;
-import com.example.schoolapp.models.Subject;
-import com.example.schoolapp.models.Teacher;
 
+import com.example.schoolapp.models.Subject;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
