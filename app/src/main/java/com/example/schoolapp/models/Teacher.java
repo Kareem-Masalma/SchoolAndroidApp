@@ -54,7 +54,6 @@ public class Teacher extends User {
     @Override
     public String toString() {
         return "Teacher{" +
-                "teacher_id=" + teacher_id +
                 ", user_id=" + super.getUser_id() +
                 ", speciality='" + speciality + '\'' +
                 ", scheduleId=" + schedule_id +
