@@ -76,7 +76,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,8 +89,15 @@
                 android:layout_weight="1"
                 android:hint="Message Content"
                 android:padding="8dp"
-                android:background="@drawable/edittext_border"/>
-
+                android:background="@drawable/edittext_border"
+                android:inputType="textMultiLine"
+                android:gravity="top|start"
+                android:lines="10"
+                android:maxLines="15"
+                android:scrollbars="vertical"
+                android:overScrollMode="always"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
+                android:scrollHorizontally="false" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
