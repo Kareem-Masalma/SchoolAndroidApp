@@ -10,14 +10,20 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.schoolapp.models.Message;
 import com.example.schoolapp.models.Student;
+import com.example.schoolapp.models.Teacher;
 import com.google.gson.Gson;
+
+import java.time.LocalDate;
 
 public class TeacherSendMessage2 extends AppCompatActivity {
 
     private TextView tvTitle, tvToStudent, tvToStudentId;
     private EditText etTitle, etContent;
     private Button btnCancel, btnSend;
+    private Student toStudent;
+    private Teacher fromTeacher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +38,13 @@ public class TeacherSendMessage2 extends AppCompatActivity {
         Intent intent = getIntent();
         Gson gson = new Gson();
         String json =  intent.getStringExtra("student");
-        Student student = gson.fromJson(json , Student.class);
-        tvToStudent.setText("To Student: " + student.getFirstName() + " " + student.getLastName());
-        tvToStudentId.setText("Student ID: " + student.getUser_id());
+        toStudent = gson.fromJson(json , Student.class);
+        tvToStudent.setText("To Student: " + toStudent.getFirstName() + " " + toStudent.getLastName());
+        tvToStudentId.setText("Student ID: " + toStudent.getUser_id());
+
+
+        String teacherJson =  intent.getStringExtra("teacher");
+        fromTeacher = gson.fromJson(teacherJson, Teacher.class);
 
     }
 
@@ -54,6 +64,9 @@ public class TeacherSendMessage2 extends AppCompatActivity {
         });
 
         btnSend.setOnClickListener(v -> {
+            String title = etTitle.getText().toString().trim();
+            String content = etContent.getText().toString().trim();
+            Message msg = new Message(fromTeacher.getTeacher_id(), toStudent.getUser_id(),title,content,LocalDate.now());
 
         });
     }
