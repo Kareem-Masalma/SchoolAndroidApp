@@ -69,7 +69,7 @@ public class TeacherDA implements ITeacherDA {
                                 obj.getInt("user_id"), obj.getString("first_name"),
                                 obj.getString("last_name"), LocalDate.parse(obj.getString("birth_date")),
                                 obj.getString("address"), obj.getString("phone"), Role.TEACHER,
-                                obj.getString("speciality"));
+                                obj.getString("speciality"), obj.getInt("schedule_id"));
                         Log.d("Teacher", "Teacher test: " + obj.toString());
                         teachers.add(teacher);
                     }

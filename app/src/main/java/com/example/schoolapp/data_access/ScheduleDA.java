@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ScheduleDA implements IScheduleDA {
-    private final String BASE_URL = "http://localhost/school/schedule_subject.php";
+    private final String BASE_URL = "http://192.168.1.102/school/schedule_subject.php";
     private final RequestQueue queue;
 
     public ScheduleDA(Context context) {
@@ -56,10 +56,11 @@ public class ScheduleDA implements IScheduleDA {
                         for (int i = 0; i < response.length(); i++) {
                             JSONObject obj = response.getJSONObject(i);
                             ScheduleSubject schedule = new ScheduleSubject(
-                                    obj.getInt("schedule_subject_id"),
                                     obj.getInt("schedule_id"),
-                                    obj.getInt("class_id"),
                                     obj.getInt("subject_id"),
+                                    obj.getInt("class_id"),
+                                    obj.getString("title"),
+                                    obj.getString("class_name"),
                                     obj.getString("day"),
                                     obj.getString("start_time"),
                                     obj.getString("end_time")
@@ -76,34 +77,34 @@ public class ScheduleDA implements IScheduleDA {
         queue.add(request);
     }
 
-    public void getScheduleById(int id, SingleScheduleCallback callback) {
-        String url = BASE_URL + "?schedule_subject_id=" + id;
+    public void getScheduleById(int id, ScheduleListCallback callback) {
+        String url = BASE_URL + "?schedule_id=" + id;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
                     try {
-                        if (response.length() > 0) {
-                            JSONObject obj = response.getJSONObject(0);
+                        List<ScheduleSubject> list = new ArrayList<>();
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject obj = response.getJSONObject(i);
                             ScheduleSubject schedule = new ScheduleSubject(
-                                    obj.getInt("schedule_subject_id"),
                                     obj.getInt("schedule_id"),
-                                    obj.getInt("class_id"),
                                     obj.getInt("subject_id"),
+                                    obj.getInt("class_id"),
+                                    obj.getString("title"),
+                                    obj.getString("class_name"),
                                     obj.getString("day"),
                                     obj.getString("start_time"),
                                     obj.getString("end_time")
                             );
-                            callback.onSuccess(schedule);
-                        } else {
-                            callback.onError("Schedule not found");
+                            list.add(schedule);
                         }
+                        callback.onSuccess(list);
                     } catch (JSONException e) {
-                        callback.onError("Parse error: " + e.getMessage());
+                        callback.onError("Failed to parse schedule data");
                     }
                 },
                 error -> callback.onError("Connection error: " + error.getMessage())
         );
-
         queue.add(request);
     }
 

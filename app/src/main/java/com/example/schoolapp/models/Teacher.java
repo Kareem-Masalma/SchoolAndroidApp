@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public class Teacher extends User {
     private String speciality;
-    private Integer schedule_id;
+    private int schedule_id;
 
     public Teacher() {
 
@@ -18,14 +18,14 @@ public class Teacher extends User {
         this.speciality = speciality;
     }
 
-    public Teacher(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, String speciality, Integer schedule_id) {
+    public Teacher(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, String speciality, int schedule_id) {
         super(user_id, firstName, lastName, birthDate, address, phone, role);
 
         this.speciality = speciality;
         this.schedule_id = schedule_id;
     }
 
-    public Teacher(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, String speciality, Integer schedule_id, String password) {
+    public Teacher(Integer user_id, String firstName, String lastName, LocalDate birthDate, String address, String phone, Role role, String speciality, int schedule_id, String password) {
         super(user_id, firstName, lastName, birthDate, address, phone, role, password);
 
         this.speciality = speciality;
@@ -44,11 +44,11 @@ public class Teacher extends User {
         this.speciality = speciality;
     }
 
-    public Integer getSchedule_id() {
+    public int getSchedule_id() {
         return schedule_id;
     }
 
-    public void setSchedule_id(Integer schedule_id) {
+    public void setSchedule_id(int schedule_id) {
         this.schedule_id = schedule_id;
     }
 

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -11,24 +12,32 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.schoolapp.adapters.ScheduleSubjectAdapter;
 import com.example.schoolapp.data_access.ClassDA;
 import com.example.schoolapp.data_access.ClassDAFactory;
+import com.example.schoolapp.data_access.ScheduleDA;
+import com.example.schoolapp.data_access.ScheduleDAFactory;
 import com.example.schoolapp.data_access.SubjectDA;
 import com.example.schoolapp.data_access.SubjectDAFactory;
 import com.example.schoolapp.models.Class;
 
 import com.example.schoolapp.data_access.DaysFactory;
+import com.example.schoolapp.models.ScheduleSubject;
 import com.example.schoolapp.models.Subject;
 import com.example.schoolapp.models.Teacher;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddTeacherSchedule extends AppCompatActivity {
@@ -37,8 +46,10 @@ public class AddTeacherSchedule extends AppCompatActivity {
     private Button btnAdd, btnCancel;
     private EditText etStartTime, etEndTime;
     private Spinner spSubject, spGrade, spDay;
-    private ScrollView svSchedule;
     private TextView tvTeacher, tvId;
+    private RecyclerView rvScheduleItems;
+    private int teacherScheduleId = -1;
+    private Teacher teacher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +65,30 @@ public class AddTeacherSchedule extends AppCompatActivity {
         defineViews();
         teacherData();
         getSpinnersData();
-        getPrevSchedule();
+        loadTeacherSchedule(teacher.getSchedule_id());
     }
 
-    private void getPrevSchedule() {
+    private void loadTeacherSchedule(int scheduleId) {
+        ScheduleSubjectAdapter adapter = new ScheduleSubjectAdapter(new ArrayList<>());
+        rvScheduleItems.setAdapter(adapter);
 
+        ScheduleDA scheduleDA = ScheduleDAFactory.getScheduleDA(AddTeacherSchedule.this);
+        scheduleDA.getScheduleById(scheduleId, new ScheduleDA.ScheduleListCallback() {
+            @Override
+            public void onSuccess(List<ScheduleSubject> list) {
+                if (!list.isEmpty()) {
+                    adapter.updateData(list);
+                    rvScheduleItems.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(AddTeacherSchedule.this, "No schedule entries found.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                Toast.makeText(AddTeacherSchedule.this, error, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void getSpinnersData() {
@@ -98,7 +128,7 @@ public class AddTeacherSchedule extends AppCompatActivity {
         Intent intent = getIntent();
         String teacherString = intent.getStringExtra(AddSchedule.TEACHER);
         Gson gson = new Gson();
-        Teacher teacher = gson.fromJson(teacherString, Teacher.class);
+        teacher = gson.fromJson(teacherString, Teacher.class);
         tvTeacher.setText("Teacher: " + teacher.getFirstName() + " " + teacher.getLastName());
         tvId.setText("ID: " + teacher.getUser_id());
     }
@@ -113,6 +143,8 @@ public class AddTeacherSchedule extends AppCompatActivity {
         this.etEndTime = findViewById(R.id.etEndTime);
         this.tvTeacher = findViewById(R.id.tvTeacher);
         this.tvId = findViewById(R.id.tvId);
-//        this.svSchedule = findViewById(R.id.rvScheduleItems);
+        this.rvScheduleItems = findViewById(R.id.rvScheduleItems);
+        this.rvScheduleItems.setLayoutManager(new LinearLayoutManager(this));
     }
 }
+

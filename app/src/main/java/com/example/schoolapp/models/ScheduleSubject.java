@@ -1,10 +1,11 @@
 package com.example.schoolapp.models;
 
 public class ScheduleSubject {
-    private int scheduleSubjectId;
     private int scheduleId;
-    private int classId;
     private int subjectId;
+    private String subject;
+    private int classId;
+    private String className;
     private String day;
     private String startTime;
     private String endTime;
@@ -12,23 +13,15 @@ public class ScheduleSubject {
     public ScheduleSubject() {
     }
 
-    public ScheduleSubject(int scheduleSubjectId, int scheduleId, int classId, int subjectId, String day, String startTime, String endTime) {
-        this.scheduleSubjectId = scheduleSubjectId;
+    public ScheduleSubject(int scheduleId, int subjectId, int classId, String subject, String className, String day, String startTime, String endTime) {
         this.scheduleId = scheduleId;
-        this.classId = classId;
         this.subjectId = subjectId;
         this.day = day;
         this.startTime = startTime;
         this.endTime = endTime;
-    }
-
-    // Getters and Setters
-    public int getScheduleSubjectId() {
-        return scheduleSubjectId;
-    }
-
-    public void setScheduleSubjectId(int scheduleSubjectId) {
-        this.scheduleSubjectId = scheduleSubjectId;
+        this.classId = classId;
+        this.className = className;
+        this.subject = subject;
     }
 
     public int getScheduleId() {
@@ -37,14 +30,6 @@ public class ScheduleSubject {
 
     public void setScheduleId(int scheduleId) {
         this.scheduleId = scheduleId;
-    }
-
-    public int getClassId() {
-        return classId;
-    }
-
-    public void setClassId(int classId) {
-        this.classId = classId;
     }
 
     public int getSubjectId() {
@@ -77,5 +62,29 @@ public class ScheduleSubject {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public int getClassId() {
+        return classId;
+    }
+
+    public void setClassId(int classId) {
+        this.classId = classId;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 }

@@ -16,7 +16,7 @@ import java.util.Map;
 public interface IScheduleDA {
     void getAllSchedules(ScheduleDA.ScheduleListCallback callback);
 
-    void getScheduleById(int id, ScheduleDA.SingleScheduleCallback callback);
+    void getScheduleById(int id, ScheduleDA.ScheduleListCallback callback);
 
     void addScheduleSubject(ScheduleSubject schedule, ScheduleDA.ScheduleCallback callback);
     void updateSchedule(ScheduleSubject schedule, ScheduleDA.ScheduleCallback callback);
