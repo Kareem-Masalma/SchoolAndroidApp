@@ -22,6 +22,13 @@ public class Message {
         this.content = content;
         this.sentDate = sentDate;
     }
+    public Message(Integer from_user_id, Integer to_user_id, String title, String content, LocalDate sentDate) {
+        this.from_user_id = from_user_id;
+        this.to_user_id = to_user_id;
+        this.title = title;
+        this.content = content;
+        this.sentDate = sentDate;
+    }
 
     public Integer getMessage_id() {
         return message_id;

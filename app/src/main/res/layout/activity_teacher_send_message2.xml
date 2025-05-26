@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="50dp">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Send a Message"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/tvToStudent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="To Student:"
+        android:textSize="16sp"
+        android:layout_marginTop="25dp"/>
+    <TextView
+        android:id="@+id/tvToStudentId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Student ID:"
+        android:textSize="16sp"
+        android:layout_marginTop="25dp"/>
+
+    <!-- Spacer -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="15dp"/>
+
+    <!-- Spacer -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DDDDDD"
+        android:layout_marginTop="1dp"/>
+
+    <!-- Message section -->
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/etTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Message Title"
+                android:padding="8dp"
+                android:background="@drawable/edittext_border"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/etContent"
+                android:layout_width="0dp"
+                android:layout_height="320dp"
+                android:layout_weight="1"
+                android:hint="Message Content"
+                android:padding="8dp"
+                android:background="@drawable/edittext_border"
+                android:inputType="textMultiLine"
+                android:gravity="top|start"
+                android:lines="10"
+                android:maxLines="15"
+                android:scrollbars="vertical"
+                android:overScrollMode="always"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
+                android:scrollHorizontally="false" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <!-- Cancel button -->
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="15dp"/>
+
+        <!-- Send button -->
+        <Button
+            android:id="@+id/btnSend"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="Send"
+            android:layout_marginTop="16dp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

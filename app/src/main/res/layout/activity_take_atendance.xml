@@ -98,7 +98,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
     <!-- Column Labels -->
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/columnHeaders"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
             android:text="Attended"
             android:textStyle="bold"
             android:textSize="14sp"/>
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <!-- RecyclerView with border -->
     <androidx.recyclerview.widget.RecyclerView
