@@ -56,7 +56,7 @@ public class TeacherSendMessage1 extends AppCompatActivity {
                 }
                 else{
                 for(Student student : list){
-                    if((String.valueOf(student.getUser_id()).contains(nameOrId)) || student.getFirstName().contains(nameOrId) || student.getLastName().contains(nameOrId)){
+                    if((String.valueOf(student.getUser_id()).contains(nameOrId)) || student.getFirstName().toLowerCase().contains(nameOrId.toLowerCase()) || student.getLastName().toLowerCase().contains(nameOrId.toLowerCase())){
                         queryRes.add(student);
                     }
                 }
