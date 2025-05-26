@@ -38,8 +38,11 @@ public class MainActivity extends AppCompatActivity {
 //        String json = gson.toJson(schoolClass);
 //        intent.putExtra("schoolClass", json);
 
+        Intent intent = new Intent(MainActivity.this, TeacherSendMessage1.class);
+
+
 //        Intent intent = new Intent(MainActivity.this, AddTeacherActivity.class);
 
-//        startActivity(intent);
+        startActivity(intent);
     }
 }
