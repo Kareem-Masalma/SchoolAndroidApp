@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import java.time.LocalDate;
 
 public class Teacher extends User {
-    private Integer teacher_id;
     private String speciality;
     private Integer schedule_id;
 
@@ -32,14 +31,6 @@ public class Teacher extends User {
         this.speciality = speciality;
         this.schedule_id = schedule_id;
 
-    }
-
-    public Integer getTeacher_id() {
-        return teacher_id;
-    }
-
-    public void setTeacher_id(Integer teacher_id) {
-        this.teacher_id = teacher_id;
     }
 
 

@@ -70,10 +70,15 @@ public class MessageDA implements  IMessageDA {
             b.put("title", m.getTitle());
             b.put("content", m.getContent());
             b.put("sent_date", m.getSentDate().toString());
+
+            // debuggging
+            Log.i("FromUserId", "from_user_id = " + m.getFrom_user_id());
+            Log.i("SendingMessage", b.toString());
+
             JsonObjectRequest req = new JsonObjectRequest(
                     Request.Method.POST, BASE, b,
                     resp -> handle(cb, resp),
-                    err -> cb.onError("Send failed")
+                    err -> cb.onError("Send failed" + err)
             );
             queue.add(req);
         } catch (JSONException ex) {

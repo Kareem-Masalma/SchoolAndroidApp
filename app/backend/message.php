@@ -32,18 +32,11 @@ try {
             SELECT
               m.message_id,
               m.from_user_id,
-              sender.first_name AS from_first_name,
-              sender.last_name AS from_last_name,
               m.to_user_id,
-              recipient.first_name AS to_first_name,
-              recipient.last_name AS to_last_name,
               m.title,
               m.content,
               m.sent_date
             FROM message m
-            JOIN users sender ON sender.user_id = m.from_user_id
-            JOIN users recipient ON recipient.user_id = m.to_user_id
-            WHERE 1=1 $where
             ORDER BY m.sent_date DESC
         ";
 
@@ -75,8 +68,10 @@ try {
             $input['sent_date']
         );
         $stmt->execute();
-
-        echo json_encode(['message_id' => $conn->insert_id]);
+           echo json_encode([
+            'success' => true,
+            'message' => 'Message Added'
+    ]);
 
     } elseif ($method === 'DELETE') {
         if (!isset($_GET['message_id'])) {
@@ -86,13 +81,18 @@ try {
         $stmt->bind_param("i", $_GET['message_id']);
         $stmt->execute();
 
-        echo json_encode(['deleted' => $stmt->affected_rows]);
-
+        echo json_encode([
+            'success' => true,
+            'deleted' => $stmt->affected_rows
+    ]);
     } else {
         http_response_code(405);
         echo json_encode(['error' => 'Method Not Allowed']);
     }
 } catch (Exception $e) {
-    http_response_code(400);
-    echo json_encode(['error' => $e->getMessage()]);
+    http_response_code(response_code: 400);
+     echo json_encode([
+            'success' => true,
+            'error' => $e->getMessage()
+    ]);
 }
