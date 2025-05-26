@@ -21,7 +21,8 @@ public class TeacherDA implements ITeacherDA {
 
     private final RequestQueue queue;
 
-    private final String BASE_URL = "http://192.168.1.102/school/teacher.php";
+    private final String BASE_URL = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/teacher.php";
+
     private final Gson gson = new Gson();
 
     public TeacherDA(Context context) {

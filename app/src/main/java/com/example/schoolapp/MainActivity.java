@@ -24,11 +24,11 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        Intent intent = new Intent(MainActivity.this, AddSchedule.class);
+//        Intent intent = new Intent(MainActivity.this, AddSchedule.class);
 
         //Intent intent = new Intent(MainActivity.this, AddTeacherActivity.class);
         //Intent intent = new Intent(MainActivity.this, AddSchedule.class);
 
-        startActivity(intent);
+//        startActivity(intent);
     }
 }

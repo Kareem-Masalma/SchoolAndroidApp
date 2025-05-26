@@ -22,7 +22,8 @@ import java.util.List;
 
 public class StudentDA implements IStudentDA {
     private final RequestQueue queue;
-    private final String BASE = "http://192.168.1.102/school/student.php"; // the emulator needs the pc's local ip address,
+    private final String BASE = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/student.php";
+ // the emulator needs the pc's local ip address,
     // using localhost here won't work because it would refer to the emulator's internal ip
 
     public StudentDA(Context ctx) {
