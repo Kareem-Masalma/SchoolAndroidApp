@@ -35,11 +35,11 @@
             android:layout_marginTop="8dp">
 
             <EditText
-                android:id="@+id/etStudentSearch"
+                android:id="@+id/etUserSearch"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Student Name or ID"
+                android:hint="Name or ID"
                 android:padding="8dp"
                 android:background="@drawable/edittext_border"/>
 
@@ -95,7 +95,7 @@
 
     <!-- RecyclerView for student list -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvStudents"
+        android:id="@+id/rvUsers"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
