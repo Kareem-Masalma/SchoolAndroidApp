@@ -17,17 +17,17 @@
         android:gravity="center"/>
 
     <TextView
-        android:id="@+id/tvToStudent"
+        android:id="@+id/tvToUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="To Student:"
+        android:text="To User:"
         android:textSize="16sp"
         android:layout_marginTop="25dp"/>
     <TextView
-        android:id="@+id/tvToStudentId"
+        android:id="@+id/tvToUserId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Student ID:"
+        android:text="User ID:"
         android:textSize="16sp"
         android:layout_marginTop="25dp"/>
 

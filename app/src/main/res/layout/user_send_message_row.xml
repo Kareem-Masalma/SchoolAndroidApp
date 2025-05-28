@@ -8,7 +8,7 @@
     android:gravity="center_vertical">
 
     <TextView
-        android:id="@+id/tvStudentId2"
+        android:id="@+id/tvUserId2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.2"
@@ -16,11 +16,11 @@
         android:textSize="16sp"/>
 
     <TextView
-        android:id="@+id/tvStudentName2"
+        android:id="@+id/tvUserName2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.4"
-        android:text="Student Name"
+        android:text="User Name"
         android:textSize="16sp"/>
 
     <Button
