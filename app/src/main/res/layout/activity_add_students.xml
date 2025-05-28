@@ -114,12 +114,29 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Initial Password -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Initial Password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginTop="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etInitialPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPostalAddress"
+                android:minLines="2"
+                android:maxLines="4" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Class ID Spinner -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Class"
+            android:hint="Class (1st grade, 2nd grade, ... etc)"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_marginTop="8dp">
 
@@ -127,18 +144,36 @@
                 android:id="@+id/spinnerClassNum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="50dp"/>
+                android:minHeight="50dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Save Button -->
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="top|center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancel"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:layout_marginTop="24dp"
+                android:layout_marginRight="15dp"
+                android:gravity="center"/>
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAdd"
             style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add"
-            android:layout_marginTop="24dp" />
+            android:layout_marginTop="24dp"
+            android:gravity="center"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </LinearLayout>
 

@@ -198,6 +198,16 @@
                     android:contentDescription="@string/dropdown_icon" />
             </LinearLayout>
 
+            <!-- Password -->
+            <TextView
+                style="@style/SectionTitle"
+                android:text="@string/password"
+                android:layout_marginTop="24dp" />
+            <EditText
+                android:id="@+id/editPassword"
+                style="@style/FormEditText"
+                android:hint="@string/enter_password_at_least_8_charachters"
+                android:inputType="textPassword" />
 
             <!-- Role -->
             <TextView
