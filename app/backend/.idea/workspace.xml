@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f6712e54-6850-4889-b72d-68f6144c7e94" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/ISubjectDA.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schedule_subject.php" beforeDir="false" afterPath="$PROJECT_DIR$/schedule_subject.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddTeacherSchedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddTeacherSchedule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/DA_Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/DA_Config.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/ScheduleDA.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/ScheduleDA.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

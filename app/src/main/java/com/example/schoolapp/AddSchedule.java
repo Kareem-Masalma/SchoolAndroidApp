@@ -101,7 +101,7 @@ public class AddSchedule extends AppCompatActivity {
 
                         @Override
                         public void onError(String error) {
-                            Toast.makeText(AddSchedule.this, "Error loading students: " + error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddSchedule.this, "Error loading classes: " + error, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

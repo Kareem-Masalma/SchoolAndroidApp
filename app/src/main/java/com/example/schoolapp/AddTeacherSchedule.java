@@ -30,6 +30,7 @@ import com.example.schoolapp.data_access.SubjectDAFactory;
 import com.example.schoolapp.models.Class;
 
 import com.example.schoolapp.data_access.DaysFactory;
+import com.example.schoolapp.models.Schedule;
 import com.example.schoolapp.models.ScheduleSubject;
 import com.example.schoolapp.models.Subject;
 import com.example.schoolapp.models.Teacher;
@@ -46,7 +47,6 @@ public class AddTeacherSchedule extends AppCompatActivity {
     private Spinner spSubject, spGrade, spDay;
     private TextView tvTeacher, tvId;
     private RecyclerView rvScheduleItems;
-    private int teacherScheduleId = -1;
     private Teacher teacher;
     private List<ScheduleSubject> teacherSchedules;
     ScheduleDA scheduleDA;
@@ -88,12 +88,6 @@ public class AddTeacherSchedule extends AppCompatActivity {
                 String startTime = etStartTime.getText().toString();
                 String endTime = etEndTime.getText().toString();
 
-                Log.d("Schedule", "Class: " + selectedClass.getClassName());
-                Log.d("Schedule", "Subject: " + subject.getTitle());
-                Log.d("Schedule", "Day: " + day);
-                Log.d("Schedule", "Start Time:" + startTime);
-                Log.d("Schedule", "End Time: " + endTime);
-
                 ScheduleSubject schedule = new ScheduleSubject(teacher.getSchedule_id(), subject.getSubjectId(), selectedClass.getClassId(),
                         subject.getTitle(), selectedClass.getClassName(), day, startTime, endTime);
 
@@ -114,7 +108,7 @@ public class AddTeacherSchedule extends AppCompatActivity {
                     });
                 } else {
                     for (ScheduleSubject curr : teacherSchedules) {
-                        if (checkConflict(curr, schedule)) {
+                        if (Schedule.checkConflict(curr, schedule)) {
                             Toast.makeText(AddTeacherSchedule.this, "Conflict with Schedule", Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -136,31 +130,6 @@ public class AddTeacherSchedule extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private boolean checkConflict(ScheduleSubject curr, ScheduleSubject newSchedule) {
-        String startTime = curr.getStartTime();
-        String endTime = curr.getEndTime();
-
-        int startMinutes = getMinutes(startTime);
-        int endMinutes = getMinutes(endTime);
-
-        String newStartTime = newSchedule.getStartTime();
-        String newEndTime = newSchedule.getEndTime();
-
-        int newStartMinutes = getMinutes(newStartTime);
-        int newEndMinutes = getMinutes(newEndTime);
-
-        return ((newStartMinutes < endMinutes) && (newEndMinutes > startMinutes)) && curr.getDay().equalsIgnoreCase(newSchedule.getDay());
-    }
-
-    private int getMinutes(String time) {
-        String[] splitTime = time.split(":");
-
-        int hours = Integer.parseInt(splitTime[0]);
-        int minutes = Integer.parseInt(splitTime[1]);
-
-        return hours * 60 + minutes;
     }
 
     private void loadTeacherSchedule(int scheduleId) {

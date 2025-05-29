@@ -19,14 +19,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SubjectDA {
+public class SubjectDA implements ISubjectDA {
     private final RequestQueue queue;
-    private final String BASE = "http://192.168.1.102/school/subject.php";
+    private final String BASE = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/subject.php";
 
     public SubjectDA(Context ctx) {
         queue = Volley.newRequestQueue(ctx);
     }
 
+    @Override
     public void getAllSubjects(SubjectListCallback cb) {
         JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, BASE, null,
                 resp -> {
@@ -45,6 +46,7 @@ public class SubjectDA {
         queue.add(req);
     }
 
+    @Override
     public void getSubjectById(int id, SingleSubjectCallback cb) {
         String url = BASE + "?subject_id=" + id;
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -60,6 +62,7 @@ public class SubjectDA {
         queue.add(req);
     }
 
+    @Override
     public void addSubject(Subject s, BaseCallback cb) {
         StringRequest req = new StringRequest(Request.Method.POST, BASE,
                 resp -> cb.onSuccess("Subject added"),
@@ -76,6 +79,7 @@ public class SubjectDA {
         queue.add(req);
     }
 
+    @Override
     public void updateSubject(Subject s, BaseCallback cb) {
         StringRequest req = new StringRequest(Request.Method.PUT, BASE,
                 resp -> cb.onSuccess("Subject updated"),
@@ -93,6 +97,7 @@ public class SubjectDA {
         queue.add(req);
     }
 
+    @Override
     public void deleteSubject(int id, BaseCallback cb) {
         String url = BASE + "?subject_id=" + id;
         StringRequest req = new StringRequest(Request.Method.DELETE, url,
