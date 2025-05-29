@@ -17,7 +17,7 @@ import java.util.List;
 
 public class AttendanceDA implements IAttendanceDA {
     private final RequestQueue queue;
-    private final String BASE = "http://10.0.0.14/androidBackend/attendance.php";
+    private final String BASE = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/attendance.php";
 
     public AttendanceDA(Context ctx) {
         this.queue = Volley.newRequestQueue(ctx);
