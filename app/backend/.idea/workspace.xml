@@ -5,17 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f6712e54-6850-4889-b72d-68f6144c7e94" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/ScheduleDAFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schedule_subject.php" beforeDir="false" afterPath="$PROJECT_DIR$/schedule_subject.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddTeacherSchedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddTeacherSchedule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/ScheduleSubjectAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/ScheduleSubjectAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/IScheduleDA.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/IScheduleDA.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/ScheduleDA.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/ScheduleDA.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/main/res/layout/activity_add_teacher_schedule.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/res/layout/activity_add_teacher_schedule.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/res/layout/item_schedule_subject.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/res/layout/item_schedule_subject.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,7 +80,7 @@
       <workItem from="1748106097570" duration="775000" />
       <workItem from="1748110091525" duration="2301000" />
       <workItem from="1748127081224" duration="2205000" />
-      <workItem from="1748287431426" duration="3066000" />
+      <workItem from="1748287431426" duration="4260000" />
     </task>
     <servers />
   </component>

@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +48,8 @@ public class AddTeacherSchedule extends AppCompatActivity {
     private RecyclerView rvScheduleItems;
     private int teacherScheduleId = -1;
     private Teacher teacher;
+    private List<ScheduleSubject> teacherSchedules;
+    ScheduleDA scheduleDA;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,17 +66,93 @@ public class AddTeacherSchedule extends AppCompatActivity {
         teacherData();
         getSpinnersData();
         loadTeacherSchedule(teacher.getSchedule_id());
+        actionButtons();
+    }
+
+
+    private void actionButtons() {
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Class selectedClass = (Class) spGrade.getSelectedItem();
+                Subject subject = (Subject) spSubject.getSelectedItem();
+                String day = spDay.getSelectedItem().toString();
+
+                String startTime = etStartTime.getText().toString();
+                String endTime = etEndTime.getText().toString();
+
+                ScheduleSubject schedule = new ScheduleSubject(teacher.getSchedule_id(), subject.getSubjectId(), selectedClass.getClassId(),
+                        subject.getTitle(), selectedClass.getClassName(), day, startTime, endTime);
+
+
+                if (teacherSchedules.isEmpty()) {
+                    teacherSchedules.add(schedule);
+                    scheduleDA.addScheduleSubject(schedule, new ScheduleDA.ScheduleCallback() {
+                        @Override
+                        public void onSuccess(String message) {
+                            Toast.makeText(AddTeacherSchedule.this, message, Toast.LENGTH_SHORT).show();
+                            loadTeacherSchedule(teacher.getSchedule_id());
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            Toast.makeText(AddTeacherSchedule.this, error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    for (ScheduleSubject curr : teacherSchedules) {
+                        if (checkConflict(curr, schedule)) {
+                            Toast.makeText(AddTeacherSchedule.this, "Conflict with Schedule", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private boolean checkConflict(ScheduleSubject curr, ScheduleSubject newSchedule) {
+        String startTime = curr.getStartTime();
+        String endTime = curr.getEndTime();
+
+        int startMinutes = getMinutes(startTime);
+        int endMinutes = getMinutes(endTime);
+
+        String newStartTime = newSchedule.getStartTime();
+        String newEndTime = newSchedule.getEndTime();
+
+        int newStartMinutes = getMinutes(newStartTime);
+        int newEndMinutes = getMinutes(newEndTime);
+
+        return ((newStartMinutes < endMinutes) && (newEndMinutes > startMinutes));
+    }
+
+    private int getMinutes(String time) {
+        String[] splitTime = time.split(":");
+
+        int hours = Integer.parseInt(splitTime[0]);
+        int minutes = Integer.parseInt(splitTime[1]);
+
+        return hours * 60 + minutes;
     }
 
     private void loadTeacherSchedule(int scheduleId) {
         ScheduleSubjectAdapter adapter = new ScheduleSubjectAdapter(new ArrayList<>());
         rvScheduleItems.setAdapter(adapter);
 
-        ScheduleDA scheduleDA = ScheduleDAFactory.getScheduleDA(AddTeacherSchedule.this);
+        scheduleDA = ScheduleDAFactory.getScheduleDA(AddTeacherSchedule.this);
         scheduleDA.getScheduleById(scheduleId, new ScheduleDA.ScheduleListCallback() {
             @Override
             public void onSuccess(List<ScheduleSubject> list) {
                 if (!list.isEmpty()) {
+                    teacherSchedules = list;
                     adapter.updateData(list);
                     rvScheduleItems.setVisibility(View.VISIBLE);
                 } else {
@@ -134,7 +210,7 @@ public class AddTeacherSchedule extends AppCompatActivity {
     }
 
     private void defineViews() {
-        this.btnAdd = findViewById(R.id.btnAdd);
+        this.btnAdd = findViewById(R.id.btnAddSchedule);
         this.btnCancel = findViewById(R.id.btnCancel);
         this.etStartTime = findViewById(R.id.etStartTime);
         this.spSubject = findViewById(R.id.spSubject);
