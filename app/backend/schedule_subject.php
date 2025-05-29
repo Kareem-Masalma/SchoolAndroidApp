@@ -27,6 +27,8 @@ try {
         }
 
     } elseif ($method === 'POST') {
+        $input = $_POST;
+
         foreach (["schedule_id", "subject_id", "day", "start_time", "end_time"] as $key) {
             if (empty($input[$key])) {
                 throw new Exception("Missing field: $key");
@@ -34,9 +36,9 @@ try {
         }
 
         $stmt = $conn->prepare("
-            INSERT INTO schedule_subject (schedule_id, subject_id, day, start_time, end_time)
-            VALUES (?, ?, ?, ?, ?)
-        ");
+        INSERT INTO schedule_subject (schedule_id, subject_id, day, start_time, end_time)
+        VALUES (?, ?, ?, ?, ?)
+    ");
         $stmt->bind_param(
             "iisss",
             $input['schedule_id'],

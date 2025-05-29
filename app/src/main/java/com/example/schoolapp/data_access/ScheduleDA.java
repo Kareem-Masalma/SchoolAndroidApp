@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ScheduleDA implements IScheduleDA {
-    private final String BASE_URL = "http://192.168.1.102/school/schedule_subject.php";
+    private final String BASE_URL = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/schedule_subject.php";
     private final RequestQueue queue;
 
     public ScheduleDA(Context context) {
@@ -117,6 +117,7 @@ public class ScheduleDA implements IScheduleDA {
         ) {
             @Override
             protected Map<String, String> getParams() {
+
                 Map<String, String> params = new HashMap<>();
                 params.put("schedule_id", String.valueOf(schedule.getScheduleId()));
                 params.put("class_id", String.valueOf(schedule.getClassId()));
@@ -124,6 +125,7 @@ public class ScheduleDA implements IScheduleDA {
                 params.put("day", schedule.getDay());
                 params.put("start_time", schedule.getStartTime());
                 params.put("end_time", schedule.getEndTime());
+
                 return params;
             }
         };

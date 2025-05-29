@@ -88,6 +88,12 @@ public class AddTeacherSchedule extends AppCompatActivity {
                 String startTime = etStartTime.getText().toString();
                 String endTime = etEndTime.getText().toString();
 
+                Log.d("Schedule", "Class: " + selectedClass.getClassName());
+                Log.d("Schedule", "Subject: " + subject.getTitle());
+                Log.d("Schedule", "Day: " + day);
+                Log.d("Schedule", "Start Time:" + startTime);
+                Log.d("Schedule", "End Time: " + endTime);
+
                 ScheduleSubject schedule = new ScheduleSubject(teacher.getSchedule_id(), subject.getSubjectId(), selectedClass.getClassId(),
                         subject.getTitle(), selectedClass.getClassName(), day, startTime, endTime);
 
@@ -110,9 +116,23 @@ public class AddTeacherSchedule extends AppCompatActivity {
                     for (ScheduleSubject curr : teacherSchedules) {
                         if (checkConflict(curr, schedule)) {
                             Toast.makeText(AddTeacherSchedule.this, "Conflict with Schedule", Toast.LENGTH_SHORT).show();
-                            break;
+                            return;
                         }
                     }
+
+                    scheduleDA.addScheduleSubject(schedule, new ScheduleDA.ScheduleCallback() {
+                        @Override
+                        public void onSuccess(String message) {
+                            loadTeacherSchedule(teacher.getSchedule_id());
+                            Toast.makeText(AddTeacherSchedule.this, message, Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            Toast.makeText(AddTeacherSchedule.this, error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                 }
             }
         });
@@ -131,7 +151,7 @@ public class AddTeacherSchedule extends AppCompatActivity {
         int newStartMinutes = getMinutes(newStartTime);
         int newEndMinutes = getMinutes(newEndTime);
 
-        return ((newStartMinutes < endMinutes) && (newEndMinutes > startMinutes));
+        return ((newStartMinutes < endMinutes) && (newEndMinutes > startMinutes)) && curr.getDay().equalsIgnoreCase(newSchedule.getDay());
     }
 
     private int getMinutes(String time) {

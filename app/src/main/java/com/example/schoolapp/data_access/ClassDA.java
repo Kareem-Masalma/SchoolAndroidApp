@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class ClassDA {
     private final RequestQueue queue;
-    private final String BASE = "http://192.168.1.102/school/class.php";
+    private final String BASE = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/class.php";
 
     public ClassDA(Context ctx) {
         queue = Volley.newRequestQueue(ctx);
