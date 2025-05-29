@@ -17,6 +17,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Login"
+            android:exported="false" />
+        <activity
             android:name=".UserSendMessage2"
             android:exported="false" />
         <activity
