@@ -23,10 +23,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       unset($user["password"]);
       echo json_encode(["success" => true, "user" => $user]);
     } else {
-      echo json_encode(["success" => false, "message" => "Incorrect password"]);
+      echo json_encode(["success" => false, "message" => "User ID or Password"]);
     }
   } else {
-    echo json_encode(["success" => false, "message" => "User not found"]);
+    echo json_encode(["success" => false, "message" => "User ID or Password"]);
   }
 
   $stmt->close();
