@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        Intent intent = new Intent(MainActivity.this, AddStudents.class);
+        Intent intent = new Intent(MainActivity.this, AddTeacherActivity.class);
 
         //Intent intent = new Intent(MainActivity.this, AddTeacherActivity.class);
         //Intent intent = new Intent(MainActivity.this, AddSchedule.class);

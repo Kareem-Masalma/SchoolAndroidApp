@@ -21,7 +21,7 @@ public class TeacherDA implements ITeacherDA {
 
     private final RequestQueue queue;
 
-    private final String BASE_URL = "http://localhost/phpmyadmin/index.php/teacher.php";
+    private final String BASE_URL = "http://192.168.0.104/School/teacher.php";
     private final Gson gson = new Gson();
 
     public TeacherDA(Context context) {
@@ -90,23 +90,49 @@ public class TeacherDA implements ITeacherDA {
     }
 
     @Override
-    public void addTeacher(Teacher teacher) {
-        StringRequest request = new StringRequest(Request.Method.POST, BASE_URL, response -> Log.d("POST_SUCCESS", response),
-                error -> Log.e("POST_ERROR", error.toString())) {
+    public void addTeacher(Teacher teacher, BaseCallback baseCallback) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("first_name", teacher.getFirstName());
+            json.put("last_name", teacher.getLastName());
+            json.put("birth_date", teacher.getBirthDate().toString());
+            json.put("address", teacher.getAddress());
+            json.put("phone", teacher.getPhone());
+            json.put("role", teacher.getRole().toString());
+            json.put("speciality", teacher.getSpeciality());
+            json.put("password", teacher.getPassword());
+        } catch (JSONException e) {
+            e.printStackTrace();
+            baseCallback.onError("Failed to create JSON payload");
+            return;
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL, json,
+                response -> {
+                    Log.d("POST_SUCCESS", response.toString());
+                    baseCallback.onSuccess("Teacher added successfully");
+                },
+                error -> {
+                    String body = "";
+                    if (error.networkResponse != null && error.networkResponse.data != null) {
+                        try {
+                            body = new String(error.networkResponse.data, "UTF-8");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Log.e("POST_ERROR", error.toString());
+                    Log.e("POST_ERROR_BODY", body);
+                    baseCallback.onError("Failed to add teacher");
+                }) {
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("first_name", teacher.getFirstName());
-                params.put("last_name", teacher.getLastName());
-                params.put("birth_date", teacher.getBirthDate().toString());
-                params.put("address", teacher.getAddress());
-                params.put("phone", teacher.getPhone());
-                params.put("role", teacher.getRole().toString());
-                params.put("speciality", teacher.getSpeciality());
-                params.put("password" , teacher.getPassword());
-                return params;
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
             }
         };
+
         queue.add(request);
     }
 

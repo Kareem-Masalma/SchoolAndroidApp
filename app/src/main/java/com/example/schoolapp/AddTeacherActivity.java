@@ -73,6 +73,7 @@ public class AddTeacherActivity extends AppCompatActivity {
             dialog.show();
         };
 
+
         editBirthDate.setOnClickListener(openDatePicker);
         LinearLayout birthDateField = findViewById(R.id.birthDateField);
         birthDateField.setOnClickListener(openDatePicker);
@@ -104,41 +105,33 @@ public class AddTeacherActivity extends AppCompatActivity {
                 editFirstName.setError("Required");
                 valid = false;
             }
-
             if (lastName.isEmpty()) {
                 editLastName.setError("Required");
                 valid = false;
             }
-
             if (birthDateStr.isEmpty()) {
                 editBirthDate.setError("Required a valid date");
                 valid = false;
             }
-
             if (city.isEmpty()) {
                 editCity.setError("Required");
                 valid = false;
             }
-
             if (address.isEmpty()) {
                 editAddress.setError("Required");
                 valid = false;
             }
-
             if (phone.isEmpty()) {
                 editPhone.setError("Required");
                 valid = false;
             }
-
-            // Add password validation
             if (password.isEmpty()) {
                 editPassword.setError("Required");
                 valid = false;
             } else if (password.length() < 8) {
                 editPassword.setError("Password must be at least 8 characters");
-                valid = false;
+                return;
             }
-
 
             if (!valid) {
                 Toast.makeText(this, "Please fill all required fields", Toast.LENGTH_SHORT).show();
@@ -173,7 +166,7 @@ public class AddTeacherActivity extends AppCompatActivity {
                 return;
             }
 
-            // Create and send Teacher
+            // Create teacher object
             Role role = Role.TEACHER;
             Teacher teacher = new Teacher();
             teacher.setFirstName(firstName);
@@ -185,11 +178,39 @@ public class AddTeacherActivity extends AppCompatActivity {
             teacher.setSpeciality(specialty);
             teacher.setPassword(password);
 
+            // Submit
             ITeacherDA teacherDA = new TeacherDA(this);
-            teacherDA.addTeacher(teacher);
+            teacherDA.addTeacher(teacher, new TeacherDA.BaseCallback() {
+                @Override
+                public void onSuccess(String message) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(AddTeacherActivity.this, "Teacher added successfully", Toast.LENGTH_SHORT).show();
+                        clearFields();
+                    });
+                }
+
+
+                @Override
+                public void onError(String error) {
+                    runOnUiThread(() -> Toast.makeText(AddTeacherActivity.this, "Failed to add teacher", Toast.LENGTH_SHORT).show());
+                }
+            });
         });
+
 
         // Cancel button
         btnCancel.setOnClickListener(v -> finish());
     }
+    private void clearFields() {
+        editFirstName.setText("");
+        editLastName.setText("");
+        editBirthDate.setText("");
+        editCity.setText("");
+        editAddress.setText("");
+        editPhone.setText("");
+        editPassword.setText("");
+        spinnerSpecialty.setSelection(0);
+    }
+
+
 }
