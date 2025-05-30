@@ -32,12 +32,18 @@
         android:id="@+id/tvSubjectId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Subject ID: 1" />
+        android:text="Subject: " />
 
     <TextView
         android:id="@+id/tvClassId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Class ID: 2" />
+        android:text="Class: " />
+
+    <TextView
+        android:id="@+id/tvSemester"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Semester: Spring" />
 
 </LinearLayout>

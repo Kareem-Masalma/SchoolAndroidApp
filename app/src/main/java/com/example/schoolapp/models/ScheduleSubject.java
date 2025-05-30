@@ -1,5 +1,7 @@
 package com.example.schoolapp.models;
 
+import java.time.LocalDate;
+
 public class ScheduleSubject {
     private int scheduleId;
     private int subjectId;
@@ -9,6 +11,8 @@ public class ScheduleSubject {
     private String day;
     private String startTime;
     private String endTime;
+    private String semester;
+    private int year = LocalDate.now().getYear();
 
     public ScheduleSubject() {
     }
@@ -22,6 +26,20 @@ public class ScheduleSubject {
         this.classId = classId;
         this.className = className;
         this.subject = subject;
+    }
+
+
+    public ScheduleSubject(int scheduleId, int subjectId, int classId, String subject, String className, String day, String startTime, String endTime, String semester, int year) {
+        this.scheduleId = scheduleId;
+        this.subjectId = subjectId;
+        this.subject = subject;
+        this.classId = classId;
+        this.className = className;
+        this.day = day;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.semester = semester;
+        this.year = year;
     }
 
     public int getScheduleId() {
@@ -86,5 +104,21 @@ public class ScheduleSubject {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public String getSemester() {
+        return semester;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 }

@@ -110,6 +110,20 @@
                 android:hint="@string/end_time"
                 android:inputType="time" />
 
+            <TextView
+                style="@style/SectionTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/semester" />
+
+            <Spinner
+                android:id="@+id/spSemester"
+                style="@style/FormSpinner"
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:spinnerMode="dropdown" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -29,23 +29,25 @@ try {
     } elseif ($method === 'POST') {
         $input = $_POST;
 
-        foreach (["schedule_id", "subject_id", "day", "start_time", "end_time"] as $key) {
+        foreach (["schedule_id", "subject_id", "day", "start_time", "end_time", "semester", "year"] as $key) {
             if (empty($input[$key])) {
                 throw new Exception("Missing field: $key");
             }
         }
 
         $stmt = $conn->prepare("
-        INSERT INTO schedule_subject (schedule_id, subject_id, day, start_time, end_time)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO schedule_subject (schedule_id, subject_id, day, start_time, end_time, semester, year)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
     ");
         $stmt->bind_param(
-            "iisss",
+            "iissssi",
             $input['schedule_id'],
             $input['subject_id'],
             $input['day'],
             $input['start_time'],
-            $input['end_time']
+            $input['end_time'],
+            $input['semester'],
+            $input['year']
         );
         $stmt->execute();
 

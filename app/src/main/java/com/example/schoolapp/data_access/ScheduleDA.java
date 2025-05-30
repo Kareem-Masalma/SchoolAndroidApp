@@ -8,6 +8,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.schoolapp.models.ScheduleSubject;
@@ -47,6 +48,12 @@ public class ScheduleDA implements IScheduleDA {
         void onError(String error);
     }
 
+    public interface ScheduleIDCallback {
+        void onSuccess(int newId);
+
+        void onError(String error);
+    }
+
     @Override
     public void getAllSchedules(ScheduleListCallback callback) {
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, BASE_URL, null,
@@ -63,7 +70,9 @@ public class ScheduleDA implements IScheduleDA {
                                     obj.getString("class_name"),
                                     obj.getString("day"),
                                     obj.getString("start_time"),
-                                    obj.getString("end_time")
+                                    obj.getString("end_time"),
+                                    obj.getString("semester"),
+                                    obj.getInt("year")
                             );
                             list.add(schedule);
                         }
@@ -94,7 +103,9 @@ public class ScheduleDA implements IScheduleDA {
                                     obj.getString("class_name"),
                                     obj.getString("day"),
                                     obj.getString("start_time"),
-                                    obj.getString("end_time")
+                                    obj.getString("end_time"),
+                                    obj.getString("semester"),
+                                    obj.getInt("year")
                             );
                             list.add(schedule);
                         }
@@ -125,6 +136,8 @@ public class ScheduleDA implements IScheduleDA {
                 params.put("day", schedule.getDay());
                 params.put("start_time", schedule.getStartTime());
                 params.put("end_time", schedule.getEndTime());
+                params.put("semester", schedule.getSemester());
+                params.put("year", String.valueOf(schedule.getYear()));
 
                 return params;
             }
@@ -148,9 +161,46 @@ public class ScheduleDA implements IScheduleDA {
                 params.put("day", schedule.getDay());
                 params.put("start_time", schedule.getStartTime());
                 params.put("end_time", schedule.getEndTime());
+                params.put("semester", schedule.getSemester());
                 return params;
             }
         };
+
+        queue.add(request);
+    }
+
+    public void addScheduleID(int userId, ScheduleIDCallback callback) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("user_id", userId);
+        } catch (JSONException e) {
+            callback.onError("JSON error: " + e.getMessage());
+            return;
+        }
+
+        String url = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/schedule.php";
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.POST,
+                url,
+                json,
+                response -> {
+                    try {
+                        if (response.getBoolean("success")) {
+                            int newId = response.getInt("schedule_id");
+                            callback.onSuccess(newId);
+                        } else {
+                            callback.onError("Failed to insert: " + response.getString("message"));
+                        }
+                    } catch (JSONException e) {
+                        callback.onError("JSON parsing error: " + e.getMessage());
+                    }
+                },
+                error -> {
+                    Log.e("ScheduleDA", "Volley error: ", error);
+                    callback.onError("Volley error: " + error.getMessage());
+                }
+        );
 
         queue.add(request);
     }

@@ -42,8 +42,9 @@ public class ScheduleSubjectAdapter extends RecyclerView.Adapter<ScheduleSubject
         holder.tvDay.setText("Day: " + item.getDay());
         holder.tvStartTime.setText("Start: " + item.getStartTime());
         holder.tvEndTime.setText("End: " + item.getEndTime());
-        holder.tvSubjectId.setText("Subject ID: " + item.getSubject());
-        holder.tvClassId.setText("Class ID: " + item.getClassName());
+        holder.tvSubjectId.setText("Subject: " + item.getSubject());
+        holder.tvClassId.setText("Class: " + item.getClassName());
+        holder.tvSemester.setText("Semester: " + item.getSemester());
     }
 
     @Override
@@ -52,7 +53,7 @@ public class ScheduleSubjectAdapter extends RecyclerView.Adapter<ScheduleSubject
     }
 
     static class ScheduleViewHolder extends RecyclerView.ViewHolder {
-        TextView tvDay, tvStartTime, tvEndTime, tvSubjectId, tvClassId;
+        TextView tvDay, tvStartTime, tvEndTime, tvSubjectId, tvClassId, tvSemester;
 
         public ScheduleViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -61,6 +62,7 @@ public class ScheduleSubjectAdapter extends RecyclerView.Adapter<ScheduleSubject
             tvEndTime = itemView.findViewById(R.id.tvEndTime);
             tvSubjectId = itemView.findViewById(R.id.tvSubjectId);
             tvClassId = itemView.findViewById(R.id.tvClassId);
+            tvSemester = itemView.findViewById(R.id.tvSemester);
         }
     }
 }

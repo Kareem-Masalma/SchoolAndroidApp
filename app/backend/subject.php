@@ -8,7 +8,7 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
 $method = $_SERVER['REQUEST_METHOD'];
-$input  = json_decode(file_get_contents("php://input"), true);
+$input = json_decode(file_get_contents("php://input"), true);
 
 try {
     if ($method === 'GET') {
@@ -31,6 +31,18 @@ try {
                 echo json_encode($row);
             }
 
+        } elseif (isset($_GET['class_id'])) {
+            $class_id = (int)$_GET['class_id'];
+            $stmt = $conn->prepare("
+                SELECT *
+                FROM subject s
+                WHERE s.class_id = ?
+            ");
+            $stmt->bind_param("i", $class_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $subjects = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+            echo json_encode($subjects);
         } else {
             $sql = "
                 SELECT s.subject_id, s.class_id, s.title, c.class_name
@@ -106,7 +118,7 @@ try {
     http_response_code(400);
     echo json_encode([
         "success" => false,
-        "error"   => $ex->getMessage()
+        "error" => $ex->getMessage()
     ]);
 }
 ?>

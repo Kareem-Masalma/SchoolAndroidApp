@@ -5,9 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f6712e54-6850-4889-b72d-68f6144c7e94" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/ISubjectDA.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schedule.php" beforeDir="false" afterPath="$PROJECT_DIR$/schedule.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schedule_subject.php" beforeDir="false" afterPath="$PROJECT_DIR$/schedule_subject.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/subject.php" beforeDir="false" afterPath="$PROJECT_DIR$/subject.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddTeacherSchedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddTeacherSchedule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/ScheduleSubjectAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/ScheduleSubjectAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/ScheduleDA.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/ScheduleDA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/SubjectDA.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/SubjectDA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/TeacherDA.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/TeacherDA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/models/ScheduleSubject.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/models/ScheduleSubject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/res/layout/activity_add_teacher_schedule.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/res/layout/activity_add_teacher_schedule.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/res/layout/item_schedule_subject.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/res/layout/item_schedule_subject.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,22 +52,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;activity/addschedule&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/user/AndroidStudioProjects/SchoolAndroidApp/app/backend&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.rainbow.brackets.root&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "activity/addschedule",
+    "last_opened_file_path": "C:/Users/user/AndroidStudioProjects/SchoolAndroidApp/app/backend",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.rainbow.brackets.root",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
