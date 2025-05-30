@@ -104,27 +104,31 @@ public class ClassDA {
     }
 
     private Class parseClass(JSONObject o) throws JSONException {
+        int schedule_id = o.isNull("schedule_id") ? 0 : o.getInt("schedule_id");
         return new Class(
                 o.getInt("class_id"),
                 o.getString("class_name"),
                 o.getInt("class_manager"),
                 o.optString("manager_name", ""),
-                o.getInt("schedule_id")
+                schedule_id
         );
     }
 
     public interface SingleClassCallback {
         void onSuccess(Class c);
+
         void onError(String error);
     }
 
     public interface ClassListCallback {
         void onSuccess(List<Class> list);
+
         void onError(String error);
     }
 
     public interface BaseCallback {
         void onSuccess(String msg);
+
         void onError(String error);
     }
 }

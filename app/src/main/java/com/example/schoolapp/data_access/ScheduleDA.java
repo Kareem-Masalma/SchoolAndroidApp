@@ -5,15 +5,12 @@ import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.schoolapp.models.ScheduleSubject;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -169,10 +166,46 @@ public class ScheduleDA implements IScheduleDA {
         queue.add(request);
     }
 
-    public void addScheduleID(int userId, ScheduleIDCallback callback) {
+    public void addTeacherScheduleID(int userId, ScheduleIDCallback callback) {
         JSONObject json = new JSONObject();
         try {
             json.put("user_id", userId);
+        } catch (JSONException e) {
+            callback.onError("JSON error: " + e.getMessage());
+            return;
+        }
+
+        String url = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/schedule.php";
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.POST,
+                url,
+                json,
+                response -> {
+                    try {
+                        if (response.getBoolean("success")) {
+                            int newId = response.getInt("schedule_id");
+                            callback.onSuccess(newId);
+                        } else {
+                            callback.onError("Failed to insert: " + response.getString("message"));
+                        }
+                    } catch (JSONException e) {
+                        callback.onError("JSON parsing error: " + e.getMessage());
+                    }
+                },
+                error -> {
+                    Log.e("ScheduleDA", "Volley error: ", error);
+                    callback.onError("Volley error: " + error.getMessage());
+                }
+        );
+
+        queue.add(request);
+    }
+
+    public void addClassScheduleID(int userId, ScheduleIDCallback callback) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("class_id", userId);
         } catch (JSONException e) {
             callback.onError("JSON error: " + e.getMessage());
             return;

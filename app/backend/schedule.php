@@ -28,8 +28,8 @@ try {
     } elseif ($method === 'POST') {
         $input = json_decode(file_get_contents("php://input"), true);
 
-        if (empty($input['user_id'])) {
-            echo json_encode(["success" => false, "message" => "Missing user_id"]);
+        if (empty($input['user_id']) && empty($input['class_id'])) {
+            echo json_encode(["success" => false, "message" => "Missing user_id or class_id"]);
             exit;
         }
 
@@ -37,13 +37,21 @@ try {
         $stmt->execute();
         $newId = $conn->insert_id;
 
-        $stmt = $conn->prepare("UPDATE teacher SET schedule_id = ? WHERE user_id = ?");
-        $stmt->bind_param("ii", $newId, $input['user_id']);
-        $stmt->execute();
+        if (!empty($input['user_id'])) {
+            $stmt = $conn->prepare("UPDATE teacher SET schedule_id = ? WHERE user_id = ?");
+            $stmt->bind_param("ii", $newId, $input['user_id']);
+            $stmt->execute();
+        }
+
+        if (!empty($input['class_id'])) {
+            $stmt = $conn->prepare("UPDATE class SET schedule_id = ? WHERE class_id = ?");
+            $stmt->bind_param("ii", $newId, $input['class_id']);
+            $stmt->execute();
+        }
 
         echo json_encode(["success" => true, "schedule_id" => $newId]);
-    }
-    elseif ($method === 'DELETE') {
+
+    } elseif ($method === 'DELETE') {
         if (!isset($_GET['schedule_id'])) {
             throw new Exception("Missing schedule_id for deletion");
         }

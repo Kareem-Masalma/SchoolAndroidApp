@@ -17,29 +17,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schoolapp.adapters.ScheduleSubjectAdapter;
-import com.example.schoolapp.data_access.ClassDA;
-import com.example.schoolapp.data_access.ClassDAFactory;
 import com.example.schoolapp.data_access.DaysFactory;
 import com.example.schoolapp.data_access.ScheduleDA;
 import com.example.schoolapp.data_access.ScheduleDAFactory;
 import com.example.schoolapp.data_access.SubjectDA;
 import com.example.schoolapp.data_access.SubjectDAFactory;
 import com.example.schoolapp.models.Class;
+import com.example.schoolapp.models.Schedule;
 import com.example.schoolapp.models.ScheduleSubject;
 import com.example.schoolapp.models.Subject;
 import com.example.schoolapp.models.Teacher;
 import com.google.gson.Gson;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AddClassSchedule extends AppCompatActivity {
 
     private TextView tvClass, tvId;
-    private Spinner spSubject, spDay;
+    private Spinner spSubject, spDay, spSemester;
     private EditText etStartTime, etEndTime;
     private RecyclerView rvScheduleItems;
     private Button btnAdd, btnCancel;
@@ -60,7 +61,83 @@ public class AddClassSchedule extends AppCompatActivity {
         defineViews();
         classData();
         getSpinnerData();
-        loadClassSchedule(selectedClass.getScheduleId());
+        if (selectedClass.getClassId() != 0)
+            loadClassSchedule(selectedClass.getScheduleId());
+        else
+            addClassScheduleId();
+        actionButtons();
+    }
+
+    private void actionButtons() {
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Subject subject = (Subject) spSubject.getSelectedItem();
+                String day = spDay.getSelectedItem().toString();
+                String semester = spSemester.getSelectedItem().toString();
+                String startTime = etStartTime.getText().toString();
+                String endTime = etEndTime.getText().toString();
+                int year = LocalDate.now().getYear();
+                ScheduleSubject schedule = new ScheduleSubject(selectedClass.getScheduleId(), subject.getSubjectId(), selectedClass.getClassId(),
+                        subject.getTitle(), selectedClass.getClassName(), day, startTime, endTime, semester, year);
+
+                if (classSchedules.isEmpty()) {
+                    classSchedules.add(schedule);
+                    scheduleDA.addScheduleSubject(schedule, new ScheduleDA.ScheduleCallback() {
+                        @Override
+                        public void onSuccess(String message) {
+                            Toast.makeText(AddClassSchedule.this, message, Toast.LENGTH_SHORT).show();
+                            loadClassSchedule(selectedClass.getScheduleId());
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            Toast.makeText(AddClassSchedule.this, error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    for (ScheduleSubject curr : classSchedules) {
+                        if (Schedule.checkConflict(curr, schedule)) {
+                            Toast.makeText(AddClassSchedule.this, "Conflict with Schedule", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                    scheduleDA.addScheduleSubject(schedule, new ScheduleDA.ScheduleCallback() {
+                        @Override
+                        public void onSuccess(String message) {
+                            loadClassSchedule(selectedClass.getScheduleId());
+                            Toast.makeText(AddClassSchedule.this, message, Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            Toast.makeText(AddClassSchedule.this, error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    private void addClassScheduleId() {
+        scheduleDA.addClassScheduleID(selectedClass.getClassId(), new ScheduleDA.ScheduleIDCallback() {
+            @Override
+            public void onSuccess(int newId) {
+                selectedClass.setScheduleId(newId);
+            }
+
+            @Override
+            public void onError(String error) {
+                Toast.makeText(AddClassSchedule.this, error, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void loadClassSchedule(int scheduleId) {
@@ -76,6 +153,7 @@ public class AddClassSchedule extends AppCompatActivity {
                     adapter.updateData(list);
                     rvScheduleItems.setVisibility(View.VISIBLE);
                 } else {
+                    classSchedules = new ArrayList<>();
                     Toast.makeText(AddClassSchedule.this, "No schedule entries found.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -92,7 +170,10 @@ public class AddClassSchedule extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(AddClassSchedule.this, android.R.layout.simple_list_item_1, days);
         spDay.setAdapter(adapter);
 
-        SubjectDAFactory.getSubjectDA(AddClassSchedule.this).getAllSubjects(new SubjectDA.SubjectListCallback() {
+        ArrayAdapter<String> semesterAdapter = new ArrayAdapter<>(AddClassSchedule.this, android.R.layout.simple_list_item_1, new String[]{"Spring", "Summer", "Winter", "Fall"});
+        spSemester.setAdapter(semesterAdapter);
+
+        SubjectDAFactory.getSubjectDA(AddClassSchedule.this).getClassSubject(selectedClass.getClassId(), new SubjectDA.ClassSubjectCallback() {
             @Override
             public void onSuccess(List<Subject> list) {
                 ArrayAdapter<Subject> adapter = new ArrayAdapter<>(AddClassSchedule.this, android.R.layout.simple_list_item_1, list);
@@ -121,10 +202,12 @@ public class AddClassSchedule extends AppCompatActivity {
         this.tvId = findViewById(R.id.tvId);
         this.spSubject = findViewById(R.id.spSubject);
         this.spDay = findViewById(R.id.spDay);
+        this.spSemester = findViewById(R.id.spSemester);
         this.etStartTime = findViewById(R.id.etStartTime);
         this.etEndTime = findViewById(R.id.etEndTime);
         this.rvScheduleItems = findViewById(R.id.rvScheduleItems);
         this.btnAdd = findViewById(R.id.btnAddSchedule);
         this.btnCancel = findViewById(R.id.btnCancel);
+        rvScheduleItems.setLayoutManager(new LinearLayoutManager(this));
     }
 }

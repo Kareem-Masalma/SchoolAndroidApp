@@ -76,7 +76,7 @@ public class AddTeacherSchedule extends AppCompatActivity {
     }
 
     private void createNewSchedule() {
-        scheduleDA.addScheduleID(teacher.getUser_id(), new ScheduleDA.ScheduleIDCallback() {
+        scheduleDA.addTeacherScheduleID(teacher.getUser_id(), new ScheduleDA.ScheduleIDCallback() {
             @Override
             public void onSuccess(int newId) {
                 teacher.setSchedule_id(newId);
@@ -112,9 +112,6 @@ public class AddTeacherSchedule extends AppCompatActivity {
                 String semester = spSemester.getSelectedItem().toString();
                 int year = LocalDate.now().getYear();
 
-                Log.d("Teacher", "Class: " + selectedClass.getClassName());
-                Log.d("Teacher", "Semester: " + semester);
-                Log.d("Teacher", "Year: " + year);
 
                 ScheduleSubject schedule = new ScheduleSubject(teacher.getSchedule_id(), subject.getSubjectId(), selectedClass.getClassId(),
                         subject.getTitle(), selectedClass.getClassName(), day, startTime, endTime, semester, year);
@@ -172,6 +169,7 @@ public class AddTeacherSchedule extends AppCompatActivity {
                     adapter.updateData(list);
                     rvScheduleItems.setVisibility(View.VISIBLE);
                 } else {
+                    teacherSchedules = new ArrayList<>();
                     Toast.makeText(AddTeacherSchedule.this, "No schedule entries found.", Toast.LENGTH_SHORT).show();
                 }
             }

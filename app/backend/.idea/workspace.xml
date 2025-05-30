@@ -5,21 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f6712e54-6850-4889-b72d-68f6144c7e94" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/schedule.php" beforeDir="false" afterPath="$PROJECT_DIR$/schedule.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schedule_subject.php" beforeDir="false" afterPath="$PROJECT_DIR$/schedule_subject.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/subject.php" beforeDir="false" afterPath="$PROJECT_DIR$/subject.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddClassSchedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddClassSchedule.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddTeacherSchedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddTeacherSchedule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/ScheduleSubjectAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/ScheduleSubjectAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/ClassDA.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/ClassDA.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/ScheduleDA.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/ScheduleDA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/SubjectDA.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/SubjectDA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/TeacherDA.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/TeacherDA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/models/ScheduleSubject.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/models/ScheduleSubject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/res/layout/activity_add_teacher_schedule.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/res/layout/activity_add_teacher_schedule.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/res/layout/item_schedule_subject.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/res/layout/item_schedule_subject.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/res/layout/activity_add_class_schedule.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/res/layout/activity_add_class_schedule.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
