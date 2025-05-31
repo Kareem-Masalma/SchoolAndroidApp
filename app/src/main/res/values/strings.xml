@@ -39,4 +39,7 @@
     <string name="class_id_1">Class ID: 1</string>
     <string name="password">Password</string>
     <string name="enter_password_at_least_8_charachters">Enter password at least 8 charachters</string>
+    <string name="Class">Class</string>
+    <string name="class_name">Class Name</string>
+    <string name="semester">Semester</string>
 </resources>

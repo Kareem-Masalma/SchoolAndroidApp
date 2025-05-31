@@ -1,30 +1,30 @@
 package com.example.schoolapp.models;
 
-import java.time.LocalTime;
+import androidx.annotation.NonNull;
 
 public class Subject {
-    private Integer subject_id;
+    private Integer subjectId;
     private String title;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private Integer classId;
+    private String classTitle;
 
     public Subject() {
 
     }
 
-    public Subject(Integer subject_id, String title, LocalTime startTime, LocalTime endTime) {
-        this.subject_id = subject_id;
+    public Subject(Integer subjectId, String title, Integer classId, String classTitle) {
+        this.subjectId = subjectId;
         this.title = title;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.classId = classId;
+        this.classTitle = classTitle;
     }
 
-    public Integer getSubject_id() {
-        return subject_id;
+    public Integer getSubjectId() {
+        return subjectId;
     }
 
-    public void setSubject_id(Integer subject_id) {
-        this.subject_id = subject_id;
+    public void setSubjectId(Integer subjectId) {
+        this.subjectId = subjectId;
     }
 
     public String getTitle() {
@@ -35,29 +35,25 @@ public class Subject {
         this.title = title;
     }
 
-    public LocalTime getStartTime() {
-        return startTime;
+    public Integer getClassId() {
+        return classId;
     }
 
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
+    public void setClassId(Integer classId) {
+        this.classId = classId;
     }
 
-    public LocalTime getEndTime() {
-        return endTime;
+    public String getClassTitle() {
+        return classTitle;
     }
 
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
+    public void setClassTitle(String classTitle) {
+        this.classTitle = classTitle;
     }
 
+    @NonNull
     @Override
     public String toString() {
-        return "Subject{" +
-                "id=" + subject_id +
-                ", title='" + title + '\'' +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                '}';
+        return title;
     }
 }
