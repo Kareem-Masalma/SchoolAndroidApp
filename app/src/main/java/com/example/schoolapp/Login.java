@@ -1,5 +1,6 @@
 package com.example.schoolapp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -73,6 +74,12 @@ public class Login extends AppCompatActivity {
                         editor.putBoolean(LOGGED_IN, true);
                         editor.apply();
                         Toast.makeText(Login.this, "Welcome " + user.getFirstName(), Toast.LENGTH_SHORT).show();
+
+                    // TODO -- DELETE THESE LINES, THEY ARE FOR TESTING ONLY
+                        Intent intent = new Intent(Login.this, Profile.class);
+                        startActivity(intent);
+                        // TODO ----
+
                     }
 
                     @Override

@@ -1,17 +1,19 @@
 package com.example.schoolapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.example.schoolapp.models.Role;
+import com.example.schoolapp.models.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
 public class Profile extends AppCompatActivity {
 
@@ -29,9 +31,34 @@ public class Profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_profile);
+
+        checkPrefs();
+
 
         setupViews();
+
+
+    }
+
+    private void checkPrefs() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Profile.this);
+        boolean loggedin =  prefs.getBoolean(Login.LOGGED_IN, false);
+        if(loggedin){
+            String json = prefs.getString(Login.LOGGED_IN_USER , null);
+            if(json != null){
+                Gson gson = new Gson();
+                User user = gson.fromJson(json, User.class);
+                if(user.getRole().equals(Role.STUDENT)){
+                    setContentView(R.layout.activity_profile_student);
+
+                } else if (user.getRole().equals(Role.TEACHER)) {
+                    setContentView(R.layout.activity_profile_teacher);
+                }else{
+                    setContentView(R.layout.activity_profile_registrar);
+                }
+            }
+        }
+
 
     }
 
