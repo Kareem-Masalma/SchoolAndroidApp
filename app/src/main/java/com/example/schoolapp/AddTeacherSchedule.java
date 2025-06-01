@@ -106,15 +106,24 @@ public class AddTeacherSchedule extends AppCompatActivity {
                 Subject subject = (Subject) spSubject.getSelectedItem();
                 String day = spDay.getSelectedItem().toString();
 
-                String startTime = etStartTime.getText().toString();
-                String endTime = etEndTime.getText().toString();
+                String start = etStartTime.getText().toString().trim();
+                String end = etEndTime.getText().toString().trim();
 
+                if (!Schedule.isValidTimeFormat(start) || !Schedule.isValidTimeFormat(end)) {
+                    Toast.makeText(AddTeacherSchedule.this, "Please enter time in HH:mm format", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!Schedule.isTimeRangeValid(start, end)) {
+                    Toast.makeText(AddTeacherSchedule.this, "Start time must be before end time", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 String semester = spSemester.getSelectedItem().toString();
                 int year = LocalDate.now().getYear();
 
 
                 ScheduleSubject schedule = new ScheduleSubject(teacher.getSchedule_id(), subject.getSubjectId(), selectedClass.getClassId(),
-                        subject.getTitle(), selectedClass.getClassName(), day, startTime, endTime, semester, year);
+                        subject.getTitle(), selectedClass.getClassName(), day, start, end, semester, year);
 
 
                 if (teacherSchedules.isEmpty()) {

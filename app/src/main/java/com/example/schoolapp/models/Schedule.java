@@ -19,30 +19,44 @@ public class Schedule {
         this.schedule_id = schedule_id;
     }
 
+    public static boolean isTimeRangeValid(String start, String end) {
+        return isValidTimeFormat(start) && isValidTimeFormat(end) &&
+                getMinutes(start) < getMinutes(end);
+    }
+
+    public static boolean isValidTimeFormat(String time) {
+        if (time == null || !time.matches("^\\d{2}:\\d{2}$")) return false;
+
+        try {
+            String[] parts = time.split(":");
+            int hours = Integer.parseInt(parts[0]);
+            int minutes = Integer.parseInt(parts[1]);
+
+            return hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public static int getMinutes(String time) {
+        if (!isValidTimeFormat(time))
+            throw new IllegalArgumentException("Invalid time format");
+
+        String[] parts = time.split(":");
+        return Integer.parseInt(parts[0]) * 60 + Integer.parseInt(parts[1]);
+    }
+
     public static boolean checkConflict(ScheduleSubject curr, ScheduleSubject newSchedule) {
-        String startTime = curr.getStartTime();
-        String endTime = curr.getEndTime();
+        if (!curr.getDay().equalsIgnoreCase(newSchedule.getDay())) return false;
 
-        int startMinutes = getMinutes(startTime);
-        int endMinutes = getMinutes(endTime);
+        int start1 = getMinutes(curr.getStartTime());
+        int end1 = getMinutes(curr.getEndTime());
+        int start2 = getMinutes(newSchedule.getStartTime());
+        int end2 = getMinutes(newSchedule.getEndTime());
 
-        String newStartTime = newSchedule.getStartTime();
-        String newEndTime = newSchedule.getEndTime();
-
-        int newStartMinutes = getMinutes(newStartTime);
-        int newEndMinutes = getMinutes(newEndTime);
-
-        return ((newStartMinutes < endMinutes) && (newEndMinutes > startMinutes)) && curr.getDay().equalsIgnoreCase(newSchedule.getDay());
+        return start2 < end1 && end2 > start1;
     }
 
-    private static int getMinutes(String time) {
-        String[] splitTime = time.split(":");
-
-        int hours = Integer.parseInt(splitTime[0]);
-        int minutes = Integer.parseInt(splitTime[1]);
-
-        return hours * 60 + minutes;
-    }
 
     @Override
     public String toString() {

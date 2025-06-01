@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        Intent intent = new Intent(MainActivity.this, UserSendMessage1.class);
 
-        Intent intent = new Intent(MainActivity.this, Login.class);
+        Intent intent = new Intent(MainActivity.this, AddSchedule.class);
 
 //        Intent intent = new Intent(MainActivity.this, AddTeacherActivity.class);
 
