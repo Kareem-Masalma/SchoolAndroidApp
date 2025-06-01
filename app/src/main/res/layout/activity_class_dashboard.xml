@@ -1,10 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutClassDashboard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ClassDashboard">
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/role_blue" />
+
+        <TextView
+            android:id="@+id/titleText"
+            style="@style/HeaderTitle"
+            android:text="@string/teacher_classes" />
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/tvClassName"
+        style="@style/SectionTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/class_grade_10_a"
+        android:textSize="18sp" />
+
+    <GridLayout
+        android:id="@+id/gridOptions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:alignmentMode="alignMargins"
+        android:columnCount="2"
+        android:rowCount="3">
+
+        <Button
+            android:id="@+id/btnSubjects"
+            style="@style/GridButtonStyle"
+            android:text="@string/subject" />
+
+        <Button
+            android:id="@+id/btnTeachers"
+            style="@style/GridButtonStyle"
+            android:text="@string/teachers" />
+
+        <Button
+            android:id="@+id/btnSchedule"
+            style="@style/GridButtonStyle"
+            android:text="@string/schedule" />
+
+        <Button
+            android:id="@+id/btnStudents"
+            style="@style/GridButtonStyle"
+            android:text="@string/students" />
+
+        <Button
+            android:id="@+id/btnAssignments"
+            style="@style/GridButtonStyle"
+            android:text="@string/assignments" />
+
+        <Button
+            android:id="@+id/btnExams"
+            style="@style/GridButtonStyle"
+            android:text="@string/exams" />
+    </GridLayout>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

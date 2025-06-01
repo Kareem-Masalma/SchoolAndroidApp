@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,14 +50,18 @@ public class SelectClass extends AppCompatActivity {
                 TeacherClassAdapter adapter = new TeacherClassAdapter(SelectClass.this, list, new TeacherClassAdapter.OnClassClickListener() {
                     @Override
                     public void onClassClick(Class selectedClass) {
-
+                        Intent intent = new Intent(SelectClass.this, ClassDashboard.class);
+                        Gson gson = new Gson();
+                        String classString = gson.toJson(selectedClass);
+                        intent.putExtra(AddSchedule.CLASS, classString);
+                        startActivity(intent);
                     }
                 });
             }
 
             @Override
             public void onError(String error) {
-
+                Toast.makeText(SelectClass.this, error, Toast.LENGTH_SHORT).show();
             }
         });
     }
