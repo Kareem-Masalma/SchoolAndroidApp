@@ -18,7 +18,7 @@
         android:text="@string/add_subject"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:drawableStart="@drawable/add_subject_icon1"
+        android:drawableStart="@drawable/add_subject_icon"
         android:drawablePadding="8dp"/>
 
 
