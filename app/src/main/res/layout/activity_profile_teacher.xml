@@ -16,7 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-
     <!-- 2) Circular Profile Image overlapping header -->
     <ImageView
         android:id="@+id/image_profile"
@@ -159,6 +158,48 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+    <!-- 6) New clickable CardView for “View Schedule” -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_schedule"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintTop_toBottomOf="@id/card_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="12dp"
+                android:src="@drawable/schedule"
+                android:tint="@color/role_blue" />
+
+            <TextView
+                android:id="@+id/text_view_schedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View Schedule"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- 7) FloatingActionButton (Edit Profile) -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_edit_profile"
         android:layout_width="wrap_content"
@@ -170,5 +211,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="30dp"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

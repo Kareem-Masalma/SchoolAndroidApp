@@ -1,5 +1,6 @@
 package com.example.schoolapp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -25,6 +26,7 @@ public class Profile extends AppCompatActivity {
     private TextView         textAddress;
     private TextView         textPhone;
     private CardView         cardInfo;
+    private CardView         cardSchedule;
     private FloatingActionButton fabEdit;
 
     @Override
@@ -72,6 +74,14 @@ public class Profile extends AppCompatActivity {
         textPhone       = findViewById(R.id.text_phone);
         cardInfo        = findViewById(R.id.card_info);
         fabEdit         = findViewById(R.id.fab_edit_profile);
+        cardSchedule    = findViewById(R.id.card_schedule);
+
+
+
+        // TODO Open the view schedule activity
+        cardSchedule.setOnClickListener(e->{
+
+        });
 
     }
 }
