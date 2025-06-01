@@ -1,28 +1,24 @@
 package com.example.schoolapp;
 
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.example.schoolapp.data_access.IStudentDA;
+import com.example.schoolapp.data_access.ClassDA;
+import com.example.schoolapp.data_access.ClassDAFactory;
 import com.example.schoolapp.data_access.ISubjectDA;
-import com.example.schoolapp.data_access.StudentDAFactory;
 import com.example.schoolapp.data_access.SubjectDA;
 import com.example.schoolapp.data_access.SubjectDAFactory;
+import com.example.schoolapp.models.Class;
 import com.example.schoolapp.models.Subject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AddSubjects extends AppCompatActivity {
@@ -30,6 +26,7 @@ public class AddSubjects extends AppCompatActivity {
     private Spinner assignGradeSP;
     private Button cancleBT;
     private Button addBT;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +37,6 @@ public class AddSubjects extends AppCompatActivity {
         addButton();
         cancleButton();
     }
-
     private void initializeViews(){
         subNameET = findViewById(R.id.subNameET);
         assignGradeSP = findViewById(R.id.assignGradeSP);
@@ -50,42 +46,53 @@ public class AddSubjects extends AppCompatActivity {
 
         setupGradeSP();
     }
-
     private void setupGradeSP(){
-        List<String> gradeNum = new ArrayList<>();
-        for (int i = 1; i <= 12; i++) {
-            gradeNum.add(String.valueOf(i));
-        }
+        ClassDAFactory.getClassDA(this).getAllClasses(new ClassDA.ClassListCallback() {
+            @Override
+            public void onSuccess(List<Class> list) {
+                ArrayAdapter<Class> gradeAdapter = new ArrayAdapter<>(AddSubjects.this, android.R.layout.simple_spinner_item, list);
+                gradeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                assignGradeSP.setAdapter(gradeAdapter);
+            }
 
-        ArrayAdapter<String> gradeAdapter = new ArrayAdapter<>
-                (this, android.R.layout.simple_spinner_item, gradeNum);
+            @Override
+            public void onError(String error) {
+                Log.d("Error", error);
+            }
+        });
 
-        gradeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        assignGradeSP.setAdapter(gradeAdapter);
+
     }
-
     private void addButton(){
         addBT.setOnClickListener(v -> {
-            Integer class_id = Integer.valueOf((String) assignGradeSP.getSelectedItem() +1);
+            Class selectedClass = (Class) assignGradeSP.getSelectedItem();
             String title = subNameET.getText().toString().trim();
 
+            if(selectedClass == null){
+                Toast.makeText(this, "Please select a class", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
+            if(title.isEmpty()){
+                Toast.makeText(this, "Please enter subject name", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Subject subject = new Subject(0,title,selectedClass.getClassId(),selectedClass.getClassName());
             ISubjectDA subjectDA = SubjectDAFactory.getSubjectDA(this);
-            Subject subject = new Subject(0,class_id,title);
 
             subjectDA.addSubject(subject, new SubjectDA.BaseCallback() {
                 @Override
                 public void onSuccess(String message) {
                     Toast.makeText(AddSubjects.this,
-                            "subject add successfully", Toast.LENGTH_SHORT).show();
-                    finish();
+                            "Subject add successfully", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onError(String error) {
                     Toast.makeText(AddSubjects.this,
-                            "add failed", Toast.LENGTH_SHORT).show();
-                    finish();
+                            "Add failed", Toast.LENGTH_SHORT).show();
+
                 }
             });
         });

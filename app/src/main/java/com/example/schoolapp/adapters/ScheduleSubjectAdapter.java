@@ -1,13 +1,17 @@
 package com.example.schoolapp.adapters;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.schoolapp.R;
 import com.example.schoolapp.models.ScheduleSubject;
+
 import java.util.List;
 
 public class ScheduleSubjectAdapter extends RecyclerView.Adapter<ScheduleSubjectAdapter.ScheduleViewHolder> {
@@ -18,6 +22,11 @@ public class ScheduleSubjectAdapter extends RecyclerView.Adapter<ScheduleSubject
         this.scheduleList = scheduleList;
     }
 
+    public void updateData(List<ScheduleSubject> newList) {
+        this.scheduleList = newList;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ScheduleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -26,14 +35,16 @@ public class ScheduleSubjectAdapter extends RecyclerView.Adapter<ScheduleSubject
         return new ScheduleViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ScheduleViewHolder holder, int position) {
         ScheduleSubject item = scheduleList.get(position);
-        holder.tvDay.setText(item.getDay());
+        holder.tvDay.setText("Day: " + item.getDay());
         holder.tvStartTime.setText("Start: " + item.getStartTime());
         holder.tvEndTime.setText("End: " + item.getEndTime());
-        holder.tvSubjectId.setText("Subject ID: " + item.getSubjectId());
-        holder.tvClassId.setText("Class ID: " + item.getClassId());
+        holder.tvSubjectId.setText("Subject: " + item.getSubject());
+        holder.tvClassId.setText("Class: " + item.getClassName());
+        holder.tvSemester.setText("Semester: " + item.getSemester());
     }
 
     @Override
@@ -41,8 +52,8 @@ public class ScheduleSubjectAdapter extends RecyclerView.Adapter<ScheduleSubject
         return scheduleList.size();
     }
 
-    public static class ScheduleViewHolder extends RecyclerView.ViewHolder {
-        TextView tvDay, tvStartTime, tvEndTime, tvSubjectId, tvClassId;
+    static class ScheduleViewHolder extends RecyclerView.ViewHolder {
+        TextView tvDay, tvStartTime, tvEndTime, tvSubjectId, tvClassId, tvSemester;
 
         public ScheduleViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -50,7 +61,8 @@ public class ScheduleSubjectAdapter extends RecyclerView.Adapter<ScheduleSubject
             tvStartTime = itemView.findViewById(R.id.tvStartTime);
             tvEndTime = itemView.findViewById(R.id.tvEndTime);
             tvSubjectId = itemView.findViewById(R.id.tvSubjectId);
-            tvClassId = itemView.findViewById(R.id.tvGrade);
+            tvClassId = itemView.findViewById(R.id.tvClassId);
+            tvSemester = itemView.findViewById(R.id.tvSemester);
         }
     }
 }

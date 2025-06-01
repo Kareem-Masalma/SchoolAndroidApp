@@ -38,11 +38,13 @@ public class TeacherDA implements ITeacherDA {
                 try {
                     JSONObject obj = response.getJSONObject(0);
                     Log.d("Teacher", "Teacher: " + obj.toString());
+                    int schedule_id = obj.isNull("schedule_id") ? 0 : obj.getInt("schedule_id");
+                    Log.d("Teacher", "id: " + schedule_id);
                     Teacher teacher = new Teacher(
                             obj.getInt("user_id"), obj.getString("first_name"),
                             obj.getString("last_name"), LocalDate.parse(obj.getString("birth_date")),
                             obj.getString("address"), obj.getString("phone"), Role.TEACHER,
-                            obj.getString("speciality"), obj.getInt("schedule_id"));
+                            obj.getString("speciality"), schedule_id);
                     callback.onSuccess(teacher);
                 } catch (JSONException e) {
                     callback.onError("Teacher Not Found");
@@ -66,11 +68,12 @@ public class TeacherDA implements ITeacherDA {
                     List<Teacher> teachers = new ArrayList<>();
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject obj = response.getJSONObject(i);
+                        int schedule_id = obj.isNull("schedule_id") ? 0 : obj.getInt("schedule_id");
                         Teacher teacher = new Teacher(
                                 obj.getInt("user_id"), obj.getString("first_name"),
                                 obj.getString("last_name"), LocalDate.parse(obj.getString("birth_date")),
                                 obj.getString("address"), obj.getString("phone"), Role.TEACHER,
-                                obj.getString("speciality"));
+                                obj.getString("speciality"), schedule_id);
                         Log.d("Teacher", "Teacher test: " + obj.toString());
                         teachers.add(teacher);
                     }
@@ -104,7 +107,7 @@ public class TeacherDA implements ITeacherDA {
                 params.put("phone", teacher.getPhone());
                 params.put("role", teacher.getRole().toString());
                 params.put("speciality", teacher.getSpeciality());
-                params.put("password" , teacher.getPassword());
+                params.put("password", teacher.getPassword());
                 return params;
             }
         };
@@ -126,7 +129,7 @@ public class TeacherDA implements ITeacherDA {
                 params.put("phone", teacher.getPhone());
                 params.put("role", teacher.getRole().toString());
                 params.put("speciality", teacher.getSpeciality());
-                params.put("password" , teacher.getPassword());
+                params.put("password", teacher.getPassword());
 
                 return params;
             }
