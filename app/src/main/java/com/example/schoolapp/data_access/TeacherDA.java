@@ -21,7 +21,8 @@ public class TeacherDA implements ITeacherDA {
 
     private final RequestQueue queue;
 
-    private final String BASE_URL = "http://192.168.0.104/School/teacher.php";
+    private final String BASE_URL = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/teacher.php";
+
     private final Gson gson = new Gson();
 
     public TeacherDA(Context context) {
@@ -36,12 +37,12 @@ public class TeacherDA implements ITeacherDA {
             public void onResponse(JSONArray response) {
                 try {
                     JSONObject obj = response.getJSONObject(0);
+                    Log.d("Teacher", "Teacher: " + obj.toString());
                     Teacher teacher = new Teacher(
                             obj.getInt("user_id"), obj.getString("first_name"),
                             obj.getString("last_name"), LocalDate.parse(obj.getString("birth_date")),
                             obj.getString("address"), obj.getString("phone"), Role.TEACHER,
                             obj.getString("speciality"), obj.getInt("schedule_id"));
-                    teacher.setPassword(obj.getString("password"));
                     callback.onSuccess(teacher);
                 } catch (JSONException e) {
                     callback.onError("Teacher Not Found");
@@ -64,13 +65,13 @@ public class TeacherDA implements ITeacherDA {
                 try {
                     List<Teacher> teachers = new ArrayList<>();
                     for (int i = 0; i < response.length(); i++) {
-                        JSONObject obj = response.getJSONObject(0);
+                        JSONObject obj = response.getJSONObject(i);
                         Teacher teacher = new Teacher(
                                 obj.getInt("user_id"), obj.getString("first_name"),
-                                obj.getString("last_name"), LocalDate.parse("birth_date"),
+                                obj.getString("last_name"), LocalDate.parse(obj.getString("birth_date")),
                                 obj.getString("address"), obj.getString("phone"), Role.TEACHER,
-                                obj.getString("speciality"), obj.getInt("schedule_id"));
-                        teacher.setPassword(obj.getString("password"));
+                                obj.getString("speciality"));
+                        Log.d("Teacher", "Teacher test: " + obj.toString());
                         teachers.add(teacher);
                     }
                     callback.onSuccess(teachers);
@@ -89,53 +90,10 @@ public class TeacherDA implements ITeacherDA {
 
     }
 
+
     @Override
     public void addTeacher(Teacher teacher, BaseCallback baseCallback) {
-        JSONObject json = new JSONObject();
-        try {
-            json.put("first_name", teacher.getFirstName());
-            json.put("last_name", teacher.getLastName());
-            json.put("birth_date", teacher.getBirthDate().toString());
-            json.put("address", teacher.getAddress());
-            json.put("phone", teacher.getPhone());
-            json.put("role", teacher.getRole().toString());
-            json.put("speciality", teacher.getSpeciality());
-            json.put("password", teacher.getPassword());
-        } catch (JSONException e) {
-            e.printStackTrace();
-            baseCallback.onError("Failed to create JSON payload");
-            return;
-        }
-
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL, json,
-                response -> {
-                    Log.d("POST_SUCCESS", response.toString());
-                    baseCallback.onSuccess("Teacher added successfully");
-                },
-                error -> {
-                    String body = "";
-                    if (error.networkResponse != null && error.networkResponse.data != null) {
-                        try {
-                            body = new String(error.networkResponse.data, "UTF-8");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    Log.e("POST_ERROR", error.toString());
-                    Log.e("POST_ERROR_BODY", body);
-                    baseCallback.onError("Failed to add teacher");
-                }) {
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json; charset=utf-8");
-                return headers;
-            }
-        };
-
-        queue.add(request);
     }
-
     @Override
     public void updateTeacher(Teacher teacher) {
         StringRequest request = new StringRequest(Request.Method.PUT, BASE_URL, response -> Log.d("PUT_SUCCESS", response),
@@ -143,7 +101,7 @@ public class TeacherDA implements ITeacherDA {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("user_id", teacher.getTeacher_id().toString());
+                params.put("user_id", teacher.getUser_id().toString());
                 params.put("first_name", teacher.getFirstName());
                 params.put("last_name", teacher.getLastName());
                 params.put("birth_date", teacher.getBirthDate().toString());

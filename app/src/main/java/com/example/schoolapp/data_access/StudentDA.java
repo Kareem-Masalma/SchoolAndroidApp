@@ -1,6 +1,7 @@
 package com.example.schoolapp.data_access;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,7 +22,8 @@ import java.util.List;
 
 public class StudentDA implements IStudentDA {
     private final RequestQueue queue;
-    private final String BASE = "http://10.0.0.11/androidBackend/student.php"; // the emulator needs the pc's local ip address,
+    private final String BASE = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/student.php";
+    // the emulator needs the pc's local ip address,
     // using localhost here won't work because it would refer to the emulator's internal ip
 
     public StudentDA(Context ctx) {
@@ -35,6 +37,7 @@ public class StudentDA implements IStudentDA {
                 Request.Method.GET, url, null,
                 resp -> {
                     try {
+                        Log.i("resp" , resp.toString());
                         cb.onSuccess(parseStudent(resp));
                     } catch (JSONException ex) {
                         cb.onError("Malformed data");
@@ -128,7 +131,7 @@ public class StudentDA implements IStudentDA {
     // Helpers
 
     private Student parseStudent(JSONObject o) throws JSONException {
-      Student  student =  new Student(
+        Student  student =  new Student(
                 o.getInt("user_id"),
                 o.getString("first_name"),
                 o.getString("last_name"),
@@ -137,7 +140,9 @@ public class StudentDA implements IStudentDA {
                 o.getString("phone"),
                 Role.valueOf(o.getString("role")),
                 o.getInt("class_id"));
-                student.setPassword(o.getString("password"));
+
+        // the GET request does not return the password
+//                student.setPassword(o.getString("password"));
         return student;
     }
 

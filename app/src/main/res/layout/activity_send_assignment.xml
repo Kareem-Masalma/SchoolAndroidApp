@@ -96,6 +96,21 @@
                 android:visibility="gone" />
 
 
+            <TextView
+                android:id="@+id/textPercentageLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/percentage_of_grade"
+                android:layout_marginTop="12dp"
+                android:padding="5dp" />
+
+            <EditText
+                android:id="@+id/editPercentage"
+                android:layout_width="138dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/e_g_20_0"
+                android:inputType="numberDecimal" />
+
 
 
 
