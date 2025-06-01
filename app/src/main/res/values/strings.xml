@@ -42,4 +42,7 @@
     <string name="Class">Class</string>
     <string name="class_name">Class Name</string>
     <string name="semester">Semester</string>
+    <string name="teacher_classes">Teacher Classes</string>
+    <string name="class_id">Class ID: 12</string>
+    <string name="manager_id">Manager ID: 5</string>
 </resources>

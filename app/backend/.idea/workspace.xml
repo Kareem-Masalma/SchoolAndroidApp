@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f6712e54-6850-4889-b72d-68f6144c7e94" name="Changes" comment="" />
+    <list default="true" id="f6712e54-6850-4889-b72d-68f6144c7e94" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/SelectClass.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/res/layout/activity_select_class.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/res/values/strings.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,7 +47,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "activity/addschedule",
+    "git-widget-placeholder": "activity/exammarks",
     "last_opened_file_path": "C:/Users/user/AndroidStudioProjects/SchoolAndroidApp/app/backend",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",

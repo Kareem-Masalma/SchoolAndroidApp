@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ClassDA {
+public class ClassDA implements IClassDA {
     private final RequestQueue queue;
     private final String BASE = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/class.php";
 
@@ -34,6 +34,25 @@ public class ClassDA {
                         cb.onSuccess(parseClass(resp));
                     } catch (JSONException ex) {
                         cb.onError("Malformed data");
+                    }
+                },
+                err -> cb.onError("Fetch failed")
+        );
+        queue.add(req);
+    }
+
+    public void getTeacherClasses(int id, ClassListCallback cb) {
+        String url = BASE + "?user_id=" + id;
+        JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, BASE, null,
+                resp -> {
+                    try {
+                        List<Class> list = new ArrayList<>();
+                        for (int i = 0; i < resp.length(); i++) {
+                            list.add(parseClass(resp.getJSONObject(i)));
+                        }
+                        cb.onSuccess(list);
+                    } catch (JSONException ex) {
+                        cb.onError("Malformed list");
                     }
                 },
                 err -> cb.onError("Fetch failed")
