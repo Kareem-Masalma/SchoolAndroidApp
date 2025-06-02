@@ -53,7 +53,7 @@ public class Profile extends AppCompatActivity {
                 User user = gson.fromJson(json, User.class);
                 if(user.getRole().equals(Role.STUDENT)){
                     setContentView(R.layout.activity_profile_student);
-
+                    setupStudentViews();
                 } else if (user.getRole().equals(Role.TEACHER)) {
                     setContentView(R.layout.activity_profile_teacher);
                     setupTeacherViews();
@@ -64,6 +64,14 @@ public class Profile extends AppCompatActivity {
         }
 
 
+    }
+
+    private void setupStudentViews() {
+        cardSchedule    = findViewById(R.id.card_schedule);
+        // TODO Open the view schedule activity
+        cardSchedule.setOnClickListener(e->{
+
+        });
     }
 
     private void setupTeacherViews() {
