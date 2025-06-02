@@ -51,4 +51,5 @@
     <string name="students">Students</string>
     <string name="assignments">Assignments</string>
     <string name="exams">Exams</string>
+    <string name="attendance">Attendance</string>
 </resources>

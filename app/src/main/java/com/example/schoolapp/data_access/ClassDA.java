@@ -43,7 +43,7 @@ public class ClassDA implements IClassDA {
 
     public void getTeacherClasses(int id, ClassListCallback cb) {
         String url = BASE + "?user_id=" + id;
-        JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, BASE, null,
+        JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, url, null,
                 resp -> {
                     try {
                         List<Class> list = new ArrayList<>();

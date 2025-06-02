@@ -27,6 +27,14 @@ try {
             } else {
                 echo json_encode($result);
             }
+        } else if (isset($_GET['user_id'])) {
+            $user_id = (int)$_GET['user_id'];
+            $stmt = $conn->prepare("SELECT * FROM teacher t, schedule s, schedule_subject ss, subject sb, class c WHERE t.schedule_id = s.schedule_id AND s.schedule_id = ss.schedule_id AND ss.subject_id = sb.subject_id AND sb.class_id = c.class_id AND t.user_id = ?;");
+            $stmt->bind_param("i", $user_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $rows = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+            echo json_encode($rows);
         } else {
             $result = $conn->query("SELECT * FROM class");
             $rows = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];

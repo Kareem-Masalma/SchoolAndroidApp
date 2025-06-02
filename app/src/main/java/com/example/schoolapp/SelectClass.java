@@ -53,10 +53,13 @@ public class SelectClass extends AppCompatActivity {
                         Intent intent = new Intent(SelectClass.this, ClassDashboard.class);
                         Gson gson = new Gson();
                         String classString = gson.toJson(selectedClass);
+                        String teacherString = gson.toJson(teacher);
                         intent.putExtra(AddSchedule.CLASS, classString);
+                        intent.putExtra(AddSchedule.TEACHER, teacherString);
                         startActivity(intent);
                     }
                 });
+                rvClasses.setAdapter(adapter);
             }
 
             @Override
