@@ -27,6 +27,7 @@ public class Profile extends AppCompatActivity {
     private TextView         textPhone;
     private CardView         cardInfo;
     private CardView         cardSchedule;
+    private CardView         cardClasses;
     private FloatingActionButton fabEdit;
 
     @Override
@@ -55,6 +56,7 @@ public class Profile extends AppCompatActivity {
 
                 } else if (user.getRole().equals(Role.TEACHER)) {
                     setContentView(R.layout.activity_profile_teacher);
+                    setupTeacherViews();
                 }else{
                     setContentView(R.layout.activity_profile_registrar);
                 }
@@ -62,6 +64,22 @@ public class Profile extends AppCompatActivity {
         }
 
 
+    }
+
+    private void setupTeacherViews() {
+        cardSchedule    = findViewById(R.id.card_schedule);
+        cardClasses     = findViewById(R.id.card_classes);
+
+
+        // TODO Open the view schedule activity
+        cardSchedule.setOnClickListener(e->{
+
+        });
+
+        // TODO Open the view classes activity
+        cardClasses.setOnClickListener(e->{
+
+        });
     }
 
 
@@ -74,14 +92,7 @@ public class Profile extends AppCompatActivity {
         textPhone       = findViewById(R.id.text_phone);
         cardInfo        = findViewById(R.id.card_info);
         fabEdit         = findViewById(R.id.fab_edit_profile);
-        cardSchedule    = findViewById(R.id.card_schedule);
 
-
-
-        // TODO Open the view schedule activity
-        cardSchedule.setOnClickListener(e->{
-
-        });
 
     }
 }
