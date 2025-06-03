@@ -1,8 +1,11 @@
 package com.example.schoolapp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +19,8 @@ import com.google.gson.Gson;
 
 public class ClassDashboard extends AppCompatActivity {
 
-    private Button btnTeachers, btnSubjects, btnExams, btnAssignments, btnAttendance, btnStudents, btnSchedule;
+    private Button btnSubjects, btnExams, btnAssignments, btnAttendance, btnStudents, btnSchedule;
+    private TextView tvClassName;
     private Class selectedClass;
     private Teacher teacher;
 
@@ -32,6 +36,27 @@ public class ClassDashboard extends AppCompatActivity {
         });
         getInfo();
         findViews();
+        addActions();
+    }
+
+    private void addActions() {
+        btnAttendance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ClassDashboard.this, TakeAttendance.class);
+                Gson gson = new Gson();
+                String classString = gson.toJson(selectedClass);
+                intent.putExtra("schoolClass", classString);
+                startActivity(intent);
+            }
+        });
+
+        btnStudents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     private void getInfo() {
@@ -43,14 +68,16 @@ public class ClassDashboard extends AppCompatActivity {
         teacher = gson.fromJson(teacherString, Teacher.class);
     }
 
+    @SuppressLint("SetTextI18n")
     private void findViews() {
+        this.tvClassName = findViewById(R.id.tvClassName);
         this.btnAssignments = findViewById(R.id.btnAssignments);
         this.btnAttendance = findViewById(R.id.btnAttendance);
         this.btnExams = findViewById(R.id.btnExams);
         this.btnSchedule = findViewById(R.id.btnSchedule);
         this.btnSubjects = findViewById(R.id.btnSubjects);
-        this.btnTeachers = findViewById(R.id.btnTeachers);
         this.btnStudents = findViewById(R.id.btnStudents);
         this.btnAttendance.setEnabled(teacher.getUser_id() == selectedClass.getClassManagerId());
+        this.tvClassName.setText("Class: " + selectedClass.getClassName());
     }
 }

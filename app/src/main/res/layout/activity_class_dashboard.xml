@@ -46,11 +46,6 @@
             android:text="@string/subject" />
 
         <Button
-            android:id="@+id/btnTeachers"
-            style="@style/GridButtonStyle"
-            android:text="@string/teachers" />
-
-        <Button
             android:id="@+id/btnSchedule"
             style="@style/GridButtonStyle"
             android:text="@string/schedule" />

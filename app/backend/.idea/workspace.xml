@@ -7,11 +7,19 @@
     <list default="true" id="f6712e54-6850-4889-b72d-68f6144c7e94" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/class.php" beforeDir="false" afterPath="$PROJECT_DIR$/class.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddClassSchedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddClassSchedule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddSchedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddSchedule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddTeacherSchedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddTeacherSchedule.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/ClassDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/ClassDashboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/MainActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/SelectClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/SelectClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/TakeAttendance.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/TakeAttendance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/ClassAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/ClassAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/TeacherClassAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/TeacherClassAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/ClassDA.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/ClassDA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/models/Class.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/models/SchoolClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/models/SchoolClass.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/main/res/layout/activity_class_dashboard.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/res/layout/activity_class_dashboard.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

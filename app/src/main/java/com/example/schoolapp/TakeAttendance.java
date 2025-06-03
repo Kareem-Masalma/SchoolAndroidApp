@@ -1,13 +1,10 @@
 package com.example.schoolapp;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schoolapp.adapters.StudentAttendanceAdapter;
 import com.example.schoolapp.data_access.AttendanceDAFactory;
-import com.example.schoolapp.data_access.AttendanceStudentDA;
 import com.example.schoolapp.data_access.AttendanceStudentDAFactory;
 import com.example.schoolapp.data_access.IAttendanceDA;
 import com.example.schoolapp.data_access.IAttendanceStudentDA;
@@ -29,6 +25,7 @@ import com.example.schoolapp.data_access.StudentDA;
 import com.example.schoolapp.data_access.StudentDAFactory;
 import com.example.schoolapp.models.Attendance;
 import com.example.schoolapp.models.Attendance_student;
+import com.example.schoolapp.models.Class;
 import com.example.schoolapp.models.SchoolClass;
 import com.example.schoolapp.models.Student;
 import com.google.gson.Gson;
@@ -49,7 +46,7 @@ public class TakeAttendance extends AppCompatActivity {
     private Button btnFinish;
 
     // this class expects an intent that contains a SchoolClass object
-    private SchoolClass schoolClass;
+    private Class schoolClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +71,7 @@ public class TakeAttendance extends AppCompatActivity {
     private void handleBtnFinish() {
          btnFinish.setOnClickListener(e->{
              LocalDate date = LocalDate.parse(editLectureDate.getText().toString());
-             Attendance attendance = new Attendance(date, schoolClass.getClass_id());
+             Attendance attendance = new Attendance(date, schoolClass.getClassId());
              IAttendanceDA attendanceDA = AttendanceDAFactory.getAttendanceDA(TakeAttendance.this);
              attendanceDA.addAttendance(attendance, new IAttendanceDA.BaseCallback() {
                  @Override
@@ -130,8 +127,8 @@ public class TakeAttendance extends AppCompatActivity {
         Intent intent = getIntent();
         Gson gson = new Gson();
         String json = intent.getStringExtra("schoolClass");
-        schoolClass = gson.fromJson(json, SchoolClass.class);
-        tvClassName.setText(schoolClass.getName());
+        schoolClass = gson.fromJson(json, Class.class);
+        tvClassName.setText(schoolClass.getClassName());
     }
 
     private void setupViews() {
@@ -154,7 +151,7 @@ public class TakeAttendance extends AppCompatActivity {
                     // check if the student.class_id == schoolClass.class_id
                     List<Student> classStudents = new ArrayList<>();
                     for(Student student : students){
-                        if(student.getClass_id() == schoolClass.getClass_id()){
+                        if(student.getClass_id() == schoolClass.getClassId()){
                             classStudents.add(student);
                         }
                     }
