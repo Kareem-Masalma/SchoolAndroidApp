@@ -10,17 +10,15 @@ import android.util.Log;
 import com.android.volley.*;
 import com.android.volley.toolbox.*;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.*;
 
 import java.io.*;
 import java.util.*;
 
 public class AssignmentDA implements IAssignmentDA {
 
-    private final RequestQueue queue;
     private final Context context;
-
+    private final RequestQueue queue;
     private final String BASE_URL = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/assignment.php";
 
     public AssignmentDA(Context context) {
@@ -32,14 +30,13 @@ public class AssignmentDA implements IAssignmentDA {
     public void sendAssignment(String title, String details, String className, String deadline, float percentage, List<Uri> files, BaseCallback callback) {
         JSONObject json = new JSONObject();
         try {
+            json.put("mode", "add");
             json.put("title", title);
             json.put("details", details);
             json.put("class", className);
             json.put("deadline", deadline);
             json.put("percentage", percentage);
 
-
-            // Encode file as Base64 string (only first file supported)
             if (!files.isEmpty()) {
                 Uri fileUri = files.get(0);
                 byte[] fileBytes = readBytes(fileUri);
@@ -51,17 +48,13 @@ public class AssignmentDA implements IAssignmentDA {
             }
 
         } catch (JSONException e) {
-            e.printStackTrace();
             callback.onError("Failed to create JSON");
             return;
         }
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL, json,
                 response -> callback.onSuccess("Assignment sent successfully"),
-                error -> {
-                    Log.e("ASSIGNMENT_ERR", error.toString());
-                    callback.onError("Failed to send assignment");
-                }) {
+                error -> callback.onError("Failed to send assignment")) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
@@ -73,37 +66,86 @@ public class AssignmentDA implements IAssignmentDA {
         queue.add(request);
     }
 
-    private byte[] readBytes(Uri uri) {
-        try (InputStream inputStream = context.getContentResolver().openInputStream(uri);
-             ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
+    @Override
+    public void getAllAssignments(AssignmentListCallback callback) {
+        String url = BASE_URL + "?mode=all";
 
-            int nRead;
-            byte[] data = new byte[1024];
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                response -> {
+                    List<JSONObject> assignments = new ArrayList<>();
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            assignments.add(response.getJSONObject(i));
+                        } catch (JSONException e) {
+                            callback.onError("Invalid data at index " + i);
+                            return;
+                        }
+                    }
+                    callback.onSuccess(assignments);
+                },
+                error -> callback.onError("Failed to fetch assignments")
+        );
 
-            while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-                buffer.write(data, 0, nRead);
-            }
+        queue.add(request);
+    }
 
-            return buffer.toByteArray();
+    @Override
+    public void findAssignmentById(int id, SingleAssignmentCallback callback) {
+        String url = BASE_URL + "?mode=find&id=" + id;
 
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                callback::onSuccess,
+                error -> callback.onError("Failed to fetch assignment by ID")
+        );
+
+        queue.add(request);
+    }
+
+    @Override
+    public void updateAssignment(int id, String title, String details, String className, String deadline, float percentage, BaseCallback callback) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("mode", "update");
+            json.put("id", id);
+            json.put("title", title);
+            json.put("details", details);
+            json.put("class", className);
+            json.put("deadline", deadline);
+            json.put("percentage", percentage);
+
+        } catch (JSONException e) {
+            callback.onError("Failed to create update JSON");
+            return;
         }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL, json,
+                response -> callback.onSuccess("Assignment updated"),
+                error -> callback.onError("Update failed")
+        );
+
+        queue.add(request);
     }
 
-    private String getFileName(Uri uri) {
-        String result = "uploaded_file";
-        try (Cursor cursor = context.getContentResolver().query(uri, null, null, null, null)) {
-            if (cursor != null && cursor.moveToFirst()) {
-                int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-                if (nameIndex >= 0) {
-                    result = cursor.getString(nameIndex);
-                }
-            }
-        } catch (Exception ignored) {}
-        return result;
+    @Override
+    public void deleteAssignment(int id, BaseCallback callback) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("mode", "delete");
+            json.put("id", id);
+        } catch (JSONException e) {
+            callback.onError("Failed to create delete request");
+            return;
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL, json,
+                response -> callback.onSuccess("Assignment deleted"),
+                error -> callback.onError("Deletion failed")
+        );
+
+        queue.add(request);
     }
+
+    @Override
     public void getClassSubjectPairs(Context context, ClassSubjectCallback callback) {
         String url = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/assignment.php?mode=class_subject";
 
@@ -131,14 +173,32 @@ public class AssignmentDA implements IAssignmentDA {
         Volley.newRequestQueue(context).add(request);
     }
 
-    public interface ClassSubjectCallback {
-        void onSuccess(List<JSONObject> pairs, List<String> labels);
-        void onError(String errorMessage);
+    private byte[] readBytes(Uri uri) {
+        try (InputStream inputStream = context.getContentResolver().openInputStream(uri);
+             ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
+
+            byte[] data = new byte[1024];
+            int nRead;
+            while ((nRead = inputStream.read(data)) != -1) {
+                buffer.write(data, 0, nRead);
+            }
+
+            return buffer.toByteArray();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
-
-    public interface BaseCallback {
-        void onSuccess(String message);
-        void onError(String error);
+    private String getFileName(Uri uri) {
+        String result = "file";
+        try (Cursor cursor = context.getContentResolver().query(uri, null, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                if (nameIndex >= 0) result = cursor.getString(nameIndex);
+            }
+        } catch (Exception ignored) {}
+        return result;
     }
 }

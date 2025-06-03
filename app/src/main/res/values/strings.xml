@@ -52,4 +52,8 @@
     <string name="send">Send</string>
     <string name="percentage_of_grade">Percentage of Grade</string>
     <string name="e_g_20_0">e.g., 20.0</string>
+    <string name="submit_assignment">Submit Assignment</string>
+    <string name="class_select_student">Class</string>
+    <string name="assignment_select_student">Assignment</string>
+    <string name="submit_assignment_student">Submit</string>
 </resources>

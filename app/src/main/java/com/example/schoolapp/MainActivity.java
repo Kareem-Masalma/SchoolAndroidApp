@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.schoolapp.models.SchoolClass;
+import com.example.schoolapp.models.Teacher;
 import com.google.gson.Gson;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,6 +42,10 @@ public class MainActivity extends AppCompatActivity {
 //        Intent intent = new Intent(MainActivity.this, TeacherSendMessage1.class);
 
         Intent intent = new Intent(MainActivity.this,SendAssignmentActivity.class);
+        //Teacher teacher = new Teacher(1,);
+//        Gson gson = new Gson();
+//        String json = gson.toJson(teacher);
+//        intent.putExtra("teacher", json);
 
 //        Intent intent = new Intent(MainActivity.this, AddTeacherActivity.class);
 

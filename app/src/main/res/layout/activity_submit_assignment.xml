@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Header -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:paddingTop="8dp"
+        android:background="@color/role_green">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/titleText"
+            style="@style/HeaderTitle"
+            android:text="@string/submit_assignment" />
+    </FrameLayout>
+
+    <!-- Scrollable Form -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="32dp">
+
+            <!-- Class Spinner -->
+            <TextView
+                style="@style/SectionTitle"
+                android:padding="5dp"
+                android:text="@string/class_select_student" />
+            <LinearLayout
+                android:id="@+id/spinnerClassContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/edittext_border"
+                android:padding="8dp"
+                android:gravity="center_vertical">
+
+                <Spinner
+                    android:id="@+id/spinnerClass"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/spinner_arrow"
+                    android:layout_marginStart="8dp" />
+            </LinearLayout>
+
+            <!-- Assignment Spinner -->
+            <TextView
+                style="@style/SectionTitle"
+                android:padding="5dp"
+                android:text="@string/assignment_select_student"
+                android:layout_marginTop="24dp" />
+            <LinearLayout
+                android:id="@+id/spinnerAssignmentContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/edittext_border"
+                android:padding="8dp"
+                android:gravity="center_vertical">
+
+                <Spinner
+                    android:id="@+id/spinnerAssignment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/spinner_arrow"
+                    android:layout_marginStart="8dp" />
+            </LinearLayout>
+
+            <!-- Details -->
+            <TextView
+                style="@style/SectionTitle"
+                android:text="@string/details"
+                android:padding="5dp"
+                android:layout_marginTop="24dp" />
+            <EditText
+                android:id="@+id/editDetails"
+                style="@style/FormEditText"
+                android:layout_height="100dp"
+                android:gravity="top"
+                android:hint="@string/enter_assignment_details"
+                android:inputType="textMultiLine" />
+
+            <!-- Attachments -->
+            <TextView
+                style="@style/SectionTitle"
+                android:text="@string/attachments"
+                android:padding="5dp"
+                android:layout_marginTop="24dp" />
+            <Button
+                android:id="@+id/btnSelectFile"
+                style="@style/ButtonPrimary.Student"
+                android:text="@string/select_file" />
+
+            <!-- Selected File Display -->
+            <TextView
+                android:id="@+id/textSelectedFile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp"
+                android:visibility="gone" />
+
+
+            <!-- Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="32dp"
+                android:gravity="end">
+
+                <Button
+                    android:id="@+id/btnCancel"
+                    style="@style/ButtonPrimary.Student"
+                    android:text="@string/cancel" />
+
+                <Button
+                    android:id="@+id/btnSend"
+                    style="@style/ButtonPrimary.Student"
+                    android:layout_width="113dp"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/submit_assignment_student" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
