@@ -38,11 +38,13 @@ public class TeacherDA implements ITeacherDA {
                 try {
                     JSONObject obj = response.getJSONObject(0);
                     Log.d("Teacher", "Teacher: " + obj.toString());
+                    int schedule_id = obj.isNull("schedule_id") ? 0 : obj.getInt("schedule_id");
+                    Log.d("Teacher", "id: " + schedule_id);
                     Teacher teacher = new Teacher(
                             obj.getInt("user_id"), obj.getString("first_name"),
                             obj.getString("last_name"), LocalDate.parse(obj.getString("birth_date")),
                             obj.getString("address"), obj.getString("phone"), Role.TEACHER,
-                            obj.getString("speciality"), obj.getInt("schedule_id"));
+                            obj.getString("speciality"), schedule_id);
                     callback.onSuccess(teacher);
                 } catch (JSONException e) {
                     callback.onError("Teacher Not Found");
@@ -66,11 +68,12 @@ public class TeacherDA implements ITeacherDA {
                     List<Teacher> teachers = new ArrayList<>();
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject obj = response.getJSONObject(i);
+                        int schedule_id = obj.isNull("schedule_id") ? 0 : obj.getInt("schedule_id");
                         Teacher teacher = new Teacher(
                                 obj.getInt("user_id"), obj.getString("first_name"),
                                 obj.getString("last_name"), LocalDate.parse(obj.getString("birth_date")),
                                 obj.getString("address"), obj.getString("phone"), Role.TEACHER,
-                                obj.getString("speciality"));
+                                obj.getString("speciality"), schedule_id);
                         Log.d("Teacher", "Teacher test: " + obj.toString());
                         teachers.add(teacher);
                     }
@@ -90,10 +93,27 @@ public class TeacherDA implements ITeacherDA {
 
     }
 
-
     @Override
-    public void addTeacher(Teacher teacher, BaseCallback baseCallback) {
+    public void addTeacher(Teacher teacher) {
+        StringRequest request = new StringRequest(Request.Method.POST, BASE_URL, response -> Log.d("POST_SUCCESS", response),
+                error -> Log.e("POST_ERROR", error.toString())) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("first_name", teacher.getFirstName());
+                params.put("last_name", teacher.getLastName());
+                params.put("birth_date", teacher.getBirthDate().toString());
+                params.put("address", teacher.getAddress());
+                params.put("phone", teacher.getPhone());
+                params.put("role", teacher.getRole().toString());
+                params.put("speciality", teacher.getSpeciality());
+                params.put("password", teacher.getPassword());
+                return params;
+            }
+        };
+        queue.add(request);
     }
+
     @Override
     public void updateTeacher(Teacher teacher) {
         StringRequest request = new StringRequest(Request.Method.PUT, BASE_URL, response -> Log.d("PUT_SUCCESS", response),
@@ -109,7 +129,7 @@ public class TeacherDA implements ITeacherDA {
                 params.put("phone", teacher.getPhone());
                 params.put("role", teacher.getRole().toString());
                 params.put("speciality", teacher.getSpeciality());
-                params.put("password" , teacher.getPassword());
+                params.put("password", teacher.getPassword());
 
                 return params;
             }

@@ -57,14 +57,6 @@ public class Class {
         this.scheduleId = scheduleId;
     }
 
-    public String getManager() {
-        return manager;
-    }
-
-    public void setManager(String manager) {
-        this.manager = manager;
-    }
-
     @NonNull
     @Override
     public String toString() {

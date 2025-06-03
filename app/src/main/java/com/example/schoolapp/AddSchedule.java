@@ -14,20 +14,20 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.schoolapp.adapters.OnStudentClickListener;
-import com.example.schoolapp.adapters.StudentAdapter;
+import com.example.schoolapp.adapters.ClassAdapter;
 import com.example.schoolapp.adapters.TeacherAdapter;
-import com.example.schoolapp.data_access.StudentDAFactory;
+import com.example.schoolapp.data_access.ClassDA;
+import com.example.schoolapp.data_access.ClassDAFactory;
 import com.example.schoolapp.data_access.TeacherDAFactory;
-import com.example.schoolapp.data_access.StudentDA;
 import com.example.schoolapp.data_access.TeacherDA;
-import com.example.schoolapp.models.Student;
 import com.example.schoolapp.models.Teacher;
+import com.example.schoolapp.models.Class;
 import com.google.gson.Gson;
 
 import java.util.List;
 
 public class AddSchedule extends AppCompatActivity {
+
 
     private RadioGroup rdRole;
     private RecyclerView rvUsers;
@@ -82,17 +82,17 @@ public class AddSchedule extends AppCompatActivity {
                             Toast.makeText(AddSchedule.this, "Error loading teachers: " + error, Toast.LENGTH_SHORT).show();
                         }
                     });
-                } else if ("Student".equals(role)) {
-                    StudentDAFactory.getStudentDA(AddSchedule.this).getAllStudents(new StudentDA.StudentListCallback() {
+                } else if ("Class".equals(role)) {
+                    ClassDAFactory.getClassDA(AddSchedule.this).getAllClasses(new ClassDA.ClassListCallback() {
                         @Override
-                        public void onSuccess(List<Student> students) {
+                        public void onSuccess(List<Class> classes) {
                             rvUsers.setLayoutManager(new LinearLayoutManager(AddSchedule.this));
-                            rvUsers.setAdapter(new StudentAdapter(students, new OnStudentClickListener() {
+                            rvUsers.setAdapter(new ClassAdapter(classes, new ClassAdapter.OnClassClickListener() {
                                 @Override
-                                public void onStudentClick(Student student) {
+                                public void onClassClick(Class c) {
                                     Intent intent = new Intent(AddSchedule.this, AddClassSchedule.class);
                                     Gson gson = new Gson();
-                                    String studentString = gson.toJson(student);
+                                    String studentString = gson.toJson(c);
                                     intent.putExtra(AddSchedule.CLASS, studentString);
                                     startActivity(intent);
                                 }
@@ -101,7 +101,7 @@ public class AddSchedule extends AppCompatActivity {
 
                         @Override
                         public void onError(String error) {
-                            Toast.makeText(AddSchedule.this, "Error loading students: " + error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddSchedule.this, "Error loading classes: " + error, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
