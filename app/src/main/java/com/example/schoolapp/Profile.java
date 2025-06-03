@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,14 +12,17 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.Role;
 import com.example.schoolapp.models.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.time.LocalDate;
 
 public class Profile extends AppCompatActivity {
 
-    // 1) Declare member variables for every view you want to initialize
     private ImageView        imageProfile;
     private TextView         textFullName;
     private TextView         textRole;
@@ -29,6 +33,7 @@ public class Profile extends AppCompatActivity {
     private CardView         cardSchedule;
     private CardView         cardClasses;
     private FloatingActionButton fabMessage;
+    User logged_in_user = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +54,9 @@ public class Profile extends AppCompatActivity {
         if(loggedin){
             String json = prefs.getString(Login.LOGGED_IN_USER , null);
             if(json != null){
-                Gson gson = new Gson();
+                Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
                 User user = gson.fromJson(json, User.class);
+                logged_in_user = user;
                 if(user.getRole().equals(Role.STUDENT)){
                     setContentView(R.layout.activity_profile_student);
                     setupStudentViews();
@@ -60,6 +66,7 @@ public class Profile extends AppCompatActivity {
                 }else{
                     setContentView(R.layout.activity_profile_registrar);
                 }
+
             }
         }
 
@@ -105,5 +112,13 @@ public class Profile extends AppCompatActivity {
             Intent intent = new Intent(Profile.this, UserSendMessage1.class);
             startActivity(intent);
         });
+
+        if(logged_in_user!=null){
+            textFullName.setText(logged_in_user.getFirstName() + " " + logged_in_user.getLastName());
+//            Log.i("birth_date", logged_in_user.getBirthDate().toString());
+            textBirthDate.setText(logged_in_user.getBirthDate().toString());
+            textAddress.setText(logged_in_user.getAddress());
+            textPhone.setText(logged_in_user.getPhone());
+        }
     }
 }

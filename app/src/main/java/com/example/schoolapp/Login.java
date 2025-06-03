@@ -19,14 +19,17 @@ import com.example.schoolapp.data_access.ILoginDA;
 import com.example.schoolapp.data_access.IUserDA;
 import com.example.schoolapp.data_access.LoginDAFactory;
 import com.example.schoolapp.data_access.UserDAFactory;
+import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.User;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONObject;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class Login extends AppCompatActivity {
@@ -68,7 +71,8 @@ public class Login extends AppCompatActivity {
                     public void onSuccess(User user) {
                         SharedPreferences   prefs = PreferenceManager.getDefaultSharedPreferences(Login.this);
                         SharedPreferences.Editor editor =  prefs.edit();
-                        Gson gson = new Gson();
+                        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
+//                        Log.i("birth_date" , user.getBirthDate().toString());
                         String json = gson.toJson(user);
                         editor.putString(LOGGED_IN_USER,json);
                         editor.putBoolean(LOGGED_IN, true);
@@ -103,3 +107,5 @@ public class Login extends AppCompatActivity {
 
     }
 }
+
+
