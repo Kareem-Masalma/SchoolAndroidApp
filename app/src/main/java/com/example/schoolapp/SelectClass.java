@@ -2,7 +2,9 @@ package com.example.schoolapp;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -76,13 +78,20 @@ public class SelectClass extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void getTeacherData() {
-        Intent intent = getIntent();
-        String teacherString = intent.getStringExtra(AddSchedule.TEACHER);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SelectClass.this);
+        boolean isLoggedIn = pref.getBoolean("Logged_in", false);
+        String teacherString = "";
+        if (isLoggedIn)
+            teacherString = pref.getString("Logged_in_user", "");
+        else {
+            Intent intent = new Intent(SelectClass.this, Login.class);
+            startActivity(intent);
+        }
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
         teacher = gson.fromJson(teacherString, Teacher.class);
         tvTeacher.setText("Teacher: " + teacher.getFirstName() + " " + teacher.getLastName());
         tvId.setText("ID: " + teacher.getUser_id());
-        Log.d("Date", "Date Before: " + teacher.getBirthDate().toString());
+        Log.d("Date", "Date Before 2: " + teacher.getBirthDate().toString());
     }
 
     private void defineViews() {

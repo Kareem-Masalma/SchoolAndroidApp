@@ -1,7 +1,10 @@
 package com.example.schoolapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,9 +49,16 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(MainActivity.this, SelectClass.class);
         Teacher teacher = new Teacher(1, "John", "Smith", LocalDate.parse("1980-03-15"), "123 Elm St", "555-1001", Role.TEACHER, "Mathematics");
+        Log.d("Date", "Date Before: " + teacher.getBirthDate());
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new com.example.schoolapp.json_helpers.LocalDateAdapter()).create();
         String json = gson.toJson(teacher);
-        intent.putExtra(AddSchedule.TEACHER, json);
+//        intent.putExtra(AddSchedule.TEACHER, json);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("Logged_in_user", json);
+        editor.putBoolean("Logged_in", true);
+        editor.apply();
+
 
 //        Intent intent = new Intent(MainActivity.this, AddTeacherActivity.class);
 

@@ -54,4 +54,6 @@
     <string name="exams">Exams</string>
     <string name="attendance">Attendance</string>
     <string name="assignments_exams">Assignments/Exams</string>
+    <string name="student_name">Student Name</string>
+    <string name="send_message">Send Message</string>
 </resources>

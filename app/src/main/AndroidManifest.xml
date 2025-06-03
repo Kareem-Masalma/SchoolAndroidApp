@@ -17,6 +17,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ClassStudents"
+            android:exported="false" />
+        <activity
             android:name=".SendAssignmentActivity"
             android:exported="false" />
         <activity
