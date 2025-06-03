@@ -2,9 +2,11 @@ package com.example.schoolapp.data_access;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.*;
 import com.android.volley.toolbox.*;
+import com.example.schoolapp.AddTeacherActivity;
 import com.example.schoolapp.models.Role;
 import com.example.schoolapp.models.Teacher;
 import com.google.gson.Gson;
@@ -20,6 +22,7 @@ import java.util.*;
 public class TeacherDA implements ITeacherDA {
 
     private final RequestQueue queue;
+    private final Context context;
 
     private final String BASE_URL = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/teacher.php";
 
@@ -27,6 +30,7 @@ public class TeacherDA implements ITeacherDA {
 
     public TeacherDA(Context context) {
         queue = Volley.newRequestQueue(context);
+        this.context = context;
     }
 
     @Override
@@ -95,8 +99,8 @@ public class TeacherDA implements ITeacherDA {
 
     @Override
     public void addTeacher(Teacher teacher) {
-        StringRequest request = new StringRequest(Request.Method.POST, BASE_URL, response -> Log.d("POST_SUCCESS", response),
-                error -> Log.e("POST_ERROR", error.toString())) {
+        StringRequest request = new StringRequest(Request.Method.POST, BASE_URL, response -> Toast.makeText(context, "Teacher added successfully", Toast.LENGTH_SHORT).show(),
+                error -> Toast.makeText(context, "Failed to add teacher", Toast.LENGTH_SHORT).show()) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();

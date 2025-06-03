@@ -180,21 +180,8 @@ public class AddTeacherActivity extends AppCompatActivity {
 
             // Submit
             ITeacherDA teacherDA = new TeacherDA(this);
-            teacherDA.addTeacher(teacher, new TeacherDA.BaseCallback() {
-                @Override
-                public void onSuccess(String message) {
-                    runOnUiThread(() -> {
-                        Toast.makeText(AddTeacherActivity.this, "Teacher added successfully", Toast.LENGTH_SHORT).show();
-                        clearFields();
-                    });
-                }
-
-
-                @Override
-                public void onError(String error) {
-                    runOnUiThread(() -> Toast.makeText(AddTeacherActivity.this, "Failed to add teacher", Toast.LENGTH_SHORT).show());
-                }
-            });
+            teacherDA.addTeacher(teacher);
+            clearFields();
         });
 
 
