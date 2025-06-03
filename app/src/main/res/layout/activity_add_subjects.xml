@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/subjectsAct"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#FFF9F2">
+
+
+    <TextView
+        android:id="@+id/subjectsTitleTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="120dp"
+        android:text="@string/add_subject"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:drawableStart="@drawable/add_subject_icon"
+        android:drawablePadding="8dp"/>
+
+
+    <TextView
+        android:id="@+id/subNameTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/subject_name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/subNameET"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:paddingStart="12dp"
+        android:hint="@string/enter_subject_name"
+        android:background="@drawable/edittext_border"/>
+
+    <TextView
+        android:id="@+id/assignGradeTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/assign_grade"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/assignGradeSP"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:background="@drawable/spinner_style_border"/>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="24dp">
+
+        <Button
+            android:id="@+id/cancleBT"
+            style="@style/ButtonPrimary.Registrar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/cancel_sub"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/addBT"
+            style="@style/ButtonPrimary.Registrar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_sub"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</LinearLayout>
