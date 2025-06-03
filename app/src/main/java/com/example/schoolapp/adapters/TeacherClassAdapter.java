@@ -45,7 +45,7 @@ public class TeacherClassAdapter extends RecyclerView.Adapter<TeacherClassAdapte
 
         holder.tvClassName.setText(currentClass.getClassName());
         holder.tvClassId.setText("Class ID: " + currentClass.getClassId());
-        holder.tvClassManager.setText("Manager ID: " + currentClass.getManager());
+        holder.tvClassManager.setText("Manager ID: " + currentClass.getClassManagerId());
 
         holder.itemView.setOnClickListener(v -> listener.onClassClick(currentClass));
     }
@@ -56,7 +56,7 @@ public class TeacherClassAdapter extends RecyclerView.Adapter<TeacherClassAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvClassName, tvClassId, tvClassManager;
+        TextView tvClassName, tvClassId, tvClassManager, tvSemester;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

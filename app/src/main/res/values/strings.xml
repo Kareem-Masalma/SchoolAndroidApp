@@ -29,6 +29,7 @@
     <string name="id">ID</string>
     <string name="grade">Grade</string>
     <string name="subject">Subject</string>
+    <string name="subjects">Subjects</string>
     <string name="day">Day</string>
     <string name="start_time">start_time_e_g_08_00</string>
     <string name="end_time">end_time_e_g_09_00</string>
@@ -52,4 +53,5 @@
     <string name="assignments">Assignments</string>
     <string name="exams">Exams</string>
     <string name="attendance">Attendance</string>
+    <string name="assignments_exams">Assignments/Exams</string>
 </resources>

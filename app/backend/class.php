@@ -29,12 +29,21 @@ try {
             }
         } else if (isset($_GET['user_id'])) {
             $user_id = (int)$_GET['user_id'];
-            $stmt = $conn->prepare("SELECT c.class_id, c.class_name, c.class_manager, c.schedule_id  FROM teacher t, schedule s, schedule_subject ss, subject sb, class c WHERE t.schedule_id = s.schedule_id AND s.schedule_id = ss.schedule_id AND ss.subject_id = sb.subject_id AND sb.class_id = c.class_id AND t.user_id = ?;");
+            $stmt = $conn->prepare("
+    SELECT DISTINCT c.class_id, c.class_name, c.class_manager, c.schedule_id  
+    FROM teacher t
+    JOIN schedule s ON t.schedule_id = s.schedule_id
+    JOIN schedule_subject ss ON s.schedule_id = ss.schedule_id
+    JOIN subject sb ON ss.subject_id = sb.subject_id
+    JOIN class c ON sb.class_id = c.class_id
+    WHERE t.user_id = ?
+");
             $stmt->bind_param("i", $user_id);
             $stmt->execute();
             $result = $stmt->get_result();
             $rows = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
             echo json_encode($rows);
+
         } else {
             $result = $conn->query("SELECT * FROM class");
             $rows = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];

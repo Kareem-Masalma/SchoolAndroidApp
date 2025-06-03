@@ -43,7 +43,7 @@
         <Button
             android:id="@+id/btnSubjects"
             style="@style/GridButtonStyle"
-            android:text="@string/subject" />
+            android:text="@string/subjects" />
 
         <Button
             android:id="@+id/btnSchedule"
@@ -58,12 +58,7 @@
         <Button
             android:id="@+id/btnAssignments"
             style="@style/GridButtonStyle"
-            android:text="@string/assignments" />
-
-        <Button
-            android:id="@+id/btnExams"
-            style="@style/GridButtonStyle"
-            android:text="@string/exams" />
+            android:text="@string/assignments_exams" />
 
         <Button
             android:id="@+id/btnAttendance"

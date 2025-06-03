@@ -10,6 +10,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.schoolapp.models.Role;
+import com.example.schoolapp.models.Teacher;
+import com.google.gson.Gson;
+
+import java.time.LocalDate;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -31,15 +37,17 @@ public class MainActivity extends AppCompatActivity {
         // take attendance activity
 //        Intent intent = new Intent(MainActivity.this, TakeAttendance.class);
 //        SchoolClass schoolClass = new SchoolClass(1,"6-B",2,1);
-//        Gson gson = new Gson();
-//        String json = gson.toJson(schoolClass);
-//        intent.putExtra("schoolClass", json);
+
 
 //        Intent intent = new Intent(MainActivity.this, TeacherSendMessage1.class);
 
 //        Intent intent = new Intent(MainActivity.this, UserSendMessage1.class);
 
-        Intent intent = new Intent(MainActivity.this, AddSchedule.class);
+        Intent intent = new Intent(MainActivity.this, SelectClass.class);
+        Teacher teacher = new Teacher(1, "John", "Smith", LocalDate.parse("1980-03-15"), "123 Elm St", "555-1001", Role.TEACHER, "Mathematics");
+        Gson gson = new Gson();
+        String json = gson.toJson(teacher);
+        intent.putExtra(AddSchedule.TEACHER, json);
 
 //        Intent intent = new Intent(MainActivity.this, AddTeacherActivity.class);
 

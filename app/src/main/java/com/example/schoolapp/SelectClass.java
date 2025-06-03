@@ -3,6 +3,7 @@ package com.example.schoolapp;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schoolapp.adapters.TeacherClassAdapter;
@@ -83,5 +85,6 @@ public class SelectClass extends AppCompatActivity {
         this.rvClasses = findViewById(R.id.rvClasses);
         this.tvTeacher = findViewById(R.id.tvTeacher);
         this.tvId = findViewById(R.id.tvId);
+        rvClasses.setLayoutManager(new LinearLayoutManager(SelectClass.this));
     }
 }

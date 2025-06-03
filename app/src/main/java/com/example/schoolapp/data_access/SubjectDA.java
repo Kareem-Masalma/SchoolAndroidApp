@@ -126,12 +126,32 @@ public class SubjectDA implements ISubjectDA {
         queue.add(req);
     }
 
+    public void getClassTeacherSubject(int class_id, int teacher_id, ClassSubjectCallback cb) {
+        String url = BASE + "?class_id=" + class_id + "&SubjectDAuser_id=" + teacher_id;
+        JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, url, null,
+                resp -> {
+                    try {
+                        List<Subject> list = new ArrayList<>();
+                        for (int i = 0; i < resp.length(); i++) {
+                            list.add(parseSubject(resp.getJSONObject(i)));
+                        }
+                        cb.onSuccess(list);
+                    } catch (JSONException ex) {
+                        cb.onError("Malformed list");
+                    }
+                },
+                err -> cb.onError("Fetch failed")
+        );
+        queue.add(req);
+    }
+
     private Subject parseSubject(JSONObject o) throws JSONException {
         return new Subject(
                 o.getInt("subject_id"),
                 o.getString("title"),
                 o.getInt("class_id"),
-                o.optString("class_name", "")
+                o.optString("class_name", ""),
+                o.getInt("accumulated_percentage")
         );
     }
 
