@@ -14,9 +14,12 @@ import com.example.schoolapp.adapters.StudentClassAdapter;
 import com.example.schoolapp.data_access.StudentDA;
 import com.example.schoolapp.data_access.StudentDAFactory;
 import com.example.schoolapp.models.Class;
+import com.example.schoolapp.models.Student;
 import com.example.schoolapp.models.User;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class ClassStudents extends AppCompatActivity {
@@ -32,7 +35,7 @@ public class ClassStudents extends AppCompatActivity {
         setContentView(R.layout.activity_class_students);
         defineViews();
         loadClassData();
-//        fetchStudents();
+        fetchStudents();
     }
 
     private void defineViews() {
@@ -46,27 +49,33 @@ public class ClassStudents extends AppCompatActivity {
     private void loadClassData() {
         Intent intent = getIntent();
         String classJson = intent.getStringExtra(AddSchedule.CLASS);
-        selectedClass = new Gson().fromJson(classJson, Class.class);
-
+        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new com.example.schoolapp.json_helpers.LocalDateAdapter()).create();
+        selectedClass = gson.fromJson(classJson, Class.class);
         tvClass.setText("Class: " + selectedClass.getClassName());
         tvClassId.setText("ID: " + selectedClass.getClassId());
     }
 
-//    private void fetchStudents() {
-//        studentDA = StudentDAFactory.getStudentDA(this);
-//        studentDA.getStudentsByClass(selectedClass.getClassId(), new StudentDA.StudentListCallback() {
-//            @Override
-//            public void onSuccess(List<User> students) {
-//                StudentClassAdapter adapter = new StudentClassAdapter(ClassStudentsActivity.this, students, student -> {
-//                    Toast.makeText(ClassStudentsActivity.this, "Send message to: " + student.getFirstName(), Toast.LENGTH_SHORT).show();
-//                });
-//                rvStudents.setAdapter(adapter);
-//            }
-//
-//            @Override
-//            public void onError(String error) {
-//                Toast.makeText(ClassStudentsActivity.this, error, Toast.LENGTH_SHORT).show();
-//            }
-//        });
+    private void fetchStudents() {
+        studentDA = (StudentDA) StudentDAFactory.getStudentDA(ClassStudents.this);
+        studentDA.getClassStudents(selectedClass.getClassId(), new StudentDA.StudentListCallback() {
+
+            @Override
+            public void onSuccess(List<Student> list) {
+                StudentClassAdapter adapter = new StudentClassAdapter(ClassStudents.this, list, student -> {
+                    Intent intent = new Intent(ClassStudents.this, UserSendMessage2.class);
+                    Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new com.example.schoolapp.json_helpers.LocalDateAdapter()).create();
+                    String userJson = gson.toJson(student);
+                    intent.putExtra("user", userJson);
+                    startActivity(intent);
+                });
+                rvStudents.setAdapter(adapter);
+            }
+
+            @Override
+            public void onError(String error) {
+                Toast.makeText(ClassStudents.this, error, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
 

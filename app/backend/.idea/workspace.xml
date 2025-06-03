@@ -5,17 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f6712e54-6850-4889-b72d-68f6144c7e94" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../src/main/res/layout/activity_send_assignment.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/class.php" beforeDir="false" afterPath="$PROJECT_DIR$/class.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/subject.php" beforeDir="false" afterPath="$PROJECT_DIR$/subject.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/SelectClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/SelectClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/TeacherClassAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/TeacherClassAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/ClassDA.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/ClassDA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/SubjectDA.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/SubjectDA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/res/layout/item_teacher_class.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/res/layout/item_teacher_class.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/student.php" beforeDir="false" afterPath="$PROJECT_DIR$/student.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/StudentDA.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/StudentDA.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

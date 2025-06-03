@@ -58,7 +58,7 @@ public class TakeAttendance extends AppCompatActivity {
 
         setupViews();
         getSchoolClass();
-//        setupRecyclerView();
+        setupRecyclerView();
         setupDatePicker();
         handleBtnFinish();
         handleBtnCancel();

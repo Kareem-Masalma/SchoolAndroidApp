@@ -10,20 +10,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.schoolapp.R;
-import com.example.schoolapp.models.User;
+import com.example.schoolapp.models.Student;
 import java.util.List;
 
 public class StudentClassAdapter extends RecyclerView.Adapter<StudentClassAdapter.ViewHolder> {
 
     private final Context context;
-    private final List<User> students;
+    private final List<Student> students;
     private final OnMessageClickListener listener;
 
     public interface OnMessageClickListener {
-        void onMessageClick(User student);
+        void onMessageClick(Student student);
     }
 
-    public StudentClassAdapter(Context context, List<User> students, OnMessageClickListener listener) {
+    public StudentClassAdapter(Context context, List<Student> students, OnMessageClickListener listener) {
         this.context = context;
         this.students = students;
         this.listener = listener;
@@ -39,7 +39,7 @@ public class StudentClassAdapter extends RecyclerView.Adapter<StudentClassAdapte
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        User student = students.get(position);
+        Student student = students.get(position);
         holder.tvStudentName.setText(student.getFirstName() + " " + student.getLastName());
         holder.btnSendMessage.setOnClickListener(v -> listener.onMessageClick(student));
     }
