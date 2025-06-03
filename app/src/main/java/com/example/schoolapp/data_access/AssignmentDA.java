@@ -27,15 +27,19 @@ public class AssignmentDA implements IAssignmentDA {
     }
 
     @Override
-    public void sendAssignment(String title, String details, String className, String deadline, float percentage, List<Uri> files, BaseCallback callback) {
+    public void sendAssignment(String title, String details, Integer subjectId, String deadline, float percentage, List<Uri> files, BaseCallback callback) {
         JSONObject json = new JSONObject();
         try {
             json.put("mode", "add");
             json.put("title", title);
             json.put("details", details);
-            json.put("class", className);
+            json.put("subject", subjectId);
             json.put("deadline", deadline);
             json.put("percentage", percentage);
+
+            // Add current date as start_date
+            String startDate = new java.text.SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new java.util.Date());
+            json.put("start_date", startDate);
 
             if (!files.isEmpty()) {
                 Uri fileUri = files.get(0);
@@ -54,7 +58,17 @@ public class AssignmentDA implements IAssignmentDA {
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL, json,
                 response -> callback.onSuccess("Assignment sent successfully"),
-                error -> callback.onError("Failed to send assignment")) {
+                error -> {
+                    String errorMsg = "Unknown error";
+                    if (error.networkResponse != null) {
+                        errorMsg = "Error code: " + error.networkResponse.statusCode;
+                        try {
+                            errorMsg += ", " + new String(error.networkResponse.data);
+                        } catch (Exception ignored) {}
+                    }
+                    callback.onError("Failed to send assignment: " + errorMsg);
+                    Log.e("AssignmentDA", errorMsg, error);
+                }) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
@@ -102,14 +116,14 @@ public class AssignmentDA implements IAssignmentDA {
     }
 
     @Override
-    public void updateAssignment(int id, String title, String details, String className, String deadline, float percentage, BaseCallback callback) {
+    public void updateAssignment(int id, String title, String details, String subjectName, String deadline, float percentage, BaseCallback callback) {
         JSONObject json = new JSONObject();
         try {
             json.put("mode", "update");
             json.put("id", id);
             json.put("title", title);
             json.put("details", details);
-            json.put("class", className);
+            json.put("subject", subjectName);
             json.put("deadline", deadline);
             json.put("percentage", percentage);
 
@@ -145,33 +159,33 @@ public class AssignmentDA implements IAssignmentDA {
         queue.add(request);
     }
 
-    @Override
-    public void getClassSubjectPairs(Context context, ClassSubjectCallback callback) {
-        String url = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/assignment.php?mode=class_subject";
-
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
-                response -> {
-                    List<JSONObject> pairs = new ArrayList<>();
-                    List<String> labels = new ArrayList<>();
-                    labels.add("Select Class - Subject");
-
-                    for (int i = 0; i < response.length(); i++) {
-                        try {
-                            JSONObject obj = response.getJSONObject(i);
-                            pairs.add(obj);
-                            labels.add(obj.getString("label"));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    callback.onSuccess(pairs, labels);
-                },
-                error -> callback.onError("Failed to load class-subject list")
-        );
-
-        Volley.newRequestQueue(context).add(request);
-    }
+//    @Override
+//    public void getSubjectPairs(Context context, SubjectCallback callback) {
+//        String url = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/assignment.php?mode=subject";
+//
+//        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+//                response -> {
+//                    List<JSONObject> pairs = new ArrayList<>();
+//                    List<String> labels = new ArrayList<>();
+//                    labels.add("Select Subject");
+//
+//                    for (int i = 0; i < response.length(); i++) {
+//                        try {
+//                            JSONObject obj = response.getJSONObject(i);
+//                            pairs.add(obj);
+//                            labels.add(obj.getString("label"));
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//
+//                    callback.onSuccess(pairs, labels);
+//                },
+//                error -> callback.onError("Failed to load subject list")
+//        );
+//
+//        Volley.newRequestQueue(context).add(request);
+//    }
 
     private byte[] readBytes(Uri uri) {
         try (InputStream inputStream = context.getContentResolver().openInputStream(uri);

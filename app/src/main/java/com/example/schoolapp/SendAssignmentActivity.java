@@ -15,6 +15,11 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.schoolapp.data_access.AssignmentDA;
 import com.example.schoolapp.data_access.IAssignmentDA;
+import com.example.schoolapp.data_access.SubjectDA;
+import com.example.schoolapp.models.Subject;
+import com.example.schoolapp.models.Teacher;
+import com.example.schoolapp.models.Class;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
@@ -28,9 +33,9 @@ public class SendAssignmentActivity extends AppCompatActivity {
 
     private EditText editTitle, editDetails, editDeadline, editPercentage;
     private TextView textSelectedFiles;
-    private Spinner spinnerClass;
+    private Spinner spinnerSubject;
     private Button btnSelectFile, btnSend, btnCancel;
-    private LinearLayout deadlineField, spinnerClassContainer;
+    private LinearLayout deadlineField, spinnerSubjectContainer;
 
     private final List<Uri> selectedFileUris = new ArrayList<>();
     private final List<JSONObject> classSubjectOptions = new ArrayList<>();
@@ -51,31 +56,38 @@ public class SendAssignmentActivity extends AppCompatActivity {
         editDeadline = findViewById(R.id.editDeadline);
         editPercentage = findViewById(R.id.editPercentage);
         textSelectedFiles = findViewById(R.id.textSelectedFile);
-        spinnerClass = findViewById(R.id.spinnerClass);
+        spinnerSubject = findViewById(R.id.spinnerClass);
         btnSelectFile = findViewById(R.id.btnSelectFile);
         btnSend = findViewById(R.id.btnSend);
         btnCancel = findViewById(R.id.btnCancel);
         deadlineField = findViewById(R.id.deadlineField);
-        spinnerClassContainer = findViewById(R.id.spinnerClassContainer);
+        spinnerSubjectContainer = findViewById(R.id.spinnerSubjectContainer);
 
-        spinnerClassContainer.setOnClickListener(v -> spinnerClass.performClick());
+        spinnerSubjectContainer.setOnClickListener(v -> spinnerSubject.performClick());
 
-        ((AssignmentDA) assignmentDA).getClassSubjectPairs(this, new AssignmentDA.ClassSubjectCallback() {
+        Intent intent1 = getIntent();
+        String teacherString = intent1.getStringExtra(AddSchedule.TEACHER);
+        String classString = intent1.getStringExtra(AddSchedule.CLASS);
+        Gson gson = new Gson();
+
+        Teacher teacher = gson.fromJson(teacherString, Teacher.class);
+        Class selectClass = gson.fromJson(classString, Class.class);
+
+        SubjectDA subjectDA = new SubjectDA(this);
+        subjectDA.getClassTeacherSubject(selectClass.getClassId(), teacher.getUser_id(), new SubjectDA.ClassSubjectCallback() {
             @Override
-            public void onSuccess(List<JSONObject> pairs, List<String> labels) {
-                classSubjectOptions.clear();
-                classSubjectOptions.addAll(pairs);
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(SendAssignmentActivity.this,
-                        android.R.layout.simple_spinner_item, labels);
+            public void onSuccess(List<Subject> list) {
+                ArrayAdapter<Subject> adapter = new ArrayAdapter<>(SendAssignmentActivity.this,
+                        android.R.layout.simple_spinner_item, list);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinnerClass.setAdapter(adapter);
+                spinnerSubject.setAdapter(adapter);
             }
 
             @Override
-            public void onError(String errorMessage) {
-                Toast.makeText(SendAssignmentActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+            public void onError(String error) {
             }
         });
+
 
         View.OnClickListener deadlinePicker = v -> {
             Calendar calendar = Calendar.getInstance();
@@ -110,13 +122,10 @@ public class SendAssignmentActivity extends AppCompatActivity {
             String details = editDetails.getText().toString().trim();
             String deadline = editDeadline.getText().toString().trim();
             String percentageStr = editPercentage.getText().toString().trim();
-            int selectedIndex = spinnerClass.getSelectedItemPosition();
+            Subject subject = (Subject) spinnerSubject.getSelectedItem();
 
             if (title.isEmpty()) { editTitle.setError("Required"); return; }
             if (details.isEmpty()) { editDetails.setError("Required"); return; }
-            if (selectedIndex <= 0 || selectedIndex > classSubjectOptions.size()) {
-                Toast.makeText(this, "Please select a class-subject", Toast.LENGTH_SHORT).show(); return;
-            }
             if (deadline.isEmpty()) { editDeadline.setError("Required"); return; }
             if (percentageStr.isEmpty()) { editPercentage.setError("Required"); return; }
 
@@ -140,13 +149,11 @@ public class SendAssignmentActivity extends AppCompatActivity {
                 editDeadline.setError("Deadline must be today or in the future"); return;
             }
 
-            JSONObject selectedPair = classSubjectOptions.get(selectedIndex - 1);
-            String className = selectedPair.optString("class");
 
             assignmentDA.sendAssignment(
                     title,
                     details,
-                    className,
+                    subject.getSubjectId(),
                     deadline,
                     percentage,
                     selectedFileUris,
@@ -201,7 +208,7 @@ public class SendAssignmentActivity extends AppCompatActivity {
         editDetails.setText("");
         editDeadline.setText("");
         editPercentage.setText("");
-        spinnerClass.setSelection(0);
+        spinnerSubject.setSelection(0);
         textSelectedFiles.setText("");
         textSelectedFiles.setVisibility(View.GONE);
         selectedFileUris.clear();

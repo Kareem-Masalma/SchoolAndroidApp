@@ -10,7 +10,7 @@ import java.util.List;
 public interface IAssignmentDA {
 
     // Create (Send)
-    void sendAssignment(String title, String details, String className, String deadline, float percentage,
+    void sendAssignment(String title, String details, Integer subjectId, String deadline, float percentage,
                         List<Uri> files, IAssignmentDA.BaseCallback callback);
 
     // Read
@@ -18,14 +18,14 @@ public interface IAssignmentDA {
     void findAssignmentById(int id, SingleAssignmentCallback callback);
 
     // Update
-    void updateAssignment(int id, String title, String details, String className, String deadline, float percentage,
+    void updateAssignment(int id, String title, String details, String subjectName, String deadline, float percentage,
                           BaseCallback callback);
 
     // Delete
     void deleteAssignment(int id, BaseCallback callback);
 
     // Spinner class-subject list
-    void getClassSubjectPairs(Context context, ClassSubjectCallback callback);
+    //void getSubjectPairs(Context context, SubjectCallback callback);
 
 
     // ===== CALLBACK INTERFACES =====

@@ -29,10 +29,9 @@ import java.util.List;
 
 public class AddSchedule extends AppCompatActivity {
 
-
     private RadioGroup rdRole;
     private RecyclerView rvUsers;
-    public static final String STUDENT = "Student";
+    public static final String CLASS = "Class";
     public static final String TEACHER = "Teacher";
 
 
@@ -94,7 +93,7 @@ public class AddSchedule extends AppCompatActivity {
                                     Intent intent = new Intent(AddSchedule.this, AddClassSchedule.class);
                                     Gson gson = new Gson();
                                     String studentString = gson.toJson(student);
-                                    intent.putExtra(AddSchedule.STUDENT, studentString);
+                                    intent.putExtra(AddSchedule.CLASS, studentString);
                                     startActivity(intent);
                                 }
                             }));

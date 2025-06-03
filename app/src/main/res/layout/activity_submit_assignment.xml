@@ -39,7 +39,7 @@
                 android:padding="5dp"
                 android:text="@string/class_select_student" />
             <LinearLayout
-                android:id="@+id/spinnerClassContainer"
+                android:id="@+id/spinnerSubjectContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

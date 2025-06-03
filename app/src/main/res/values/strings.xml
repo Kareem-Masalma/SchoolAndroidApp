@@ -56,4 +56,5 @@
     <string name="class_select_student">Class</string>
     <string name="assignment_select_student">Assignment</string>
     <string name="submit_assignment_student">Submit</string>
+    <string name="select_subject">Select subject</string>
 </resources>
