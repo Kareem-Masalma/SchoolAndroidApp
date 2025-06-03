@@ -7,6 +7,7 @@ public class Subject {
     private String title;
     private Integer classId;
     private String classTitle;
+    private Integer totalPercentage;
 
     public Subject() {
 
@@ -17,6 +18,22 @@ public class Subject {
         this.title = title;
         this.classId = classId;
         this.classTitle = classTitle;
+    }
+
+    public Subject(Integer subjectId, String title, Integer classId, String classTitle, Integer totalPercentage) {
+        this.subjectId = subjectId;
+        this.title = title;
+        this.classId = classId;
+        this.classTitle = classTitle;
+        this.totalPercentage = totalPercentage;
+    }
+
+    public Integer getTotalPercentage() {
+        return totalPercentage;
+    }
+
+    public void setTotalPercentage(Integer totalPercentage) {
+        this.totalPercentage = totalPercentage;
     }
 
     public Integer getSubjectId() {
