@@ -28,7 +28,7 @@ public class Profile extends AppCompatActivity {
     private CardView         cardInfo;
     private CardView         cardSchedule;
     private CardView         cardClasses;
-    private FloatingActionButton fabEdit;
+    private FloatingActionButton fabMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,8 +99,11 @@ public class Profile extends AppCompatActivity {
         textAddress     = findViewById(R.id.text_address);
         textPhone       = findViewById(R.id.text_phone);
         cardInfo        = findViewById(R.id.card_info);
-        fabEdit         = findViewById(R.id.fab_edit_profile);
+        fabMessage         = findViewById(R.id.fab_send_message);
 
-
+        fabMessage.setOnClickListener(e->{
+            Intent intent = new Intent(Profile.this, UserSendMessage1.class);
+            startActivity(intent);
+        });
     }
 }
