@@ -28,6 +28,7 @@ import com.example.schoolapp.data_access.ScheduleDA;
 import com.example.schoolapp.data_access.ScheduleDAFactory;
 import com.example.schoolapp.data_access.SubjectDA;
 import com.example.schoolapp.data_access.SubjectDAFactory;
+import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.Class;
 
 import com.example.schoolapp.data_access.DaysFactory;
@@ -36,6 +37,7 @@ import com.example.schoolapp.models.ScheduleSubject;
 import com.example.schoolapp.models.Subject;
 import com.example.schoolapp.models.Teacher;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -248,7 +250,7 @@ public class AddTeacherSchedule extends AppCompatActivity {
     private void teacherData() {
         Intent intent = getIntent();
         String teacherString = intent.getStringExtra(AddSchedule.TEACHER);
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
         teacher = gson.fromJson(teacherString, Teacher.class);
         tvTeacher.setText("Teacher: " + teacher.getFirstName() + " " + teacher.getLastName());
         tvId.setText("ID: " + teacher.getUser_id());

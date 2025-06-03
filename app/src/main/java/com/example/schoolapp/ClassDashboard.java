@@ -3,6 +3,7 @@ package com.example.schoolapp;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,13 +14,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.Class;
 import com.example.schoolapp.models.Teacher;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.time.LocalDate;
 
 public class ClassDashboard extends AppCompatActivity {
 
-    private Button btnSubjects, btnExams, btnAssignments, btnAttendance, btnStudents, btnSchedule;
+    private Button btnSubjects, btnAssignmentsExams, btnAttendance, btnStudents, btnSchedule;
     private TextView tvClassName;
     private Class selectedClass;
     private Teacher teacher;
@@ -44,7 +49,7 @@ public class ClassDashboard extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ClassDashboard.this, TakeAttendance.class);
-                Gson gson = new Gson();
+                Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
                 String classString = gson.toJson(selectedClass);
                 intent.putExtra("schoolClass", classString);
                 startActivity(intent);
@@ -72,6 +77,12 @@ public class ClassDashboard extends AppCompatActivity {
             }
         });
 
+        btnAssignmentsExams.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 
@@ -79,17 +90,17 @@ public class ClassDashboard extends AppCompatActivity {
         Intent intent = getIntent();
         String classString = intent.getStringExtra(AddSchedule.CLASS);
         String teacherString = intent.getStringExtra(AddSchedule.TEACHER);
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
         selectedClass = gson.fromJson(classString, Class.class);
         teacher = gson.fromJson(teacherString, Teacher.class);
+        Log.d("Date", "Date after: " + teacher.getBirthDate().toString());
     }
 
     @SuppressLint("SetTextI18n")
     private void findViews() {
         this.tvClassName = findViewById(R.id.tvClassName);
-        this.btnAssignments = findViewById(R.id.btnAssignments);
+        this.btnAssignmentsExams = findViewById(R.id.btnAssignmentsExams);
         this.btnAttendance = findViewById(R.id.btnAttendance);
-        this.btnExams = findViewById(R.id.btnExams);
         this.btnSchedule = findViewById(R.id.btnSchedule);
         this.btnSubjects = findViewById(R.id.btnSubjects);
         this.btnStudents = findViewById(R.id.btnStudents);

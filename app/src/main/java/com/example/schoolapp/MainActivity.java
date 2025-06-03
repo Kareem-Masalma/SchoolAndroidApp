@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.schoolapp.models.Role;
 import com.example.schoolapp.models.Teacher;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.time.LocalDate;
 
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(MainActivity.this, SelectClass.class);
         Teacher teacher = new Teacher(1, "John", "Smith", LocalDate.parse("1980-03-15"), "123 Elm St", "555-1001", Role.TEACHER, "Mathematics");
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new com.example.schoolapp.json_helpers.LocalDateAdapter()).create();
         String json = gson.toJson(teacher);
         intent.putExtra(AddSchedule.TEACHER, json);
 

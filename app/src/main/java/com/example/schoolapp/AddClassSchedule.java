@@ -33,6 +33,7 @@ import com.example.schoolapp.models.ScheduleSubject;
 import com.example.schoolapp.models.Subject;
 import com.example.schoolapp.models.Teacher;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -222,7 +223,7 @@ public class AddClassSchedule extends AppCompatActivity {
     private void classData() {
         Intent intent = getIntent();
         String classString = intent.getStringExtra(AddSchedule.CLASS);
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new com.example.schoolapp.json_helpers.LocalDateAdapter()).create();
         selectedClass = gson.fromJson(classString, Class.class);
         tvClass.setText("Class: " + selectedClass.getClassName());
         tvId.setText("ID: " + selectedClass.getClassId());

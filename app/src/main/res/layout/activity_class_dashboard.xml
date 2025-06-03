@@ -56,7 +56,7 @@
             android:text="@string/students" />
 
         <Button
-            android:id="@+id/btnAssignments"
+            android:id="@+id/btnAssignmentsExams"
             style="@style/GridButtonStyle"
             android:text="@string/assignments_exams" />
 

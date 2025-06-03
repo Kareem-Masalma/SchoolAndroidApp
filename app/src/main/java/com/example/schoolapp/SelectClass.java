@@ -18,10 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.schoolapp.adapters.TeacherClassAdapter;
 import com.example.schoolapp.data_access.ClassDA;
 import com.example.schoolapp.data_access.ClassDAFactory;
+import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.Class;
 import com.example.schoolapp.models.Teacher;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class SelectClass extends AppCompatActivity {
@@ -53,7 +56,7 @@ public class SelectClass extends AppCompatActivity {
                     @Override
                     public void onClassClick(Class selectedClass) {
                         Intent intent = new Intent(SelectClass.this, ClassDashboard.class);
-                        Gson gson = new Gson();
+                        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
                         String classString = gson.toJson(selectedClass);
                         String teacherString = gson.toJson(teacher);
                         intent.putExtra(AddSchedule.CLASS, classString);
@@ -75,10 +78,11 @@ public class SelectClass extends AppCompatActivity {
     private void getTeacherData() {
         Intent intent = getIntent();
         String teacherString = intent.getStringExtra(AddSchedule.TEACHER);
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
         teacher = gson.fromJson(teacherString, Teacher.class);
         tvTeacher.setText("Teacher: " + teacher.getFirstName() + " " + teacher.getLastName());
         tvId.setText("ID: " + teacher.getUser_id());
+        Log.d("Date", "Date Before: " + teacher.getBirthDate().toString());
     }
 
     private void defineViews() {
