@@ -46,15 +46,7 @@
         <activity
             android:name=".UserSendMessage1"
             android:exported="false" />
-        <activity
-            android:name=".StudentSendMessage1"
-            android:exported="false" />
-        <activity
-            android:name=".TeacherSendMessage2"
-            android:exported="false" />
-        <activity
-            android:name=".TeacherSendMessage1"
-            android:exported="false" />
+
         <activity
             android:name=".AddTeacherSchedule"
             android:exported="false" />
@@ -69,6 +61,12 @@
             android:exported="false" />
         <activity
             android:name=".AddSchedule"
+            android:exported="false" />
+        <activity
+            android:name=".AddTeacherActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddSubjects"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

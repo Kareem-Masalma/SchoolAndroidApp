@@ -29,7 +29,6 @@
     <string name="id">ID</string>
     <string name="grade">Grade</string>
     <string name="subject">Subject</string>
-    <string name="subjects">Subjects</string>
     <string name="day">Day</string>
     <string name="start_time">start_time_e_g_08_00</string>
     <string name="end_time">end_time_e_g_09_00</string>
@@ -43,6 +42,12 @@
     <string name="Class">Class</string>
     <string name="class_name">Class Name</string>
     <string name="semester">Semester</string>
+    <string name="subject_name">Subject Name:</string>
+    <string name="enter_subject_name">Enter subject name</string>
+    <string name="assign_grade">Assign Grade:</string>
+    <string name="cancel_sub">Cancel</string>
+    <string name="add_sub">Add</string>
+    <string name="add_subject">Add Subject</string>
     <string name="teacher_classes">Teacher Classes</string>
     <string name="class_id">Class ID: 12</string>
     <string name="manager_id">Manager ID: 5</string>
@@ -79,12 +84,6 @@
     <string name="assignment_select_student">Assignment</string>
     <string name="submit_assignment_student">Submit</string>
     <string name="select_subject">Select subject</string>
-    <string name="subject_name">Subject Name:</string>
-    <string name="enter_subject_name">Enter subject name</string>
-    <string name="assign_grade">Assign Grade:</string>
-    <string name="cancel_sub">Cancel</string>
-    <string name="add_sub">Add</string>
-    <string name="add_subject">Add Subject</string>
     <string name="class_students">Class Students</string>
     <string name="class_subjects">Class Subjects</string>
     <string name="subject_title">Subject Title</string>
