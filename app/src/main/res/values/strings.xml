@@ -88,4 +88,11 @@
     <string name="class_students">Class Students</string>
     <string name="class_subjects">Class Subjects</string>
     <string name="subject_title">Subject Title</string>
+    <string name="enter_student_marks">Enter student marks</string>
+    <string name="publish_results">Publish Results</string>
+    <string name="exam_date_yyyy_mm_dd">Exam Date (YYYY-MM-DD)</string>
+    <string name="exam_title">Exam Title</string>
+    <string name="class_x">Class: X</string>
+    <string name="mark">Mark</string>
+    <string name="exam_date">Exam Date</string>
 </resources>

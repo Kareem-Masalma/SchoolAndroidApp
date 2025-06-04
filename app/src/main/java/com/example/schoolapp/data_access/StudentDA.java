@@ -149,6 +149,27 @@ public class StudentDA implements IStudentDA {
         queue.add(req);
     }
 
+//    public void getSubjectStudents(int subject_id, StudentListCallback cb) {
+//        String url = BASE + "?subject_id=" + subject_id;
+//        JsonArrayRequest req = new JsonArrayRequest(
+//                Request.Method.GET, url, null,
+//                resp -> {
+//                    try {
+//                        List<Student> list = new ArrayList<>();
+//                        for (int i = 0; i < resp.length(); i++) {
+//                            list.add(parseStudent(resp.getJSONObject(i)));
+//                        }
+//                        cb.onSuccess(list);
+//                    } catch (JSONException ex) {
+//                        cb.onError("Malformed list");
+//                    }
+//                },
+//                err -> cb.onError("Fetch failed")
+//        );
+//        queue.add(req);
+//    }
+
+
     // Helpers
 
     private Student parseStudent(JSONObject o) throws JSONException {

@@ -214,7 +214,7 @@ public class AddClassSchedule extends AppCompatActivity {
 
             @Override
             public void onError(String error) {
-                Log.d("Error", error);
+                Toast.makeText(AddClassSchedule.this, error, Toast.LENGTH_SHORT).show();
             }
         });
     }

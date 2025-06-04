@@ -1,39 +1,83 @@
 package com.example.schoolapp.models;
 
+import java.time.LocalDate;
+
 public class Exam {
-    private Integer exam_id;
+    private int examId;
     private String title;
+    private String subject;
+    private String semester;
+    private int year;
+    private LocalDate date;
+    private int classId;
 
-    public Exam() {
-
-    }
-
-    public Exam(Integer exam_id, String title) {
-        this.exam_id = exam_id;
+    public Exam(String title, String subject, String semester, int year, LocalDate date, int classId) {
         this.title = title;
+        this.subject = subject;
+        this.semester = semester;
+        this.year = year;
+        this.date = date;
+        this.classId = classId;
     }
 
-    public Integer getExam_id() {
-        return exam_id;
+    public Exam(int examId, String title, String subject, String semester, int year, LocalDate date, int classId) {
+        this(title, subject, semester, year, date, classId);
+        this.examId = examId;
     }
 
-    public void setExam_id(Integer exam_id) {
-        this.exam_id = exam_id;
+    public int getExamId() {
+        return examId;
     }
 
     public String getTitle() {
         return title;
     }
 
+    public String getSubject() {
+        return subject;
+    }
+
+    public String getSemester() {
+        return semester;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public int getClassId() {
+        return classId;
+    }
+
+    public void setExamId(int examId) {
+        this.examId = examId;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
 
-    @Override
-    public String toString() {
-        return "Exam{" +
-                "id=" + exam_id +
-                ", title='" + title + '\'' +
-                '}';
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setClassId(int classId) {
+        this.classId = classId;
     }
 }
