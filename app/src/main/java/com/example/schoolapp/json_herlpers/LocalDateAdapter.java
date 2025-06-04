@@ -1,4 +1,4 @@
-package com.example.schoolapp.json_helpers;
+package com.example.schoolapp.json_herlpers;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
