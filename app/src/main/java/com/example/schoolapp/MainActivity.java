@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 //        Intent intent = new Intent(MainActivity.this, UserSendMessage1.class);
 
         Intent intent = new Intent(MainActivity.this, SelectClass.class);
-        Teacher teacher = new Teacher(1, "John", "Smith", LocalDate.parse("1980-03-15"), "123 Elm St", "555-1001", Role.TEACHER, "Mathematics");
+        Teacher teacher = new Teacher(1, "John", "Smith", LocalDate.parse("1980-03-15"), "123 Elm St", "555-1001", Role.TEACHER, "Mathematics", 1);
         Log.d("Date", "Date Before: " + teacher.getBirthDate());
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new com.example.schoolapp.json_helpers.LocalDateAdapter()).create();
         String json = gson.toJson(teacher);
