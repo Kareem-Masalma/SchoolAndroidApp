@@ -45,6 +45,22 @@
             android:inputType="text" />
 
         <EditText
+            android:id="@+id/etDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/duration"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/etPercentage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/exam_percentage"
+            android:inputType="numberDecimal" />
+
+        <EditText
             android:id="@+id/etExamDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -5,23 +5,20 @@ import java.time.LocalDate;
 public class Exam {
     private int examId;
     private String title;
-    private String subject;
-    private String semester;
-    private int year;
+    private int subject;
     private LocalDate date;
-    private int classId;
+    private int duration;
+    private int percentage;
 
-    public Exam(String title, String subject, String semester, int year, LocalDate date, int classId) {
+    public Exam(String title, int subject, LocalDate date, int duration, int percentage) {
         this.title = title;
         this.subject = subject;
-        this.semester = semester;
-        this.year = year;
         this.date = date;
-        this.classId = classId;
+        this.duration = duration;
     }
 
-    public Exam(int examId, String title, String subject, String semester, int year, LocalDate date, int classId) {
-        this(title, subject, semester, year, date, classId);
+    public Exam(int examId, String title, int subject, LocalDate date, int duration, int percentage) {
+        this(title, subject, date, duration, percentage);
         this.examId = examId;
     }
 
@@ -33,24 +30,12 @@ public class Exam {
         return title;
     }
 
-    public String getSubject() {
+    public int getSubject() {
         return subject;
-    }
-
-    public String getSemester() {
-        return semester;
-    }
-
-    public int getYear() {
-        return year;
     }
 
     public LocalDate getDate() {
         return date;
-    }
-
-    public int getClassId() {
-        return classId;
     }
 
     public void setExamId(int examId) {
@@ -61,23 +46,27 @@ public class Exam {
         this.title = title;
     }
 
-    public void setSubject(String subject) {
+    public void setSubject(int subject) {
         this.subject = subject;
-    }
-
-    public void setSemester(String semester) {
-        this.semester = semester;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
     }
 
     public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public void setClassId(int classId) {
-        this.classId = classId;
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public int getPercentage() {
+        return percentage;
+    }
+
+    public void setPercentage(int percentage) {
+        this.percentage = percentage;
     }
 }

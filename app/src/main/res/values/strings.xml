@@ -95,4 +95,6 @@
     <string name="class_x">Class: X</string>
     <string name="mark">Mark</string>
     <string name="exam_date">Exam Date</string>
+    <string name="duration">Duration</string>
+    <string name="exam_percentage">Exam Percentage</string>
 </resources>

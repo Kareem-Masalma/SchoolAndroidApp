@@ -5,7 +5,9 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -20,12 +22,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schoolapp.adapters.StudentMarksAdapter;
+import com.example.schoolapp.data_access.ExamDA;
 import com.example.schoolapp.data_access.StudentDA;
 import com.example.schoolapp.data_access.StudentDAFactory;
 import com.example.schoolapp.data_access.SubjectDA;
 import com.example.schoolapp.data_access.SubjectDAFactory;
 import com.example.schoolapp.models.Class;
 import com.example.schoolapp.models.Student;
+import com.example.schoolapp.models.Exam;
 import com.example.schoolapp.models.StudentExamResult;
 import com.example.schoolapp.models.Subject;
 import com.google.gson.Gson;
@@ -40,11 +44,13 @@ public class ExamMarks extends AppCompatActivity {
 
     private TextView tvClass;
     private Spinner spSubject;
-    private EditText edTitle;
+    private EditText edTitle, edDuration, edPercentage;
     private RecyclerView rvStudents;
     private EditText etExamDate;
+    private Button btnPublish;
     private LocalDate examDate;
     private Class selectedClass;
+    private StudentMarksAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +67,66 @@ public class ExamMarks extends AppCompatActivity {
         getClassData();
         getSpinnerData();
         loadStudents();
+        addActionButton();
+    }
+
+    private void addActionButton() {
+        btnPublish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String examTitle = edTitle.getText().toString();
+                Subject subject = (Subject) spSubject.getSelectedItem();
+                int duration = Integer.parseInt(edDuration.getText().toString());
+                int percentage = Integer.parseInt(edPercentage.getText().toString());
+
+                if (examTitle.isEmpty()) {
+                    Toast.makeText(ExamMarks.this, "Title is required", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (examDate == null) {
+                    Toast.makeText(ExamMarks.this, "Please select a date", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (percentage >= 100 || percentage <= 0) {
+                    Toast.makeText(ExamMarks.this, "Choose a Valid Percentage", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+                Exam exam = new Exam(examTitle, subject.getSubjectId(), examDate, duration, percentage);
+
+                List<StudentExamResult> studentMarks = adapter.getStudentMarks();
+
+                boolean hasValidMark = false;
+                for (StudentExamResult res : studentMarks) {
+                    if (res.getMark() > 0) {
+                        hasValidMark = true;
+                        break;
+                    }
+                }
+                if (!hasValidMark) {
+                    Toast.makeText(ExamMarks.this, "Please enter at least one mark", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                ExamDA examDA = new ExamDA(ExamMarks.this);
+                examDA.publishExamResults(exam, studentMarks, new ExamDA.ExamCallback() {
+                    @Override
+                    public void onSuccess(String message) {
+                        Toast.makeText(ExamMarks.this, message, Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Toast.makeText(ExamMarks.this, error, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        });
     }
 
     private void loadStudents() {
@@ -75,7 +141,7 @@ public class ExamMarks extends AppCompatActivity {
                     );
                     results.add(result);
                 }
-                StudentMarksAdapter adapter = new StudentMarksAdapter(results);
+                adapter = new StudentMarksAdapter(results);
                 rvStudents.setAdapter(adapter);
             }
 
@@ -116,6 +182,9 @@ public class ExamMarks extends AppCompatActivity {
         this.spSubject = findViewById(R.id.spSubject);
         this.rvStudents = findViewById(R.id.rvStudentMarks);
         this.etExamDate = findViewById(R.id.etExamDate);
+        this.btnPublish = findViewById(R.id.btnPublish);
+        this.edDuration = findViewById(R.id.etDuration);
+        this.edPercentage = findViewById(R.id.etPercentage);
         this.etExamDate.setOnClickListener(v -> showDatePicker());
         this.rvStudents.setLayoutManager(new LinearLayoutManager(ExamMarks.this));
     }
@@ -126,14 +195,10 @@ public class ExamMarks extends AppCompatActivity {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this,
-                (view, selectedYear, selectedMonth, selectedDay) -> {
-                    examDate = LocalDate.of(selectedYear, selectedMonth + 1, selectedDay);
-                    etExamDate.setText(examDate.toString());
-                },
-                year, month, day
-        );
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, selectedYear, selectedMonth, selectedDay) -> {
+            examDate = LocalDate.of(selectedYear, selectedMonth + 1, selectedDay);
+            etExamDate.setText(examDate.toString());
+        }, year, month, day);
         datePickerDialog.show();
     }
 }
