@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f6712e54-6850-4889-b72d-68f6144c7e94" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/exam.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/ExamDA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/ExamMarks.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/ExamMarks.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/models/Exam.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/models/Exam.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/res/layout/activity_exam_marks.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/res/layout/activity_exam_marks.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/res/values/strings.xml" afterDir="false" />
-    </list>
+    <list default="true" id="f6712e54-6850-4889-b72d-68f6144c7e94" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
