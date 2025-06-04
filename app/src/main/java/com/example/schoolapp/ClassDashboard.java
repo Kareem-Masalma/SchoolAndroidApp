@@ -83,7 +83,11 @@ public class ClassDashboard extends AppCompatActivity {
         btnSubjects.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
+                Intent intent = new Intent(ClassDashboard.this, TeacherClassSubjectsActivity.class);
+                Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new com.example.schoolapp.json_helpers.LocalDateAdapter()).create();
+                String classString = gson.toJson(selectedClass);
+                intent.putExtra(AddSchedule.CLASS, classString);
+                startActivity(intent);
             }
         });
 

@@ -1,6 +1,7 @@
 package com.example.schoolapp.data_access;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -127,7 +128,7 @@ public class SubjectDA implements ISubjectDA {
     }
 
     public void getClassTeacherSubject(int class_id, int teacher_id, ClassSubjectCallback cb) {
-        String url = BASE + "?class_id=" + class_id + "&SubjectDAuser_id=" + teacher_id;
+        String url = BASE + "?class_id=" + class_id + "&user_id=" + teacher_id;
         JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, url, null,
                 resp -> {
                     try {

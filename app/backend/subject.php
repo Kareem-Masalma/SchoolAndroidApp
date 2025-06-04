@@ -38,7 +38,7 @@ try {
                 $user_id = (int)$_GET['user_id'];
 
                 $stmt = $conn->prepare("
-                    SELECT s.*
+                    SELECT *
                     FROM subject s
                     JOIN schedule_subject ss ON ss.subject_id = s.subject_id
                     JOIN class c ON s.class_id = c.class_id

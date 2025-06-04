@@ -53,7 +53,7 @@ public class TeacherClassSubjectsActivity extends AppCompatActivity {
     private void defineViews() {
         tvClass = findViewById(R.id.tvClass);
         tvClassId = findViewById(R.id.tvClassId);
-        rvSubjects = findViewById(R.id.rvStudents);
+        rvSubjects = findViewById(R.id.rvSubjects);
         rvSubjects.setLayoutManager(new LinearLayoutManager(this));
     }
 
