@@ -1,6 +1,7 @@
 package com.example.schoolapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ public class SubmitAssignmentActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submit_assignment);
+
 
         submitAssignmentDA = new SubmitAssignmentDA(this);
 
@@ -85,24 +87,39 @@ public class SubmitAssignmentActivity extends AppCompatActivity {
 
         btnSend.setOnClickListener(v -> {
             String details = editDetails.getText().toString().trim();
-            submitAssignmentDA.submitAssignment(
-                    classTitle, // use the separate value
-                    assignment.getTitle(),
-                    details,
-                    selectedFileUris,
-                    new ISubmitAssignmentDA.BaseCallback() {
-                        @Override
-                        public void onSuccess(String message) {
-                            Toast.makeText(SubmitAssignmentActivity.this, message, Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
 
-                        @Override
-                        public void onError(String error) {
-                            Toast.makeText(SubmitAssignmentActivity.this, error, Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
+            int studentId = prefs.getInt("user_id", -1);
+
+            if (studentId == -1) {
+                showErrorDialog("Student ID not found. Please log in again.");
+                return;
+            }
+
+            // Update DA with method that accepts studentId
+            if (submitAssignmentDA instanceof SubmitAssignmentDA) {
+                ((SubmitAssignmentDA) submitAssignmentDA).submitAssignment(
+                        studentId,
+                        assignment.getTitle(),
+                        details,
+                        selectedFileUris,
+                        new ISubmitAssignmentDA.BaseCallback() {
+                            @Override
+                            public void onSuccess(String message) {
+                                Toast.makeText(SubmitAssignmentActivity.this, message, Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+
+                            @Override
+                            public void onError(String error) {
+                                Toast.makeText(SubmitAssignmentActivity.this, error, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            } else {
+                showErrorDialog("Data access error. Please try again.");
+            }
         });
+
 
         btnCancel.setOnClickListener(v -> finish());
     }
@@ -116,4 +133,12 @@ public class SubmitAssignmentActivity extends AppCompatActivity {
         } catch (Exception ignored) {}
         return uri.getLastPathSegment();
     }
+    private void showErrorDialog(String message) {
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("Submission Error")
+                .setMessage(message)
+                .setPositiveButton("OK", null)
+                .show();
+    }
+
 }

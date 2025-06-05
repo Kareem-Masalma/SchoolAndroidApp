@@ -3,21 +3,30 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="16dp">
 
+    <!-- Section Header -->
     <TextView
         android:id="@+id/textTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Assignments"
-        android:textSize="20sp"
+        android:text="@string/assignments"
+        android:textSize="22sp"
         android:textStyle="bold"
-        android:paddingBottom="8dp" />
+        android:textColor="@color/role_green"
+        android:paddingTop="8dp"
+        android:layout_marginBottom="12dp"
+        android:gravity="center"
+        android:textAlignment="center" />
 
+
+    <!-- Assignment RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerAssignments"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:scrollbars="vertical" />
 </LinearLayout>

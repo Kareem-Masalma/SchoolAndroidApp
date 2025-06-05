@@ -19,7 +19,7 @@ public class SubmitAssignmentDA implements ISubmitAssignmentDA {
 
     private final Context context;
     private final RequestQueue queue;
-    private final String BASE_URL = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/student_assignment_result.php";
+    private final String BASE_URL = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/assignment.php";
 
     public SubmitAssignmentDA(Context context) {
         this.context = context;
@@ -27,14 +27,20 @@ public class SubmitAssignmentDA implements ISubmitAssignmentDA {
     }
 
     @Override
-    public void submitAssignment(String classTitle, String title, String details, List<Uri> files, BaseCallback callback) {
+    public void submitAssignment(int studentId, String assignmentTitle, String details, List<Uri> files, BaseCallback callback) {
+        if (studentId == -1) {
+            callback.onError("User not logged in or student ID not found.");
+            return;
+        }
+
         JSONObject json = new JSONObject();
         try {
             json.put("mode", "submit");
-            json.put("class_title", classTitle);
-            json.put("title", title);
+            json.put("student_id", studentId);
+            json.put("assignment_title", assignmentTitle);
             json.put("details", details);
 
+            // File handling
             if (!files.isEmpty()) {
                 Uri fileUri = files.get(0);
                 byte[] fileBytes = readBytes(fileUri);
@@ -46,12 +52,18 @@ public class SubmitAssignmentDA implements ISubmitAssignmentDA {
             }
 
         } catch (JSONException e) {
-            callback.onError("Failed to create JSON");
+            callback.onError("Failed to create JSON: " + e.getMessage());
             return;
         }
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL, json,
-                response -> callback.onSuccess("Assignment submitted successfully"),
+                response -> {
+                    if (response.optBoolean("success", false)) {
+                        callback.onSuccess(response.optString("message", "Assignment submitted successfully."));
+                    } else {
+                        callback.onError("Server error: " + response.optString("error", "Unknown server error."));
+                    }
+                },
                 error -> {
                     String errorMsg = "Unknown error";
                     if (error.networkResponse != null) {
@@ -76,20 +88,39 @@ public class SubmitAssignmentDA implements ISubmitAssignmentDA {
 
     @Override
     public void findSubmissionById(int id, SingleSubmissionCallback callback) {
-        String url = BASE_URL + "?mode=find&id=" + id;
+        String url = BASE_URL + "?mode=find_submission&id=" + id;
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                callback::onSuccess,
+                response -> {
+                    if (response != null && response.length() > 0) {
+                        callback.onSuccess(response.toString());
+                    } else {
+                        callback.onError("No submission found.");
+                    }
+                },
                 error -> {
-                    String errorMsg = "Failed to fetch submission by ID";
+                    String errorMsg = "Failed to fetch submission";
                     if (error.networkResponse != null) {
                         errorMsg += ": " + error.networkResponse.statusCode;
+                        try {
+                            errorMsg += ", " + new String(error.networkResponse.data);
+                        } catch (Exception ignored) {}
                     }
                     callback.onError(errorMsg);
-                });
+                    Log.e("SubmitAssignmentDA", errorMsg, error);
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+        };
 
         queue.add(request);
     }
+
+
 
     @Override
     public void getAllSubmissions(SubmissionListCallback callback) {

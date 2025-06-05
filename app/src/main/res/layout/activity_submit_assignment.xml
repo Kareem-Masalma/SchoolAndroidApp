@@ -49,10 +49,14 @@
             <EditText
                 android:id="@+id/editDetails"
                 style="@style/FormEditText"
-                android:layout_height="100dp"
-                android:gravity="top"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
                 android:hint="@string/enter_assignment_details"
-                android:inputType="textMultiLine" />
+                android:gravity="top"
+                android:inputType="textMultiLine"
+                android:background="@drawable/edittext_border"
+                android:padding="12dp"
+                android:layout_marginTop="4dp"/>
 
             <!-- File Upload -->
             <TextView

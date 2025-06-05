@@ -2,11 +2,9 @@ package com.example.schoolapp;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.OpenableColumns;
 import android.view.View;
 import android.widget.*;
@@ -24,7 +22,6 @@ import com.example.schoolapp.models.Teacher;
 import com.example.schoolapp.models.Class;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 
 import org.json.JSONObject;
 
@@ -71,17 +68,15 @@ public class SendAssignmentActivity extends AppCompatActivity {
 
         spinnerSubjectContainer.setOnClickListener(v -> spinnerSubject.performClick());
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String userJson = prefs.getString(Login.LOGGED_IN_USER, null);
+        // --- Deserialize Teacher and Class from Intent Extras ---
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
-
-        Teacher teacher = gson.fromJson(userJson, Teacher.class);  // Assumes user is a teacher
-
-        Intent intent1 = getIntent();
-        String classString = intent1.getStringExtra(AddSchedule.CLASS);
+        Intent intent = getIntent();
+        String teacherString = intent.getStringExtra(AddSchedule.TEACHER);
+        String classString = intent.getStringExtra(AddSchedule.CLASS);
+        Teacher teacher = gson.fromJson(teacherString, Teacher.class);
         Class selectClass = gson.fromJson(classString, Class.class);
 
-
+        // --- Load subjects for teacher and selected class ---
         SubjectDA subjectDA = new SubjectDA(this);
         subjectDA.getClassTeacherSubject(selectClass.getClassId(), teacher.getUser_id(), new SubjectDA.ClassSubjectCallback() {
             @Override
@@ -94,10 +89,11 @@ public class SendAssignmentActivity extends AppCompatActivity {
 
             @Override
             public void onError(String error) {
+                Toast.makeText(SendAssignmentActivity.this, "Failed to load subjects", Toast.LENGTH_SHORT).show();
             }
         });
 
-
+        // --- Deadline Picker ---
         View.OnClickListener deadlinePicker = v -> {
             Calendar calendar = Calendar.getInstance();
             DatePickerDialog dialog = new DatePickerDialog(
@@ -117,15 +113,17 @@ public class SendAssignmentActivity extends AppCompatActivity {
         editDeadline.setOnClickListener(deadlinePicker);
         deadlineField.setOnClickListener(deadlinePicker);
 
+        // --- File Picker ---
         btnSelectFile.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.setType("*/*");
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-            startActivityForResult(Intent.createChooser(intent, "Select File"), PICK_FILE_REQUEST_CODE);
+            Intent fileIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            fileIntent.setType("*/*");
+            fileIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
+            fileIntent.addCategory(Intent.CATEGORY_OPENABLE);
+            fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+            startActivityForResult(Intent.createChooser(fileIntent, "Select File"), PICK_FILE_REQUEST_CODE);
         });
 
+        // --- Submit Assignment ---
         btnSend.setOnClickListener(v -> {
             String title = editTitle.getText().toString().trim();
             String details = editDetails.getText().toString().trim();
@@ -158,7 +156,6 @@ public class SendAssignmentActivity extends AppCompatActivity {
                 editDeadline.setError("Deadline must be today or in the future"); return;
             }
 
-
             assignmentDA.sendAssignment(
                     title,
                     details,
@@ -184,6 +181,7 @@ public class SendAssignmentActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(v -> finish());
     }
 
+    // --- Handle file picker result ---
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

@@ -23,7 +23,7 @@ public class AssignmentListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private AssignmentAdapter adapter;
     private List<Assignment> assignmentList = new ArrayList<>();
-    private Map<Assignment, String> classTitleMap = new HashMap<>(); // NEW
+    private Map<Assignment, String> classTitleMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class AssignmentListActivity extends AppCompatActivity {
             Gson gson = new GsonBuilder()
                     .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                     .create();
-            intent.putExtra("ASSIGNMENT_JSON", new Gson().toJson(assignment));
+            intent.putExtra("ASSIGNMENT_JSON", gson.toJson(assignment));
             intent.putExtra("CLASS_TITLE", classTitle); // send it separately
             startActivity(intent);
         });
@@ -54,7 +54,7 @@ public class AssignmentListActivity extends AppCompatActivity {
                         Gson gson = new GsonBuilder()
                                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                                 .create();
-                        Assignment assignment = new Gson().fromJson(obj.toString(), Assignment.class);
+                        Assignment assignment = gson.fromJson(obj.toString(), Assignment.class);
                         assignmentList.add(assignment);
                         // Extract and store class title
                         if (obj.has("class_title")) {

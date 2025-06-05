@@ -86,20 +86,23 @@ public class AssignmentDA implements IAssignmentDA {
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
-                    List<JSONObject> assignments = new ArrayList<>();
+                    List<JSONObject> result = new ArrayList<>();
                     for (int i = 0; i < response.length(); i++) {
                         try {
-                            assignments.add(response.getJSONObject(i));
+                            result.add(response.getJSONObject(i));
                         } catch (JSONException e) {
-                            callback.onError("Invalid data at index " + i);
+                            callback.onError("Invalid JSON at index " + i);
                             return;
                         }
                     }
-                    callback.onSuccess(assignments);
+                    callback.onSuccess(result);
                 },
-                error -> callback.onError("Failed to fetch assignments")
+                error -> {
+                    String msg = "Failed to fetch assignments";
+                    Log.e("AssignmentDA", msg, error);
+                    callback.onError(msg);
+                }
         );
-
         queue.add(request);
     }
 

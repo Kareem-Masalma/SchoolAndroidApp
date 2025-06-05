@@ -66,4 +66,12 @@
     <string name="cancel_sub">Cancel</string>
     <string name="add_sub">Add</string>
     <string name="add_subject">Add Subject</string>
+    <string name="assignment_title">Assignment Title</string>
+    <string name="deadline_list">Deadline</string>
+    <string name="assignment_details">Assignment Details</string>
+    <string name="class_details">Class</string>
+    <string name="title_details">Title</string>
+    <string name="deadline_details">Deadline</string>
+    <string name="assignment_details_details">Assignment Details:</string>
+    <string name="assignments">Assignments</string>
 </resources>

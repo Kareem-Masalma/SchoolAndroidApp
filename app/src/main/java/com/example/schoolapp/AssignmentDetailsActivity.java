@@ -31,7 +31,7 @@ public class AssignmentDetailsActivity extends AppCompatActivity {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .create();
-        Assignment assignment = new Gson().fromJson(json, Assignment.class);
+        Assignment assignment =gson.fromJson(json, Assignment.class);
 
         // Set text
         textClass.setText("Class: " + classTitle);

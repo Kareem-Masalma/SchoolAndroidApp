@@ -79,23 +79,41 @@ if (isset($_GET['mode']) && $_GET['mode'] === 'all_submissions') {
         }
 
         // Default: return only active assignments (end_date today or in future)
-        $result = $conn->query("SELECT * FROM assignment WHERE end_date >= CURDATE()");
-        echo json_encode($result ? $result->fetch_all(MYSQLI_ASSOC) : []);
+if (isset($_GET['mode']) && $_GET['mode'] === 'all') {
+     $sql = "SELECT 
+                a.*, 
+                s.title AS subject_title,
+                c.class_name AS class_title 
+            FROM assignment a
+            JOIN subject s ON a.subject_id = s.subject_id
+            JOIN class c ON s.class_id = c.class_id
+            WHERE a.end_date >= CURDATE()";
+
+    $result = $conn->query($sql);
+    $assignments = [];
+    while ($row = $result->fetch_assoc()) {
+        $assignments[] = $row;
+    }
+    echo json_encode($assignments);
+    return;
+}
+
 
     }
 
     // --- SUBMIT ASSIGNMENT ---
     if ($input['mode'] === 'submit') {
-        foreach (['class_title', 'title', 'details'] as $key) {
-            if (empty($input[$key])) throw new Exception("Missing field: $key");
-        }
+    foreach (['student_id', 'assignment_title', 'details'] as $key) {
+        if (empty($input[$key])) throw new Exception("Missing field: $key");
+    }
 
-    $classTitle = $input['class_title'];
-    $title = $input['title'];
+    $studentId = intval($input['student_id']);
+    $assignmentTitle = $input['assignment_title'];
     $details = $input['details'];
     $fileData = $input['file_data'] ?? null;
     $fileName = $input['file_name'] ?? null;
 
+    // Upload file
     $filePath = null;
     if ($fileData && $fileName) {
         $uploadDir = __DIR__ . "/uploads/";
@@ -104,51 +122,84 @@ if (isset($_GET['mode']) && $_GET['mode'] === 'all_submissions') {
         $filePath = "uploads/" . basename($fileName);
     }
 
+    // Get assignment_id
+    $stmt = $conn->prepare("SELECT assignment_id FROM assignment WHERE title = ?");
+    $stmt->bind_param("s", $assignmentTitle);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows === 0) throw new Exception("Assignment not found");
+    $assignmentId = $result->fetch_assoc()['assignment_id'];
+
+    // Insert into student_assignment_submission
     $stmt = $conn->prepare("
-        INSERT INTO student_assignment_result (student_id, assignment_id, score)
-        VALUES (?, ?, ?)
-        ON DUPLICATE KEY UPDATE score = VALUES(score)
+        INSERT INTO student_assignment_submission (student_id, assignment_id, file_path, details)
+    VALUES (?, ?, ?, ?)
+    ON DUPLICATE KEY UPDATE 
+        file_path = VALUES(file_path), 
+        details = VALUES(details),
+        submitted_at = NOW()
     ");
-    $stmt->bind_param("ssss", $classTitle, $title, $details, $filePath);
+    $stmt->bind_param("iiss", $studentId, $assignmentId, $filePath, $details);
     $stmt->execute();
 
-    echo json_encode(["success" => true, "message" => "Submission recorded", "id" => $conn->insert_id]);
-    return;
-    }
+    echo json_encode(["success" => true, "message" => "Submission recorded"]);
+    exit;
+}
 
-    // --- UPDATE SUBMISSION ---
+
+  // --- UPDATE SUBMISSION ---
 if ($input['mode'] === 'update_submission') {
-    foreach (['student_id', 'assignment_id', 'score'] as $key) {
+    foreach (['student_id', 'assignment_id', 'details'] as $key) {
         if (!isset($input[$key])) throw new Exception("Missing field: $key");
     }
 
     $studentId = intval($input['student_id']);
     $assignmentId = intval($input['assignment_id']);
-    $score = floatval($input['score']);
+    $details = $input['details'];
+    $fileData = $input['file_data'] ?? null;
+    $fileName = $input['file_name'] ?? null;
+    $filePath = null;
 
-    $stmt = $conn->prepare("
-        UPDATE student_assignment_result
-        SET score = ?
-        WHERE student_id = ? AND assignment_id = ?
-    ");
-    $stmt->bind_param("dii", $score, $studentId, $assignmentId);
+    if ($fileData && $fileName) {
+        $uploadDir = __DIR__ . "/uploads/";
+        if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+        file_put_contents($uploadDir . basename($fileName), base64_decode($fileData));
+        $filePath = "uploads/" . basename($fileName);
+    }
+
+    if ($filePath) {
+        $stmt = $conn->prepare("
+            UPDATE student_assignment_submission
+            SET file_path = ?, details = ?, submitted_at = NOW()
+            WHERE student_id = ? AND assignment_id = ?
+        ");
+        $stmt->bind_param("ssii", $filePath, $details, $studentId, $assignmentId);
+    } else {
+        $stmt = $conn->prepare("
+            UPDATE student_assignment_submission
+            SET details = ?, submitted_at = NOW()
+            WHERE student_id = ? AND assignment_id = ?
+        ");
+        $stmt->bind_param("sii", $details, $studentId, $assignmentId);
+    }
+
     $stmt->execute();
-
-    echo json_encode(["success" => true, "message" => "Submission score updated"]);
+    echo json_encode(["success" => true, "message" => "Submission updated"]);
     return;
 }
 
 
     // --- DELETE SUBMISSION ---
-    if ($input['mode'] === 'delete_submission') {
-        if (!isset($input['id'])) throw new Exception("Missing submission ID for deletion");
-        $id = intval($input['id']);
-        $stmt = $conn->prepare("DELETE FROM student_assignment_result WHERE id = ?");
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        echo json_encode(["success" => true, "message" => "Submission deleted"]);
-        return;
-    }
+if ($input['mode'] === 'delete_submission') {
+    if (!isset($input['id'])) throw new Exception("Missing submission ID for deletion");
+    $id = intval($input['id']);
+    $stmt = $conn->prepare("DELETE FROM student_assignment_submission WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    echo json_encode(["success" => true, "message" => "Submission deleted"]);
+    return;
+}
+
 
     elseif ($method === 'POST') {
         if (!isset($input['mode'])) throw new Exception("Missing mode");
