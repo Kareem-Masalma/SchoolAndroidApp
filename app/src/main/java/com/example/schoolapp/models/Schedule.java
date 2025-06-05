@@ -54,7 +54,7 @@ public class Schedule {
         int start2 = getMinutes(newSchedule.getStartTime());
         int end2 = getMinutes(newSchedule.getEndTime());
 
-        return start2 < end1 && end2 > start1;
+        return start2 < end1 && end2 > start1 && curr.getSemester().equalsIgnoreCase(newSchedule.getSemester());
     }
 
 

@@ -43,7 +43,7 @@
         <Button
             android:id="@+id/btnSubjects"
             style="@style/GridButtonStyle"
-            android:text="@string/subjects" />
+            android:text="@string/class_subjects" />
 
         <Button
             android:id="@+id/btnSchedule"

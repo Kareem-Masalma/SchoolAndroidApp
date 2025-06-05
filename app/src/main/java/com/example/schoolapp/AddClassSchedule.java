@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -31,7 +30,6 @@ import com.example.schoolapp.models.Class;
 import com.example.schoolapp.models.Schedule;
 import com.example.schoolapp.models.ScheduleSubject;
 import com.example.schoolapp.models.Subject;
-import com.example.schoolapp.models.Teacher;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -79,7 +77,6 @@ public class AddClassSchedule extends AppCompatActivity {
 
         TimePickerDialog timePicker = new TimePickerDialog(this,
                 (view, selectedHour, selectedMinute) -> {
-                    // Format to HH:mm
                     String formatted = String.format(Locale.getDefault(), "%02d:%02d", selectedHour, selectedMinute);
                     targetEditText.setText(formatted);
                 },
