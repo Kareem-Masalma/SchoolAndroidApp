@@ -11,22 +11,20 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-
 import com.example.schoolapp.data_access.ISubmitAssignmentDA;
 import com.example.schoolapp.data_access.SubmitAssignmentDA;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.example.schoolapp.models.Assignment;
+import com.google.gson.Gson;
+import java.util.*;
 
 public class SubmitAssignmentActivity extends AppCompatActivity {
-
-    private Spinner spinnerClass, spinnerAssignment;
+    private TextView textAssignmentTitle, textSelectedFile;
     private EditText editDetails;
     private Button btnSelectFile, btnSend, btnCancel;
-    private TextView textSelectedFile;
     private ISubmitAssignmentDA submitAssignmentDA;
-
     private List<Uri> selectedFileUris = new ArrayList<>();
+    private Assignment assignment;
+    private String classTitle; // NEW: get it from intent
 
     private ActivityResultLauncher<Intent> filePickerLauncher;
 
@@ -39,24 +37,21 @@ public class SubmitAssignmentActivity extends AppCompatActivity {
         submitAssignmentDA = new SubmitAssignmentDA(this);
 
         // Bind views
-        spinnerClass = findViewById(R.id.spinnerClass);
-        spinnerAssignment = findViewById(R.id.spinnerAssignment);
+        textAssignmentTitle = findViewById(R.id.textAssignmentTitle);
         editDetails = findViewById(R.id.editDetails);
+        textSelectedFile = findViewById(R.id.textSelectedFile);
         btnSelectFile = findViewById(R.id.btnSelectFile);
         btnSend = findViewById(R.id.btnSend);
         btnCancel = findViewById(R.id.btnCancel);
-        textSelectedFile = findViewById(R.id.textSelectedFile);
 
-        // Dummy spinner data (replace with real API later)
-        ArrayAdapter<String> classAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new String[]{"Select Class", "10-A", "10-B"});
-        classAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerClass.setAdapter(classAdapter);
+        // Get assignment and classTitle separately
+        assignment = new Gson().fromJson(getIntent().getStringExtra("ASSIGNMENT_JSON"), Assignment.class);
+        classTitle = getIntent().getStringExtra("CLASS_TITLE"); // pass this from previous screen
 
-        ArrayAdapter<String> assignmentAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new String[]{"Select Assignment", "Homework 1", "Project X"});
-        assignmentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerAssignment.setAdapter(assignmentAdapter);
+        // Show assignment title
+        textAssignmentTitle.setText("Submitting: " + assignment.getTitle());
 
-        // File picker
+        // File picker setup
         filePickerLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                 selectedFileUris.clear();
@@ -80,40 +75,27 @@ public class SubmitAssignmentActivity extends AppCompatActivity {
         });
 
         btnSend.setOnClickListener(v -> {
-            String classSelected = spinnerClass.getSelectedItem().toString();
-            String assignmentSelected = spinnerAssignment.getSelectedItem().toString();
             String details = editDetails.getText().toString().trim();
+            submitAssignmentDA.submitAssignment(
+                    classTitle, // use the separate value
+                    assignment.getTitle(),
+                    details,
+                    selectedFileUris,
+                    new ISubmitAssignmentDA.BaseCallback() {
+                        @Override
+                        public void onSuccess(String message) {
+                            Toast.makeText(SubmitAssignmentActivity.this, message, Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
 
-            if (classSelected.equals("Select Class") || assignmentSelected.equals("Select Assignment")) {
-                Toast.makeText(this, "Please select class and assignment", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            submitAssignmentDA.submitAssignment(classSelected, assignmentSelected, details, selectedFileUris, new ISubmitAssignmentDA.BaseCallback() {
-                @Override
-                public void onSuccess(String message) {
-                    Toast.makeText(SubmitAssignmentActivity.this, message, Toast.LENGTH_SHORT).show();
-                    clearForm();
-                }
-
-                @Override
-                public void onError(String error) {
-                    Toast.makeText(SubmitAssignmentActivity.this, error, Toast.LENGTH_SHORT).show();
-                }
-            });
-
+                        @Override
+                        public void onError(String error) {
+                            Toast.makeText(SubmitAssignmentActivity.this, error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
         });
 
         btnCancel.setOnClickListener(v -> finish());
-    }
-
-    private void clearForm() {
-        spinnerClass.setSelection(0);
-        spinnerAssignment.setSelection(0);
-        editDetails.setText("");
-        textSelectedFile.setText("");
-        textSelectedFile.setVisibility(View.GONE);
-        selectedFileUris.clear();
     }
 
     private String getFileName(Uri uri) {

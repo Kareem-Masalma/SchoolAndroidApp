@@ -13,6 +13,24 @@ $input = json_decode(file_get_contents('php://input'), true);
 try {
     if ($method === 'GET') {
 
+        // --- FIND SUBMISSION BY ID ---
+if (isset($_GET['mode']) && $_GET['mode'] === 'find_submission' && isset($_GET['id'])) {
+    $id = intval($_GET['id']);
+    $stmt = $conn->prepare("SELECT * FROM student_assignment_result WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    echo json_encode($stmt->get_result()->fetch_assoc());
+    return;
+}
+
+// --- GET ALL SUBMISSIONS ---
+if (isset($_GET['mode']) && $_GET['mode'] === 'all_submissions') {
+    $result = $conn->query("SELECT * FROM student_assignment_result ORDER BY id DESC");
+    echo json_encode($result ? $result->fetch_all(MYSQLI_ASSOC) : []);
+    return;
+}
+
+
         if (isset($_GET['mode']) && $_GET['mode'] === 'subject') {
             if (!isset($_GET['teacher_id'])) {
                 throw new Exception("Missing teacher_id");
@@ -60,9 +78,76 @@ try {
             return;
         }
 
-        // Default: return all assignments
-        $result = $conn->query("SELECT * FROM assignment");
+        // Default: return only active assignments (end_date today or in future)
+        $result = $conn->query("SELECT * FROM assignment WHERE end_date >= CURDATE()");
         echo json_encode($result ? $result->fetch_all(MYSQLI_ASSOC) : []);
+
+    }
+
+    // --- SUBMIT ASSIGNMENT ---
+    if ($input['mode'] === 'submit') {
+        foreach (['class_title', 'title', 'details'] as $key) {
+            if (empty($input[$key])) throw new Exception("Missing field: $key");
+        }
+
+    $classTitle = $input['class_title'];
+    $title = $input['title'];
+    $details = $input['details'];
+    $fileData = $input['file_data'] ?? null;
+    $fileName = $input['file_name'] ?? null;
+
+    $filePath = null;
+    if ($fileData && $fileName) {
+        $uploadDir = __DIR__ . "/uploads/";
+        if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+        file_put_contents($uploadDir . basename($fileName), base64_decode($fileData));
+        $filePath = "uploads/" . basename($fileName);
+    }
+
+    $stmt = $conn->prepare("
+        INSERT INTO student_assignment_result (student_id, assignment_id, score)
+        VALUES (?, ?, ?)
+        ON DUPLICATE KEY UPDATE score = VALUES(score)
+    ");
+    $stmt->bind_param("ssss", $classTitle, $title, $details, $filePath);
+    $stmt->execute();
+
+    echo json_encode(["success" => true, "message" => "Submission recorded", "id" => $conn->insert_id]);
+    return;
+    }
+
+    // --- UPDATE SUBMISSION ---
+if ($input['mode'] === 'update_submission') {
+    foreach (['student_id', 'assignment_id', 'score'] as $key) {
+        if (!isset($input[$key])) throw new Exception("Missing field: $key");
+    }
+
+    $studentId = intval($input['student_id']);
+    $assignmentId = intval($input['assignment_id']);
+    $score = floatval($input['score']);
+
+    $stmt = $conn->prepare("
+        UPDATE student_assignment_result
+        SET score = ?
+        WHERE student_id = ? AND assignment_id = ?
+    ");
+    $stmt->bind_param("dii", $score, $studentId, $assignmentId);
+    $stmt->execute();
+
+    echo json_encode(["success" => true, "message" => "Submission score updated"]);
+    return;
+}
+
+
+    // --- DELETE SUBMISSION ---
+    if ($input['mode'] === 'delete_submission') {
+        if (!isset($input['id'])) throw new Exception("Missing submission ID for deletion");
+        $id = intval($input['id']);
+        $stmt = $conn->prepare("DELETE FROM student_assignment_result WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        echo json_encode(["success" => true, "message" => "Submission deleted"]);
+        return;
     }
 
     elseif ($method === 'POST') {
@@ -78,6 +163,22 @@ try {
             $subject_id = intval($input['subject']);
             $deadline = $input['deadline'];
             $percentage = floatval($input['percentage']);
+
+            $stmt = $conn->prepare("SELECT accumulated_percentage FROM subject WHERE subject_id = ?");
+        $stmt->bind_param("i", $subject_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows === 0) {
+            throw new Exception("Subject not found");
+        }
+
+        $accumulated = floatval($result->fetch_assoc()['accumulated_percentage']);
+
+        if ($accumulated + $percentage > 100) {
+            throw new Exception("Cannot add assignment. Total accumulated percentage will exceed 100%. Current: $accumulated%. Reduce assignment percentage.");
+        }
+
             $fileData = $input['file_data'] ?? null;
             $fileName = $input['file_name'] ?? null;
 
@@ -97,6 +198,11 @@ try {
                 VALUES (?, ?, ?, ?, ?, ?)
             ");
             $stmt->bind_param("issssd", $subject_id, $title, $details, $startDate, $deadline, $percentage);
+            $stmt->execute();
+
+            $newTotal = $accumulated + $percentage;
+            $stmt = $conn->prepare("UPDATE subject SET accumulated_percentage = ? WHERE subject_id = ?");
+            $stmt->bind_param("di", $newTotal, $subject_id);
             $stmt->execute();
 
             echo json_encode(['success' => true, 'message' => 'Assignment added', 'assignment_id' => $conn->insert_id]);

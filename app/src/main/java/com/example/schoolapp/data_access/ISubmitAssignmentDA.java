@@ -14,4 +14,14 @@ public interface ISubmitAssignmentDA {
         void onSuccess(String message);
         void onError(String error);
     }
+
+    interface SingleSubmissionCallback {
+        void onSuccess(org.json.JSONObject submission);
+        void onError(String error);
+    }
+
+    interface SubmissionListCallback {
+        void onSuccess(List<org.json.JSONObject> submissions);
+        void onError(String error);
+    }
 }

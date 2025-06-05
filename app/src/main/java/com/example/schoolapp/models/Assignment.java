@@ -6,6 +6,8 @@ public class Assignment {
     private Integer assignment_id;
     private Integer subject_id;
     private String title;
+    private String details;
+
     private LocalDate start_date;
     private LocalDate end_date;
     private float percentage_of_grade;
@@ -19,6 +21,24 @@ public class Assignment {
         this.start_date = start_date;
         this.end_date = end_date;
         this.percentage_of_grade = percentage_of_grade;
+    }
+
+    public Assignment(Integer assignment_id, Integer subject_id, String title, String details, LocalDate start_date, LocalDate end_date, float percentage_of_grade) {
+        this.assignment_id = assignment_id;
+        this.subject_id = subject_id;
+        this.title = title;
+        this.details = details;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.percentage_of_grade = percentage_of_grade;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
     }
 
     public Integer getAssignment_id() {

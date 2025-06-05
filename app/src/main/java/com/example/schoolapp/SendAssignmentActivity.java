@@ -2,9 +2,11 @@ package com.example.schoolapp;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.OpenableColumns;
 import android.view.View;
 import android.widget.*;
@@ -16,13 +18,17 @@ import androidx.appcompat.app.AppCompatDelegate;
 import com.example.schoolapp.data_access.AssignmentDA;
 import com.example.schoolapp.data_access.IAssignmentDA;
 import com.example.schoolapp.data_access.SubjectDA;
+import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.Subject;
 import com.example.schoolapp.models.Teacher;
 import com.example.schoolapp.models.Class;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 
 import org.json.JSONObject;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -65,13 +71,16 @@ public class SendAssignmentActivity extends AppCompatActivity {
 
         spinnerSubjectContainer.setOnClickListener(v -> spinnerSubject.performClick());
 
-        Intent intent1 = getIntent();
-        String teacherString = intent1.getStringExtra(AddSchedule.TEACHER);
-        String classString = intent1.getStringExtra(AddSchedule.CLASS);
-        Gson gson = new Gson();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String userJson = prefs.getString(Login.LOGGED_IN_USER, null);
+        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
 
-        Teacher teacher = gson.fromJson(teacherString, Teacher.class);
+        Teacher teacher = gson.fromJson(userJson, Teacher.class);  // Assumes user is a teacher
+
+        Intent intent1 = getIntent();
+        String classString = intent1.getStringExtra(AddSchedule.CLASS);
         Class selectClass = gson.fromJson(classString, Class.class);
+
 
         SubjectDA subjectDA = new SubjectDA(this);
         subjectDA.getClassTeacherSubject(selectClass.getClassId(), teacher.getUser_id(), new SubjectDA.ClassSubjectCallback() {

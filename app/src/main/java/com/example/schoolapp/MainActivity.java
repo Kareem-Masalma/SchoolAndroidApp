@@ -10,10 +10,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.Class;
 import com.example.schoolapp.models.Role;
 import com.example.schoolapp.models.Teacher;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.time.LocalDate;
 
@@ -44,10 +46,11 @@ public class MainActivity extends AppCompatActivity {
 
 //        Intent intent = new Intent(MainActivity.this, TeacherSendMessage1.class);
 
+
         Intent intent = new Intent(MainActivity.this,SendAssignmentActivity.class);
         Class sClass = new Class(1, "10-A", 1, "John",11);
         Teacher teacher = new Teacher(1,"Joan","Smith", LocalDate.parse("1980-03-15"), "123 Elm St","555-1001", Role.TEACHER,"Mathematics");
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
         String json = gson.toJson(teacher);
         intent.putExtra(AddSchedule.TEACHER, json);
         String json1 = gson.toJson(sClass);
