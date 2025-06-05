@@ -1,11 +1,15 @@
 package com.example.schoolapp;
 
 import android.content.Intent;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.schoolapp.data_access.DA_Config;
 import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.Assignment;
 import com.google.gson.Gson;
@@ -22,6 +26,8 @@ public class AssignmentDetailsActivity extends AppCompatActivity {
         TextView textClass = findViewById(R.id.textClassTitle);
         TextView textTitle = findViewById(R.id.textTitle);
         TextView textDeadline = findViewById(R.id.textDeadline);
+        TextView textFile = findViewById(R.id.textFile);
+        textFile.setPaintFlags(textFile.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         TextView textDetails = findViewById(R.id.textDetails);
         Button btnSubmit = findViewById(R.id.btnSubmitWork);
 
@@ -36,6 +42,19 @@ public class AssignmentDetailsActivity extends AppCompatActivity {
         // Set text
         textClass.setText("Class: " + classTitle);
         textTitle.setText("Title: " + assignment.getTitle());
+        if (assignment.getFilePath() != null && !assignment.getFilePath().isEmpty()) {
+            textFile.setVisibility(View.VISIBLE);
+            textFile.setText("Open attached file");
+            textFile.setPaintFlags(textFile.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            textFile.setOnClickListener(v -> {
+                String fileUrl = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/" + assignment.getFilePath();
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(fileUrl));
+                startActivity(browserIntent);
+            });
+        } else {
+            textFile.setVisibility(View.GONE);
+        }
+
         textDeadline.setText("Deadline: " + assignment.getEnd_date());
         textDetails.setText(assignment.getDetails());
 

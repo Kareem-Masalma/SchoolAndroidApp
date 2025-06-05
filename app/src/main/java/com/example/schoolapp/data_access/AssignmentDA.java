@@ -46,8 +46,13 @@ public class AssignmentDA implements IAssignmentDA {
                 byte[] fileBytes = readBytes(fileUri);
                 if (fileBytes != null) {
                     String encoded = Base64.encodeToString(fileBytes, Base64.NO_WRAP);
+                    String fileName = getFileName(fileUri);
                     json.put("file_data", encoded);
-                    json.put("file_name", getFileName(fileUri));
+                    json.put("file_name", fileName);
+
+                    // Add file_path as expected by backend (optional but helpful)
+                    String filePath = "uploads/" + fileName;
+                    json.put("file_path", filePath);
                 }
             }
 

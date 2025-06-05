@@ -74,4 +74,5 @@
     <string name="deadline_details">Deadline</string>
     <string name="assignment_details_details">Assignment Details:</string>
     <string name="assignments">Assignments</string>
+    <string name="open_attached_file">Open Attached File</string>
 </resources>

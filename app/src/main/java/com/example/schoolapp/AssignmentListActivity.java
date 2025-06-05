@@ -2,6 +2,7 @@ package com.example.schoolapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -54,7 +55,7 @@ public class AssignmentListActivity extends AppCompatActivity {
                         Gson gson = new GsonBuilder()
                                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                                 .create();
-                        Assignment assignment = gson.fromJson(obj.toString(), Assignment.class);
+                        Assignment assignment = new Assignment(obj.getInt("assignment_id"), obj.getInt("subject_id"),obj.getString("title"),obj.getString("details"),LocalDate.parse(obj.getString("start_date")),obj.getString("file_path"),LocalDate.parse(obj.getString("end_date")), (float) obj.getDouble("percentage_of_grade"));
                         assignmentList.add(assignment);
                         // Extract and store class title
                         if (obj.has("class_title")) {

@@ -7,8 +7,8 @@ public class Assignment {
     private Integer subject_id;
     private String title;
     private String details;
-
     private LocalDate start_date;
+    private String filePath;
     private LocalDate end_date;
     private float percentage_of_grade;
 
@@ -31,6 +31,25 @@ public class Assignment {
         this.start_date = start_date;
         this.end_date = end_date;
         this.percentage_of_grade = percentage_of_grade;
+    }
+
+    public Assignment(Integer assignment_id, Integer subject_id, String title, String details, LocalDate start_date, String filePath, LocalDate end_date, float percentage_of_grade) {
+        this.assignment_id = assignment_id;
+        this.subject_id = subject_id;
+        this.title = title;
+        this.details = details;
+        this.start_date = start_date;
+        this.filePath = filePath;
+        this.end_date = end_date;
+        this.percentage_of_grade = percentage_of_grade;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
     public String getDetails() {

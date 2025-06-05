@@ -116,7 +116,7 @@ if (isset($_GET['mode']) && $_GET['mode'] === 'all') {
     // Upload file
     $filePath = null;
     if ($fileData && $fileName) {
-        $uploadDir = __DIR__ . "/uploads/";
+        $uploadDir = __DIR__ . "./uploads/";
         if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
         file_put_contents($uploadDir . basename($fileName), base64_decode($fileData));
         $filePath = "uploads/" . basename($fileName);
@@ -161,7 +161,7 @@ if ($input['mode'] === 'update_submission') {
     $filePath = null;
 
     if ($fileData && $fileName) {
-        $uploadDir = __DIR__ . "/uploads/";
+        $uploadDir = __DIR__ . "./uploads/";
         if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
         file_put_contents($uploadDir . basename($fileName), base64_decode($fileData));
         $filePath = "uploads/" . basename($fileName);
@@ -205,60 +205,70 @@ if ($input['mode'] === 'delete_submission') {
         if (!isset($input['mode'])) throw new Exception("Missing mode");
 
         if ($input['mode'] === 'add') {
-            foreach (['title', 'details', 'subject', 'deadline', 'percentage'] as $key) {
-                if (empty($input[$key])) throw new Exception("Missing field: $key");
-            }
+    foreach (['title', 'details', 'subject', 'deadline', 'percentage'] as $key) {
+        if (empty($input[$key])) throw new Exception("Missing field: $key");
+    }
 
-            $title = $input['title'];
-            $details = $input['details'];
-            $subject_id = intval($input['subject']);
-            $deadline = $input['deadline'];
-            $percentage = floatval($input['percentage']);
+    $title = $input['title'];
+    $details = $input['details'];
+    $subject_id = intval($input['subject']);
+    $deadline = $input['deadline'];
+    $percentage = floatval($input['percentage']);
 
-            $stmt = $conn->prepare("SELECT accumulated_percentage FROM subject WHERE subject_id = ?");
-        $stmt->bind_param("i", $subject_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
+    $stmt = $conn->prepare("SELECT accumulated_percentage FROM subject WHERE subject_id = ?");
+    $stmt->bind_param("i", $subject_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-        if ($result->num_rows === 0) {
-            throw new Exception("Subject not found");
+    if ($result->num_rows === 0) {
+        throw new Exception("Subject not found");
+    }
+
+    $accumulated = floatval($result->fetch_assoc()['accumulated_percentage']);
+
+    if ($accumulated + $percentage > 100) {
+        throw new Exception("Cannot add assignment. Total accumulated percentage will exceed 100%. Current: $accumulated%. Reduce assignment percentage.");
+    }
+
+    $filePath = null;
+    $fileData = $input['file_data'] ?? null;
+    $fileName = $input['file_name'] ?? null;
+
+    if ($fileData && $fileName) {
+        if (!is_writable(__DIR__ . "./uploads/")) {
+            throw new Exception("Uploads directory is not writable");
         }
+        $uploadDir = __DIR__ . "./uploads/";
+        if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
 
-        $accumulated = floatval($result->fetch_assoc()['accumulated_percentage']);
+        $safeFileName = basename($fileName);
+        $fullPath = $uploadDir . $safeFileName;
+        file_put_contents($fullPath, base64_decode($fileData));
+        $filePath = "uploads/" . $safeFileName;
+    }
 
-        if ($accumulated + $percentage > 100) {
-            throw new Exception("Cannot add assignment. Total accumulated percentage will exceed 100%. Current: $accumulated%. Reduce assignment percentage.");
-        }
+    $startDate = isset($input['start_date']) ? $input['start_date'] : date('Y-m-d');
 
-            $fileData = $input['file_data'] ?? null;
-            $fileName = $input['file_name'] ?? null;
+    $stmt = $conn->prepare("
+        INSERT INTO assignment (subject_id, title, details, file_path, start_date, end_date, percentage_of_grade)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    ");
+    $stmt->bind_param("isssssd", $subject_id, $title, $details, $filePath, $startDate, $deadline, $percentage);
+    $stmt->execute();
 
-            if ($fileData && $fileName) {
-                if (!is_writable(__DIR__ . "/uploads/")) {
-                    throw new Exception("Uploads directory is not writable");
-                }
-                $uploadDir = __DIR__ . "/uploads/";
-                if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
-                file_put_contents($uploadDir . basename($fileName), base64_decode($fileData));
-            }
+    $newTotal = $accumulated + $percentage;
+    $stmt = $conn->prepare("UPDATE subject SET accumulated_percentage = ? WHERE subject_id = ?");
+    $stmt->bind_param("di", $newTotal, $subject_id);
+    $stmt->execute();
 
-            $startDate = isset($input['start_date']) ? $input['start_date'] : date('Y-m-d');
+    echo json_encode([
+        'success' => true,
+        'message' => 'Assignment added',
+        'assignment_id' => $conn->insert_id
+    ]);
+    return;
+}
 
-            $stmt = $conn->prepare("
-                INSERT INTO assignment (subject_id, title, details, start_date, end_date, percentage_of_grade)
-                VALUES (?, ?, ?, ?, ?, ?)
-            ");
-            $stmt->bind_param("issssd", $subject_id, $title, $details, $startDate, $deadline, $percentage);
-            $stmt->execute();
-
-            $newTotal = $accumulated + $percentage;
-            $stmt = $conn->prepare("UPDATE subject SET accumulated_percentage = ? WHERE subject_id = ?");
-            $stmt->bind_param("di", $newTotal, $subject_id);
-            $stmt->execute();
-
-            echo json_encode(['success' => true, 'message' => 'Assignment added', 'assignment_id' => $conn->insert_id]);
-            return;
-        }
 
         if ($input['mode'] === 'update') {
             foreach (['id', 'title', 'details', 'subject', 'deadline', 'percentage'] as $key) {
