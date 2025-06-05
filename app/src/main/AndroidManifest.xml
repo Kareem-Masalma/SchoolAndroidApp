@@ -31,6 +31,8 @@
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".AddSubjects" android:exported="false" />
         <activity android:name=".SendAssignmentActivity" android:exported="false" />
+        <activity android:name=".AssignmentListActivity" android:exported="false" />
+        <activity android:name=".AssignmentDetailsActivity" android:exported="false" />
         <activity android:name=".SubmitAssignmentActivity" android:exported="false" />
 
         <!-- Launcher Activity -->

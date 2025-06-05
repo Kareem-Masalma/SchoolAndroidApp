@@ -5,8 +5,13 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.Assignment;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.time.LocalDate;
 
 public class AssignmentDetailsActivity extends AppCompatActivity {
     @Override
@@ -23,6 +28,9 @@ public class AssignmentDetailsActivity extends AppCompatActivity {
         // Get data from intent
         String json = getIntent().getStringExtra("ASSIGNMENT_JSON");
         String classTitle = getIntent().getStringExtra("CLASS_TITLE");
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
         Assignment assignment = new Gson().fromJson(json, Assignment.class);
 
         // Set text

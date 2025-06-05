@@ -9,9 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.schoolapp.adapters.AssignmentAdapter;
 import com.example.schoolapp.data_access.AssignmentDA;
 import com.example.schoolapp.data_access.IAssignmentDA;
+import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.Assignment;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.json.JSONObject;
+
+import java.time.LocalDate;
 import java.util.*;
 
 public class AssignmentListActivity extends AppCompatActivity {
@@ -31,7 +36,10 @@ public class AssignmentListActivity extends AppCompatActivity {
         adapter = new AssignmentAdapter(assignmentList, assignment -> {
             // Get class title from map
             String classTitle = classTitleMap.get(assignment);
-            Intent intent = new Intent(this, AssignmentDetailsActivity.class); // or SubmitAssignmentActivity.class
+            Intent intent = new Intent(this, AssignmentDetailsActivity.class);
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                    .create();
             intent.putExtra("ASSIGNMENT_JSON", new Gson().toJson(assignment));
             intent.putExtra("CLASS_TITLE", classTitle); // send it separately
             startActivity(intent);
@@ -43,6 +51,9 @@ public class AssignmentListActivity extends AppCompatActivity {
             public void onSuccess(List<JSONObject> data) {
                 for (JSONObject obj : data) {
                     try {
+                        Gson gson = new GsonBuilder()
+                                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                                .create();
                         Assignment assignment = new Gson().fromJson(obj.toString(), Assignment.class);
                         assignmentList.add(assignment);
                         // Extract and store class title

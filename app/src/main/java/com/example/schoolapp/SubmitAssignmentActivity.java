@@ -13,8 +13,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import com.example.schoolapp.data_access.ISubmitAssignmentDA;
 import com.example.schoolapp.data_access.SubmitAssignmentDA;
+import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.Assignment;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.time.LocalDate;
 import java.util.*;
 
 public class SubmitAssignmentActivity extends AppCompatActivity {
@@ -45,7 +49,12 @@ public class SubmitAssignmentActivity extends AppCompatActivity {
         btnCancel = findViewById(R.id.btnCancel);
 
         // Get assignment and classTitle separately
-        assignment = new Gson().fromJson(getIntent().getStringExtra("ASSIGNMENT_JSON"), Assignment.class);
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
+
+        assignment = gson.fromJson(getIntent().getStringExtra("ASSIGNMENT_JSON"), Assignment.class);
+
         classTitle = getIntent().getStringExtra("CLASS_TITLE"); // pass this from previous screen
 
         // Show assignment title
