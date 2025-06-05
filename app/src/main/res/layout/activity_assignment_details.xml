@@ -8,10 +8,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="8dp">
 
-        <!-- Header Section -->
+        <!-- Header -->
         <TextView
             android:id="@+id/textHeader"
             android:layout_width="wrap_content"
@@ -23,15 +23,15 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="16dp" />
 
-        <!-- Card-style container -->
+        <!-- Card 1: Class, Title, Deadline, File -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/card_background"
-            android:padding="20dp"
             android:orientation="vertical"
             android:elevation="4dp"
-            android:layout_marginBottom="24dp">
+            android:padding="20dp"
+            android:layout_marginBottom="16dp">
 
             <TextView
                 android:id="@+id/textClassTitle"
@@ -63,18 +63,28 @@
                 android:textColor="@color/black"
                 android:layout_marginBottom="12dp" />
 
-             <!-- File link -->
             <TextView
                 android:id="@+id/textFile"
-                android:layout_width="181dp"
-                android:layout_height="21dp"
-                android:layout_marginBottom="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:clickable="true"
                 android:text="@string/open_attached_file"
+                android:textColor="@android:color/holo_blue_dark"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:visibility="visible" />
+                android:visibility="gone"
+                android:layout_marginBottom="12dp" />
+        </LinearLayout>
 
+        <!-- Card 2: Assignment Details Only -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/card_background"
+            android:orientation="vertical"
+            android:elevation="4dp"
+            android:padding="20dp"
+            android:layout_marginBottom="24dp">
 
             <TextView
                 android:id="@+id/textDetails"
