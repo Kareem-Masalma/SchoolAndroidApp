@@ -32,9 +32,6 @@
             android:name=".ClassStudents"
             android:exported="false" />
         <activity
-            android:name=".SendAssignmentActivity"
-            android:exported="false" />
-        <activity
             android:name=".ClassDashboard"
             android:exported="false" />
         <activity
