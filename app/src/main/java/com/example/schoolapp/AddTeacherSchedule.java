@@ -28,7 +28,8 @@ import com.example.schoolapp.data_access.ScheduleDA;
 import com.example.schoolapp.data_access.ScheduleDAFactory;
 import com.example.schoolapp.data_access.SubjectDA;
 import com.example.schoolapp.data_access.SubjectDAFactory;
-import com.example.schoolapp.models.Class;
+import com.example.schoolapp.json_helpers.LocalDateAdapter;
+import com.example.schoolapp.models.SchoolClass;
 
 import com.example.schoolapp.data_access.DaysFactory;
 import com.example.schoolapp.models.Schedule;
@@ -36,6 +37,7 @@ import com.example.schoolapp.models.ScheduleSubject;
 import com.example.schoolapp.models.Subject;
 import com.example.schoolapp.models.Teacher;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -101,20 +103,29 @@ public class AddTeacherSchedule extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Class selectedClass = (Class) spGrade.getSelectedItem();
-                Log.d("Teacher", "Class id after: " + selectedClass.getClassId());
+                SchoolClass selectedSchoolClass = (SchoolClass) spGrade.getSelectedItem();
+                Log.d("Teacher", "Class id after: " + selectedSchoolClass.getClassId());
                 Subject subject = (Subject) spSubject.getSelectedItem();
                 String day = spDay.getSelectedItem().toString();
 
-                String startTime = etStartTime.getText().toString();
-                String endTime = etEndTime.getText().toString();
+                String start = etStartTime.getText().toString().trim();
+                String end = etEndTime.getText().toString().trim();
 
+                if (!Schedule.isValidTimeFormat(start) || !Schedule.isValidTimeFormat(end)) {
+                    Toast.makeText(AddTeacherSchedule.this, "Please enter time in HH:mm format", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!Schedule.isTimeRangeValid(start, end)) {
+                    Toast.makeText(AddTeacherSchedule.this, "Start time must be before end time", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 String semester = spSemester.getSelectedItem().toString();
                 int year = LocalDate.now().getYear();
 
 
-                ScheduleSubject schedule = new ScheduleSubject(teacher.getSchedule_id(), subject.getSubjectId(), selectedClass.getClassId(),
-                        subject.getTitle(), selectedClass.getClassName(), day, startTime, endTime, semester, year);
+                ScheduleSubject schedule = new ScheduleSubject(teacher.getSchedule_id(), subject.getSubjectId(), selectedSchoolClass.getClassId(),
+                        subject.getTitle(), selectedSchoolClass.getClassName(), day, start, end, semester, year);
 
 
                 if (teacherSchedules.isEmpty()) {
@@ -191,8 +202,8 @@ public class AddTeacherSchedule extends AppCompatActivity {
 
         ClassDAFactory.getClassDA(AddTeacherSchedule.this).getAllClasses(new ClassDA.ClassListCallback() {
             @Override
-            public void onSuccess(List<Class> list) {
-                ArrayAdapter<Class> classesAdapter = new ArrayAdapter<>(AddTeacherSchedule.this, android.R.layout.simple_list_item_1, list);
+            public void onSuccess(List<SchoolClass> list) {
+                ArrayAdapter<SchoolClass> classesAdapter = new ArrayAdapter<>(AddTeacherSchedule.this, android.R.layout.simple_list_item_1, list);
                 spGrade.setAdapter(classesAdapter);
             }
 
@@ -205,9 +216,9 @@ public class AddTeacherSchedule extends AppCompatActivity {
         spGrade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Class selectedClass = (Class) spGrade.getSelectedItem();
-                if (selectedClass != null) {
-                    int classId = selectedClass.getClassId();
+                SchoolClass selectedSchoolClass = (SchoolClass) spGrade.getSelectedItem();
+                if (selectedSchoolClass != null) {
+                    int classId = selectedSchoolClass.getClassId();
 
                     SubjectDA subjectDA = SubjectDAFactory.getSubjectDA(AddTeacherSchedule.this);
                     subjectDA.getClassSubject(classId, new SubjectDA.ClassSubjectCallback() {
@@ -239,7 +250,7 @@ public class AddTeacherSchedule extends AppCompatActivity {
     private void teacherData() {
         Intent intent = getIntent();
         String teacherString = intent.getStringExtra(AddSchedule.TEACHER);
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
         teacher = gson.fromJson(teacherString, Teacher.class);
         tvTeacher.setText("Teacher: " + teacher.getFirstName() + " " + teacher.getLastName());
         tvId.setText("ID: " + teacher.getUser_id());

@@ -15,7 +15,7 @@ try {
         if (isset($_GET['subject_id'])) {
             $sid = (int)$_GET['subject_id'];
             $stmt = $conn->prepare("
-                SELECT s.subject_id, s.class_id, s.title, c.class_name
+                SELECT *
                 FROM subject s
                 JOIN class c ON s.class_id = c.class_id
                 WHERE s.subject_id = ?
@@ -38,13 +38,12 @@ try {
                 $user_id = (int)$_GET['user_id'];
 
                 $stmt = $conn->prepare("
-            SELECT s.*
-FROM subject s
-JOIN schedule_subject ss ON ss.subject_id = s.subject_id
-JOIN class c ON s.class_id = c.class_id
-JOIN teacher t ON t.schedule_id = ss.schedule_id
-WHERE c.class_id = ? AND t.user_id = ?
-
+                    SELECT *
+                    FROM subject s
+                    JOIN schedule_subject ss ON ss.subject_id = s.subject_id
+                    JOIN class c ON s.class_id = c.class_id
+                    JOIN teacher t ON t.schedule_id = ss.schedule_id
+                    WHERE c.class_id = ? AND t.user_id = ?
         ");
                 $stmt->bind_param("ii", $class_id, $user_id);
                 $stmt->execute();
@@ -66,7 +65,7 @@ WHERE c.class_id = ? AND t.user_id = ?
             }
         } else {
             $sql = "
-                SELECT s.subject_id, s.class_id, s.title, c.class_name
+                SELECT *
                 FROM subject s
                 JOIN class c ON s.class_id = c.class_id
             ";

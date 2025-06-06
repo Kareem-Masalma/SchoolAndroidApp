@@ -20,10 +20,13 @@ import com.example.schoolapp.data_access.ClassDA;
 import com.example.schoolapp.data_access.ClassDAFactory;
 import com.example.schoolapp.data_access.TeacherDAFactory;
 import com.example.schoolapp.data_access.TeacherDA;
+import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.Teacher;
-import com.example.schoolapp.models.Class;
+import com.example.schoolapp.models.SchoolClass;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class AddSchedule extends AppCompatActivity {
@@ -69,7 +72,7 @@ public class AddSchedule extends AppCompatActivity {
                                 @Override
                                 public void onTeacherClick(Teacher teacher) {
                                     Intent intent = new Intent(AddSchedule.this, AddTeacherSchedule.class);
-                                    Gson gson = new Gson();
+                                    Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
                                     String teacherString = gson.toJson(teacher);
                                     intent.putExtra(AddSchedule.TEACHER, teacherString);
                                     startActivity(intent);
@@ -85,13 +88,13 @@ public class AddSchedule extends AppCompatActivity {
                 } else if ("Class".equals(role)) {
                     ClassDAFactory.getClassDA(AddSchedule.this).getAllClasses(new ClassDA.ClassListCallback() {
                         @Override
-                        public void onSuccess(List<Class> classes) {
+                        public void onSuccess(List<SchoolClass> schoolClasses) {
                             rvUsers.setLayoutManager(new LinearLayoutManager(AddSchedule.this));
-                            rvUsers.setAdapter(new ClassAdapter(classes, new ClassAdapter.OnClassClickListener() {
+                            rvUsers.setAdapter(new ClassAdapter(schoolClasses, new ClassAdapter.OnClassClickListener() {
                                 @Override
-                                public void onClassClick(Class c) {
+                                public void onClassClick(SchoolClass c) {
                                     Intent intent = new Intent(AddSchedule.this, AddClassSchedule.class);
-                                    Gson gson = new Gson();
+                                    Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
                                     String studentString = gson.toJson(c);
                                     intent.putExtra(AddSchedule.CLASS, studentString);
                                     startActivity(intent);

@@ -1,39 +1,72 @@
 package com.example.schoolapp.models;
 
+import java.time.LocalDate;
+
 public class Exam {
-    private Integer exam_id;
+    private int examId;
     private String title;
+    private int subject;
+    private LocalDate date;
+    private int duration;
+    private int percentage;
 
-    public Exam() {
-
-    }
-
-    public Exam(Integer exam_id, String title) {
-        this.exam_id = exam_id;
+    public Exam(String title, int subject, LocalDate date, int duration, int percentage) {
         this.title = title;
+        this.subject = subject;
+        this.date = date;
+        this.duration = duration;
     }
 
-    public Integer getExam_id() {
-        return exam_id;
+    public Exam(int examId, String title, int subject, LocalDate date, int duration, int percentage) {
+        this(title, subject, date, duration, percentage);
+        this.examId = examId;
     }
 
-    public void setExam_id(Integer exam_id) {
-        this.exam_id = exam_id;
+    public int getExamId() {
+        return examId;
     }
 
     public String getTitle() {
         return title;
     }
 
+    public int getSubject() {
+        return subject;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setExamId(int examId) {
+        this.examId = examId;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
 
-    @Override
-    public String toString() {
-        return "Exam{" +
-                "id=" + exam_id +
-                ", title='" + title + '\'' +
-                '}';
+    public void setSubject(int subject) {
+        this.subject = subject;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public int getPercentage() {
+        return percentage;
+    }
+
+    public void setPercentage(int percentage) {
+        this.percentage = percentage;
     }
 }

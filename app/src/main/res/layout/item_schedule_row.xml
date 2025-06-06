@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:layout_marginHorizontal="4dp"
+    android:elevation="6dp"
+    android:radius="16dp"
+    android:foreground="?attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/tvSubjectTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Subject Title"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/role_blue"
+            tools:text="Mathematics" />
+
+        <TextView
+            android:id="@+id/tvDayTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Monday - 08:00 to 10:00"
+            android:textColor="#444"
+            android:textSize="15sp"
+            tools:text="Monday - 09:00 to 11:00" />
+
+        <TextView
+            android:id="@+id/tvClass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Class: Grade 9"
+            android:textSize="14sp"
+            android:textColor="#666"
+            android:layout_marginTop="2dp"
+            tools:text="Class: Grade 11" />
+
+        <TextView
+            android:id="@+id/tvSemesterYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Semester: Fall 2025"
+            android:textSize="14sp"
+            android:textColor="#777"
+            android:layout_marginTop="2dp"
+            tools:text="Semester: Spring 2024" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
