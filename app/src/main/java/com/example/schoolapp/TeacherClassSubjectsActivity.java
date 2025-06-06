@@ -31,7 +31,7 @@ public class TeacherClassSubjectsActivity extends AppCompatActivity {
 
     private TextView tvClass, tvClassId;
     private RecyclerView rvSubjects;
-    private SchoolClass selectedSchoolClass;
+    private SchoolClass selectedClass;
     private SubjectDA subjectDA;
     private Teacher teacher;
 
@@ -62,9 +62,9 @@ public class TeacherClassSubjectsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String classJson = intent.getStringExtra(AddSchedule.CLASS);
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new com.example.schoolapp.json_helpers.LocalDateAdapter()).create();
-        selectedSchoolClass = gson.fromJson(classJson, SchoolClass.class);
-        tvClass.setText("Class: " + selectedSchoolClass.getClassName());
-        tvClassId.setText("ID: " + selectedSchoolClass.getClassId());
+        selectedClass = gson.fromJson(classJson, SchoolClass.class);
+        tvClass.setText("Class: " + selectedClass.getClassName());
+        tvClassId.setText("ID: " + selectedClass.getClassId());
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(TeacherClassSubjectsActivity.this);
         boolean isLoggedIn = pref.getBoolean("Logged_in", false);
@@ -81,7 +81,7 @@ public class TeacherClassSubjectsActivity extends AppCompatActivity {
 
     private void fetchSubjects() {
         subjectDA = new SubjectDA(TeacherClassSubjectsActivity.this);
-        subjectDA.getClassTeacherSubject(selectedSchoolClass.getClassId(), teacher.getUser_id(), new SubjectDA.ClassSubjectCallback() {
+        subjectDA.getClassTeacherSubject(selectedClass.getClassId(), teacher.getUser_id(), new SubjectDA.ClassSubjectCallback() {
             @Override
             public void onSuccess(List<Subject> list) {
                 SubjectAdapter adapter = new SubjectAdapter(TeacherClassSubjectsActivity.this, list);

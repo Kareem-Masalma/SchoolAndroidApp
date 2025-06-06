@@ -28,6 +28,14 @@ public class Subject {
         this.totalPercentage = totalPercentage;
     }
 
+    public Integer getTotalPercentage() {
+        return totalPercentage;
+    }
+
+    public void setTotalPercentage(Integer totalPercentage) {
+        this.totalPercentage = totalPercentage;
+    }
+
     public Integer getSubjectId() {
         return subjectId;
     }
@@ -58,14 +66,6 @@ public class Subject {
 
     public void setClassTitle(String classTitle) {
         this.classTitle = classTitle;
-    }
-
-    public Integer getTotalPercentage() {
-        return totalPercentage;
-    }
-
-    public void setTotalPercentage(Integer totalPercentage) {
-        this.totalPercentage = totalPercentage;
     }
 
     @NonNull

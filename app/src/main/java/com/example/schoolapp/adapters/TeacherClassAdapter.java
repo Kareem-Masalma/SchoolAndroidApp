@@ -17,17 +17,17 @@ import java.util.List;
 
 public class TeacherClassAdapter extends RecyclerView.Adapter<TeacherClassAdapter.ViewHolder> {
 
-    private final List<SchoolClass> schoolClassList;
+    private final List<SchoolClass> ClassList;
     private final Context context;
     private final OnClassClickListener listener;
 
     public interface OnClassClickListener {
-        void onClassClick(SchoolClass selectedSchoolClass);
+        void onClassClick(SchoolClass selectedClass);
     }
 
-    public TeacherClassAdapter(Context context, List<SchoolClass> schoolClassList, OnClassClickListener listener) {
+    public TeacherClassAdapter(Context context, List<SchoolClass> ClassList, OnClassClickListener listener) {
         this.context = context;
-        this.schoolClassList = schoolClassList;
+        this.ClassList = ClassList;
         this.listener = listener;
     }
 
@@ -41,18 +41,18 @@ public class TeacherClassAdapter extends RecyclerView.Adapter<TeacherClassAdapte
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull TeacherClassAdapter.ViewHolder holder, int position) {
-        SchoolClass currentSchoolClass = schoolClassList.get(position);
+        SchoolClass currentClass = ClassList.get(position);
 
-        holder.tvClassName.setText(currentSchoolClass.getClassName());
-        holder.tvClassId.setText("Class ID: " + currentSchoolClass.getClassId());
-        holder.tvClassManager.setText("Manager ID: " + currentSchoolClass.getClassManagerId());
+        holder.tvClassName.setText(currentClass.getClassName());
+        holder.tvClassId.setText("Class ID: " + currentClass.getClassId());
+        holder.tvClassManager.setText("Manager ID: " + currentClass.getClassManagerId());
 
-        holder.itemView.setOnClickListener(v -> listener.onClassClick(currentSchoolClass));
+        holder.itemView.setOnClickListener(v -> listener.onClassClick(currentClass));
     }
 
     @Override
     public int getItemCount() {
-        return schoolClassList.size();
+        return ClassList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

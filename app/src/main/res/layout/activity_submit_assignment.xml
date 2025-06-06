@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Header -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="@color/role_green"
+        android:paddingTop="8dp">
+
+        <TextView
+            android:id="@+id/titleText"
+            style="@style/HeaderTitle"
+            android:text="@string/submit_assignment" />
+    </FrameLayout>
+
+    <!-- Scrollable content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="32dp">
+
+            <!-- Assignment Title Display -->
+            <TextView
+                android:id="@+id/textAssignmentTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Details input -->
+            <TextView
+                style="@style/SectionTitle"
+                android:text="@string/details"
+                android:padding="5dp"
+                android:layout_marginTop="12dp" />
+
+            <EditText
+                android:id="@+id/editDetails"
+                style="@style/FormEditText"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:hint="@string/enter_assignment_details"
+                android:gravity="top"
+                android:inputType="textMultiLine"
+                android:background="@drawable/edittext_border"
+                android:padding="12dp"
+                android:layout_marginTop="4dp"/>
+
+            <!-- File Upload -->
+            <TextView
+                style="@style/SectionTitle"
+                android:text="@string/attachments"
+                android:padding="5dp"
+                android:layout_marginTop="24dp" />
+
+            <Button
+                android:id="@+id/btnSelectFile"
+                style="@style/ButtonPrimary.Student"
+                android:text="@string/select_file" />
+
+            <TextView
+                android:id="@+id/textSelectedFile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp"
+                android:visibility="gone" />
+
+            <!-- Submit/Cancel -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="32dp"
+                android:gravity="end">
+
+                <Button
+                    android:id="@+id/btnCancel"
+                    style="@style/ButtonPrimary.Student"
+                    android:text="@string/cancel" />
+
+                <Button
+                    android:id="@+id/btnSend"
+                    style="@style/ButtonPrimary.Student"
+                    android:layout_width="113dp"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/submit_assignment_student" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

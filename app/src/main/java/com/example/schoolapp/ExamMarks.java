@@ -48,7 +48,7 @@ public class ExamMarks extends AppCompatActivity {
     private EditText etExamDate;
     private Button btnPublish;
     private LocalDate examDate;
-    private SchoolClass selectedSchoolClass;
+    private SchoolClass selectedClass;
     private StudentMarksAdapter adapter;
 
     @Override
@@ -129,7 +129,7 @@ public class ExamMarks extends AppCompatActivity {
     }
 
     private void loadStudents() {
-        StudentDAFactory.getStudentDA(ExamMarks.this).getClassStudents(selectedSchoolClass.getClassId(), new StudentDA.StudentListCallback() {
+        StudentDAFactory.getStudentDA(ExamMarks.this).getClassStudents(selectedClass.getClassId(), new StudentDA.StudentListCallback() {
             @Override
             public void onSuccess(List<Student> list) {
                 List<StudentExamResult> results = new ArrayList<>();
@@ -152,7 +152,7 @@ public class ExamMarks extends AppCompatActivity {
     }
 
     private void getSpinnerData() {
-        SubjectDAFactory.getSubjectDA(ExamMarks.this).getClassSubject(selectedSchoolClass.getClassId(), new SubjectDA.ClassSubjectCallback() {
+        SubjectDAFactory.getSubjectDA(ExamMarks.this).getClassSubject(selectedClass.getClassId(), new SubjectDA.ClassSubjectCallback() {
             @Override
             public void onSuccess(List<Subject> list) {
                 ArrayAdapter<Subject> adapter = new ArrayAdapter<>(ExamMarks.this, android.R.layout.simple_list_item_1, list);
@@ -171,8 +171,8 @@ public class ExamMarks extends AppCompatActivity {
         Intent intent = getIntent();
         String classJson = intent.getStringExtra(AddSchedule.CLASS);
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new com.example.schoolapp.json_helpers.LocalDateAdapter()).create();
-        selectedSchoolClass = gson.fromJson(classJson, SchoolClass.class);
-        tvClass.setText("Class: " + selectedSchoolClass.getClassName());
+        selectedClass = gson.fromJson(classJson, SchoolClass.class);
+        tvClass.setText("Class: " + selectedClass.getClassName());
     }
 
     private void defineViews() {
