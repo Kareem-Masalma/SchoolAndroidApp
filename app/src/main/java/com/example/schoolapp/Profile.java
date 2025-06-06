@@ -7,13 +7,21 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.example.schoolapp.data_access.ClassDA;
+import com.example.schoolapp.data_access.ClassDAFactory;
+import com.example.schoolapp.data_access.IClassDA;
 import com.example.schoolapp.json_helpers.LocalDateAdapter;
+import com.example.schoolapp.models.Registrar;
 import com.example.schoolapp.models.Role;
+import com.example.schoolapp.models.SchoolClass;
+import com.example.schoolapp.models.Student;
+import com.example.schoolapp.models.Teacher;
 import com.example.schoolapp.models.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -59,12 +67,15 @@ public class Profile extends AppCompatActivity {
                 logged_in_user = user;
                 if(user.getRole().equals(Role.STUDENT)){
                     setContentView(R.layout.activity_profile_student);
+                    logged_in_user = gson.fromJson(json, Student.class);
                     setupStudentViews();
                 } else if (user.getRole().equals(Role.TEACHER)) {
                     setContentView(R.layout.activity_profile_teacher);
+                    logged_in_user = gson.fromJson(json, Teacher.class);
                     setupTeacherViews();
                 }else{
                     setContentView(R.layout.activity_profile_registrar);
+                    logged_in_user = gson.fromJson(json, Registrar.class);
                 }
 
             }
@@ -77,6 +88,23 @@ public class Profile extends AppCompatActivity {
         cardSchedule    = findViewById(R.id.card_schedule);
         // TODO Open the view schedule activity
         cardSchedule.setOnClickListener(e->{
+            Intent intent = new Intent(Profile.this, ViewSchedule.class);
+            int id = ((Student) logged_in_user).getClass_id();
+            IClassDA classDA = ClassDAFactory.getClassDA(this);
+            classDA.getClassById(id, new ClassDA.SingleClassCallback() {
+                @Override
+                public void onSuccess(SchoolClass c) {
+                    Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
+                    String json = gson.toJson(c,SchoolClass.class);
+                    intent.putExtra(AddSchedule.CLASS, json);
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onError(String error) {
+                    Toast.makeText(Profile.this, "Error Occurred: " + error, Toast.LENGTH_SHORT).show();
+                }
+            });
 
         });
     }
