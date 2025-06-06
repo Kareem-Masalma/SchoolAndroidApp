@@ -16,10 +16,19 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.schoolapp.data_access.ILoginDA;
+import com.example.schoolapp.data_access.IStudentDA;
+import com.example.schoolapp.data_access.ITeacherDA;
 import com.example.schoolapp.data_access.IUserDA;
 import com.example.schoolapp.data_access.LoginDAFactory;
+import com.example.schoolapp.data_access.StudentDA;
+import com.example.schoolapp.data_access.StudentDAFactory;
+import com.example.schoolapp.data_access.TeacherDA;
+import com.example.schoolapp.data_access.TeacherDAFactory;
 import com.example.schoolapp.data_access.UserDAFactory;
 import com.example.schoolapp.json_helpers.LocalDateAdapter;
+import com.example.schoolapp.models.Role;
+import com.example.schoolapp.models.Student;
+import com.example.schoolapp.models.Teacher;
 import com.example.schoolapp.models.User;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -73,10 +82,46 @@ public class Login extends AppCompatActivity {
                         SharedPreferences.Editor editor =  prefs.edit();
                         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
 //                        Log.i("birth_date" , user.getBirthDate().toString());
-                        String json = gson.toJson(user);
-                        editor.putString(LOGGED_IN_USER,json);
-                        editor.putBoolean(LOGGED_IN, true);
-                        editor.apply();
+
+                        // TODO -- ALSO WRITE THE SUBTYPE SPECIFIC ATTRIBUTES
+                        Log.i("Role" , user.getRole().toString());
+                        if(user.getRole() == Role.TEACHER){
+                            ITeacherDA teacherDA = TeacherDAFactory.getTeacherDA(Login.this);
+                            teacherDA.findTeacherById(user.getUser_id(), new TeacherDA.SingleTeacherCallback() {
+                                @Override
+                                public void onSuccess(Teacher teacher) {
+                                    String json = gson.toJson(teacher);
+                                    editor.putString(LOGGED_IN_USER,json);
+                                    editor.putBoolean(LOGGED_IN, true);
+                                    editor.apply();
+                                }
+                                @Override
+                                public void onError(String error) {
+                                    Toast.makeText(Login.this, error, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }else if(user.getRole() == Role.STUDENT){
+                            IStudentDA studentDA = StudentDAFactory.getStudentDA(Login.this);
+                            studentDA.getStudentById(user.getUser_id(), new StudentDA.SingleStudentCallback() {
+                                @Override
+                                public void onSuccess(Student s) {
+                                    String json = gson.toJson(s);
+                                    editor.putString(LOGGED_IN_USER,json);
+                                    editor.putBoolean(LOGGED_IN, true);
+                                    editor.apply();
+                                }
+
+                                @Override
+                                public void onError(String error) {
+                                    Toast.makeText(Login.this, error, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }else{
+                            String json = gson.toJson(user);
+                            editor.putString(LOGGED_IN_USER,json);
+                            editor.putBoolean(LOGGED_IN, true);
+                            editor.apply();
+                        }
                         Toast.makeText(Login.this, "Welcome " + user.getFirstName(), Toast.LENGTH_SHORT).show();
 
                     // TODO -- DELETE THESE LINES, THEY ARE FOR TESTING ONLY
