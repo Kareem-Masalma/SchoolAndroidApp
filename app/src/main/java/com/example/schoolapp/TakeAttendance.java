@@ -46,8 +46,8 @@ public class TakeAttendance extends AppCompatActivity {
     private Button btnCancel;
     private Button btnFinish;
 
-    // this class expects an intent that contains a SchoolClass object
-    private SchoolClass schoolClass;
+    // this class expects an intent that contains a Class object
+    private SchoolClass Class;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class TakeAttendance extends AppCompatActivity {
         setContentView(R.layout.activity_take_atendance);
 
         setupViews();
-        getSchoolClass();
+        getClasses();
         setupRecyclerView();
         setupDatePicker();
         handleBtnFinish();
@@ -72,7 +72,7 @@ public class TakeAttendance extends AppCompatActivity {
     private void handleBtnFinish() {
         btnFinish.setOnClickListener(e -> {
             LocalDate date = LocalDate.parse(editLectureDate.getText().toString());
-            Attendance attendance = new Attendance(date, schoolClass.getClassId());
+            Attendance attendance = new Attendance(date, Class.getClassId());
             IAttendanceDA attendanceDA = AttendanceDAFactory.getAttendanceDA(TakeAttendance.this);
             attendanceDA.addAttendance(attendance, new IAttendanceDA.BaseCallback() {
                 @Override
@@ -124,12 +124,12 @@ public class TakeAttendance extends AppCompatActivity {
         });
     }
 
-    private void getSchoolClass() {
+    private void getClasses() {
         Intent intent = getIntent();
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
-        String json = intent.getStringExtra("schoolClass");
-        schoolClass = gson.fromJson(json, SchoolClass.class);
-        tvClassName.setText(schoolClass.getClassName());
+        String json = intent.getStringExtra("Class");
+        Class = gson.fromJson(json, SchoolClass.class);
+        tvClassName.setText(Class.getClassName());
     }
 
     private void setupViews() {
@@ -149,10 +149,10 @@ public class TakeAttendance extends AppCompatActivity {
             @Override
             public void onSuccess(List<Student> students) {
                 runOnUiThread(() -> {
-                    // check if the student.class_id == schoolClass.class_id
+                    // check if the student.class_id == Class.class_id
                     List<Student> classStudents = new ArrayList<>();
                     for (Student student : students) {
-                        if (student.getClass_id() == schoolClass.getClassId()) {
+                        if (student.getClass_id() == Class.getClassId()) {
                             classStudents.add(student);
                         }
                     }

@@ -56,12 +56,12 @@ public class ViewSchedule extends AppCompatActivity {
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
         if (intent.hasExtra(AddSchedule.CLASS)) {
             String classJson = intent.getStringExtra(AddSchedule.CLASS);
-            SchoolClass selectedSchoolClass = gson.fromJson(classJson, SchoolClass.class);
+            SchoolClass selectedClass = gson.fromJson(classJson, SchoolClass.class);
 
-            tvUser.setText("Class: " + selectedSchoolClass.getClassName());
-            tvId.setText("ID: " + selectedSchoolClass.getClassId());
+            tvUser.setText("Class: " + selectedClass.getClassName());
+            tvId.setText("ID: " + selectedClass.getClassId());
 
-            loadSchedule(selectedSchoolClass.getScheduleId());
+            loadSchedule(selectedClass.getScheduleId());
         } else {
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
             String teacherString = pref.getString(Login.LOGGED_IN_USER, "");

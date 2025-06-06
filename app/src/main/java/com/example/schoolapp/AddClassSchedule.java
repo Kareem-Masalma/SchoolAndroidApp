@@ -46,7 +46,7 @@ public class AddClassSchedule extends AppCompatActivity {
     private EditText etStartTime, etEndTime;
     private RecyclerView rvScheduleItems;
     private Button btnAdd, btnCancel;
-    private SchoolClass selectedSchoolClass;
+    private SchoolClass selectedClass;
     private List<ScheduleSubject> classSchedules;
     private ScheduleDA scheduleDA;
 
@@ -63,8 +63,8 @@ public class AddClassSchedule extends AppCompatActivity {
         defineViews();
         classData();
         getSpinnerData();
-        if (selectedSchoolClass.getClassId() != 0)
-            loadClassSchedule(selectedSchoolClass.getScheduleId());
+        if (selectedClass.getClassId() != 0)
+            loadClassSchedule(selectedClass.getScheduleId());
         else
             addClassScheduleId();
         actionButtons();
@@ -114,8 +114,8 @@ public class AddClassSchedule extends AppCompatActivity {
                 }
 
                 int year = LocalDate.now().getYear();
-                ScheduleSubject schedule = new ScheduleSubject(selectedSchoolClass.getScheduleId(), subject.getSubjectId(), selectedSchoolClass.getClassId(),
-                        subject.getTitle(), selectedSchoolClass.getClassName(), day, start, end, semester, year);
+                ScheduleSubject schedule = new ScheduleSubject(selectedClass.getScheduleId(), subject.getSubjectId(), selectedClass.getClassId(),
+                        subject.getTitle(), selectedClass.getClassName(), day, start, end, semester, year);
 
                 if (classSchedules.isEmpty()) {
                     classSchedules.add(schedule);
@@ -123,7 +123,7 @@ public class AddClassSchedule extends AppCompatActivity {
                         @Override
                         public void onSuccess(String message) {
                             Toast.makeText(AddClassSchedule.this, message, Toast.LENGTH_SHORT).show();
-                            loadClassSchedule(selectedSchoolClass.getScheduleId());
+                            loadClassSchedule(selectedClass.getScheduleId());
                         }
 
                         @Override
@@ -141,7 +141,7 @@ public class AddClassSchedule extends AppCompatActivity {
                     scheduleDA.addScheduleSubject(schedule, new ScheduleDA.ScheduleCallback() {
                         @Override
                         public void onSuccess(String message) {
-                            loadClassSchedule(selectedSchoolClass.getScheduleId());
+                            loadClassSchedule(selectedClass.getScheduleId());
                             Toast.makeText(AddClassSchedule.this, message, Toast.LENGTH_SHORT).show();
                         }
 
@@ -156,10 +156,10 @@ public class AddClassSchedule extends AppCompatActivity {
     }
 
     private void addClassScheduleId() {
-        scheduleDA.addClassScheduleID(selectedSchoolClass.getClassId(), new ScheduleDA.ScheduleIDCallback() {
+        scheduleDA.addClassScheduleID(selectedClass.getClassId(), new ScheduleDA.ScheduleIDCallback() {
             @Override
             public void onSuccess(int newId) {
-                selectedSchoolClass.setScheduleId(newId);
+                selectedClass.setScheduleId(newId);
             }
 
             @Override
@@ -202,7 +202,7 @@ public class AddClassSchedule extends AppCompatActivity {
         ArrayAdapter<String> semesterAdapter = new ArrayAdapter<>(AddClassSchedule.this, android.R.layout.simple_list_item_1, new String[]{"Spring", "Summer", "Winter", "Fall"});
         spSemester.setAdapter(semesterAdapter);
 
-        SubjectDAFactory.getSubjectDA(AddClassSchedule.this).getClassSubject(selectedSchoolClass.getClassId(), new SubjectDA.ClassSubjectCallback() {
+        SubjectDAFactory.getSubjectDA(AddClassSchedule.this).getClassSubject(selectedClass.getClassId(), new SubjectDA.ClassSubjectCallback() {
             @Override
             public void onSuccess(List<Subject> list) {
                 ArrayAdapter<Subject> adapter = new ArrayAdapter<>(AddClassSchedule.this, android.R.layout.simple_list_item_1, list);
@@ -221,9 +221,9 @@ public class AddClassSchedule extends AppCompatActivity {
         Intent intent = getIntent();
         String classString = intent.getStringExtra(AddSchedule.CLASS);
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new com.example.schoolapp.json_helpers.LocalDateAdapter()).create();
-        selectedSchoolClass = gson.fromJson(classString, SchoolClass.class);
-        tvClass.setText("Class: " + selectedSchoolClass.getClassName());
-        tvId.setText("ID: " + selectedSchoolClass.getClassId());
+        selectedClass = gson.fromJson(classString, SchoolClass.class);
+        tvClass.setText("Class: " + selectedClass.getClassName());
+        tvId.setText("ID: " + selectedClass.getClassId());
     }
 
     private void defineViews() {

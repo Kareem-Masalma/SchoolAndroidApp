@@ -88,9 +88,9 @@ public class AddSchedule extends AppCompatActivity {
                 } else if ("Class".equals(role)) {
                     ClassDAFactory.getClassDA(AddSchedule.this).getAllClasses(new ClassDA.ClassListCallback() {
                         @Override
-                        public void onSuccess(List<SchoolClass> schoolClasses) {
+                        public void onSuccess(List<SchoolClass> Classes) {
                             rvUsers.setLayoutManager(new LinearLayoutManager(AddSchedule.this));
-                            rvUsers.setAdapter(new ClassAdapter(schoolClasses, new ClassAdapter.OnClassClickListener() {
+                            rvUsers.setAdapter(new ClassAdapter(Classes, new ClassAdapter.OnClassClickListener() {
                                 @Override
                                 public void onClassClick(SchoolClass c) {
                                     Intent intent = new Intent(AddSchedule.this, AddClassSchedule.class);

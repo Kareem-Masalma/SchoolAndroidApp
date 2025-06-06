@@ -25,7 +25,7 @@ public class ClassStudents extends AppCompatActivity {
 
     private TextView tvClass, tvClassId;
     private RecyclerView rvStudents;
-    private SchoolClass selectedSchoolClass;
+    private SchoolClass selectedClass;
     private StudentDA studentDA;
 
     @Override
@@ -49,14 +49,14 @@ public class ClassStudents extends AppCompatActivity {
         Intent intent = getIntent();
         String classJson = intent.getStringExtra(AddSchedule.CLASS);
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new com.example.schoolapp.json_helpers.LocalDateAdapter()).create();
-        selectedSchoolClass = gson.fromJson(classJson, SchoolClass.class);
-        tvClass.setText("Class: " + selectedSchoolClass.getClassName());
-        tvClassId.setText("ID: " + selectedSchoolClass.getClassId());
+        selectedClass = gson.fromJson(classJson, SchoolClass.class);
+        tvClass.setText("Class: " + selectedClass.getClassName());
+        tvClassId.setText("ID: " + selectedClass.getClassId());
     }
 
     private void fetchStudents() {
         studentDA = (StudentDA) StudentDAFactory.getStudentDA(ClassStudents.this);
-        studentDA.getClassStudents(selectedSchoolClass.getClassId(), new StudentDA.StudentListCallback() {
+        studentDA.getClassStudents(selectedClass.getClassId(), new StudentDA.StudentListCallback() {
 
             @Override
             public void onSuccess(List<Student> list) {

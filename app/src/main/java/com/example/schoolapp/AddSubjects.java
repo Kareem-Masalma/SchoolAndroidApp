@@ -65,10 +65,10 @@ public class AddSubjects extends AppCompatActivity {
     }
     private void addButton(){
         addBT.setOnClickListener(v -> {
-            SchoolClass selectedSchoolClass = (SchoolClass) assignGradeSP.getSelectedItem();
+            SchoolClass selectedClass = (SchoolClass) assignGradeSP.getSelectedItem();
             String title = subNameET.getText().toString().trim();
 
-            if(selectedSchoolClass == null){
+            if(selectedClass == null){
                 Toast.makeText(this, "Please select a class", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -78,7 +78,7 @@ public class AddSubjects extends AppCompatActivity {
                 return;
             }
 
-            Subject subject = new Subject(0,title, selectedSchoolClass.getClassId(), selectedSchoolClass.getClassName());
+            Subject subject = new Subject(0,title, selectedClass.getClassId(), selectedClass.getClassName());
             ISubjectDA subjectDA = SubjectDAFactory.getSubjectDA(this);
 
             subjectDA.addSubject(subject, new SubjectDA.BaseCallback() {
