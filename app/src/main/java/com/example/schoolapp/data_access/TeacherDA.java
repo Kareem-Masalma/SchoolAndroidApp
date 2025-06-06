@@ -35,33 +35,59 @@ public class TeacherDA implements ITeacherDA {
 
     @Override
     public void findTeacherById(int id, SingleTeacherCallback callback) {
-        String url = BASE_URL + "?id=" + id;
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                try {
-                    JSONObject obj = response.getJSONObject(0);
-                    Log.d("Teacher", "Teacher: " + obj.toString());
-                    int schedule_id = obj.isNull("schedule_id") ? 0 : obj.getInt("schedule_id");
-                    Log.d("Teacher", "id: " + schedule_id);
-                    Teacher teacher = new Teacher(
-                            obj.getInt("user_id"), obj.getString("first_name"),
-                            obj.getString("last_name"), LocalDate.parse(obj.getString("birth_date")),
-                            obj.getString("address"), obj.getString("phone"), Role.TEACHER,
-                            obj.getString("speciality"), schedule_id);
-                    callback.onSuccess(teacher);
-                } catch (JSONException e) {
-                    callback.onError("Teacher Not Found");
+        String url = BASE_URL + "?user_id=" + id;
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject obj) {
+                        try {
+                            if (obj == null || !obj.has("user_id")) {
+                                callback.onError("Teacher Not Found");
+                                return;
+                            }
+
+                            int schedule_id = obj.isNull("schedule_id") ? 0 : obj.getInt("schedule_id");
+
+                            int userId = obj.getInt("user_id");
+                            String firstName = obj.getString("first_name");
+                            String lastName = obj.getString("last_name");
+                            LocalDate birthDate = LocalDate.parse(obj.getString("birth_date"));
+                            String address = obj.getString("address");
+                            String phone = obj.getString("phone");
+                            String speciality = obj.getString("speciality");
+
+                            Teacher teacher = new Teacher(
+                                    userId,
+                                    firstName,
+                                    lastName,
+                                    birthDate,
+                                    address,
+                                    phone,
+                                    Role.TEACHER,
+                                    speciality,
+                                    schedule_id
+                            );
+
+                            callback.onSuccess(teacher);
+                        } catch (JSONException e) {
+                            callback.onError("Teacher Not Found");
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        callback.onError("Teacher Not Found");
+                    }
                 }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                callback.onError("Teacher Not Found");
-            }
-        });
+        );
+
         queue.add(request);
     }
+
 
     @Override
     public void getAllTeachers(TeacherListCallback callback) {

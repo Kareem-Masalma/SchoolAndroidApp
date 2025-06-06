@@ -68,22 +68,27 @@ public class Login extends AppCompatActivity {
     private void handleLoginBtn() {
         btnLogin.setOnClickListener(e->{
             String user_id = etID.getText().toString().trim();
+//            Log.i("login_user", user_id);
             String password = etPassword.getText().toString().trim();
             if(user_id.isEmpty() || password.isEmpty()){
                 // TODO display message
                 Log.i("input_data", user_id + " " + password);
             }
             else{
+                SharedPreferences   prefs = PreferenceManager.getDefaultSharedPreferences(Login.this);
+                SharedPreferences.Editor editor =  prefs.edit();
+                editor.remove(Login.LOGGED_IN_USER);
+                editor.remove(Login.LOGGED_IN);
+                editor.commit();
                 ILoginDA loginDA = LoginDAFactory.getLoginDA(this);
                 loginDA.login(user_id, password, new ILoginDA.LoginCallback() {
                     @Override
                     public void onSuccess(User user) {
-                        SharedPreferences   prefs = PreferenceManager.getDefaultSharedPreferences(Login.this);
-                        SharedPreferences.Editor editor =  prefs.edit();
+
                         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
 //                        Log.i("birth_date" , user.getBirthDate().toString());
 
-                        // TODO -- ALSO WRITE THE SUBTYPE SPECIFIC ATTRIBUTES
+                        // WRITE THE SUBTYPE SPECIFIC ATTRIBUTES
                         Log.i("Role" , user.getRole().toString());
                         if(user.getRole() == Role.TEACHER){
                             ITeacherDA teacherDA = TeacherDAFactory.getTeacherDA(Login.this);
@@ -93,7 +98,12 @@ public class Login extends AppCompatActivity {
                                     String json = gson.toJson(teacher);
                                     editor.putString(LOGGED_IN_USER,json);
                                     editor.putBoolean(LOGGED_IN, true);
-                                    editor.apply();
+                                    editor.commit();
+                                    // TODO -- DELETE THESE LINES, THEY ARE FOR TESTING ONLY
+//                                    Log.i("loggedin_teacher", teacher.getFirstName() + " " + teacher.getLastName());
+                                    Intent intent = new Intent(Login.this, Profile.class);
+                                    startActivity(intent);
+
                                 }
                                 @Override
                                 public void onError(String error) {
@@ -108,7 +118,11 @@ public class Login extends AppCompatActivity {
                                     String json = gson.toJson(s);
                                     editor.putString(LOGGED_IN_USER,json);
                                     editor.putBoolean(LOGGED_IN, true);
-                                    editor.apply();
+                                    editor.commit();
+                                    // TODO -- DELETE THESE LINES, THEY ARE FOR TESTING ONLY
+                                    Intent intent = new Intent(Login.this, Profile.class);
+                                    startActivity(intent);
+
                                 }
 
                                 @Override
@@ -120,14 +134,14 @@ public class Login extends AppCompatActivity {
                             String json = gson.toJson(user);
                             editor.putString(LOGGED_IN_USER,json);
                             editor.putBoolean(LOGGED_IN, true);
-                            editor.apply();
+                            editor.commit();
+                            // TODO -- DELETE THESE LINES, THEY ARE FOR TESTING ONLY
+                            Intent intent = new Intent(Login.this, Profile.class);
+                            startActivity(intent);
+
                         }
                         Toast.makeText(Login.this, "Welcome " + user.getFirstName(), Toast.LENGTH_SHORT).show();
 
-                    // TODO -- DELETE THESE LINES, THEY ARE FOR TESTING ONLY
-                        Intent intent = new Intent(Login.this, Profile.class);
-                        startActivity(intent);
-                        // TODO ----
 
                     }
 

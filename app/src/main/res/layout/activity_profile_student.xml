@@ -37,7 +37,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="John Smith"
+        android:text="Student Name"
         android:textColor="@android:color/black"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -104,7 +104,7 @@
                     android:id="@+id/text_birth_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Birth Date: 1980-03-15"
+                    android:text="Birth Date: 1111-11-11"
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -128,7 +128,7 @@
                     android:id="@+id/text_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Address: 123 Elm St"
+                    android:text="Address: Student Address"
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -151,7 +151,7 @@
                     android:id="@+id/text_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Phone: 555-1001"
+                    android:text="Phone: 111-1111"
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
             </LinearLayout>

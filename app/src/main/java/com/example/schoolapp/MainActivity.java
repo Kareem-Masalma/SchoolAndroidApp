@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
 //        Intent intent = new Intent(MainActivity.this, UserSendMessage1.class);
 
       // logout before we open login.class
-        logout();
         Intent intent = new Intent(MainActivity.this, Login.class);
 
 //        Intent intent = new Intent(MainActivity.this, AddTeacherActivity.class);
@@ -57,15 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
 //        Intent intent = new Intent(MainActivity.this, Profile.class);
         startActivity(intent);
-        finish();
-    }
-
-
-    public void logout(){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.clear();
-        editor.apply();
     }
 
 }

@@ -49,10 +49,7 @@ public class Profile extends AppCompatActivity {
         EdgeToEdge.enable(this);
 
         checkPrefs();
-
-
         setupViews();
-
 
     }
 
@@ -67,6 +64,7 @@ public class Profile extends AppCompatActivity {
                 logged_in_user = user;
                 if(user.getRole().equals(Role.STUDENT)){
                     setContentView(R.layout.activity_profile_student);
+
                     logged_in_user = gson.fromJson(json, Student.class);
                     setupStudentViews();
                 } else if (user.getRole().equals(Role.TEACHER)) {
