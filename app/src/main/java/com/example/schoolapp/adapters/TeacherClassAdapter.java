@@ -11,21 +11,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schoolapp.R;
-import com.example.schoolapp.models.Class;
+import com.example.schoolapp.models.SchoolClass;
 
 import java.util.List;
 
 public class TeacherClassAdapter extends RecyclerView.Adapter<TeacherClassAdapter.ViewHolder> {
 
-    private final List<Class> ClassList;
+    private final List<SchoolClass> ClassList;
     private final Context context;
     private final OnClassClickListener listener;
 
     public interface OnClassClickListener {
-        void onClassClick(Class selectedClass);
+        void onClassClick(SchoolClass selectedClass);
     }
 
-    public TeacherClassAdapter(Context context, List<Class> ClassList, OnClassClickListener listener) {
+    public TeacherClassAdapter(Context context, List<SchoolClass> ClassList, OnClassClickListener listener) {
         this.context = context;
         this.ClassList = ClassList;
         this.listener = listener;
@@ -41,7 +41,7 @@ public class TeacherClassAdapter extends RecyclerView.Adapter<TeacherClassAdapte
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull TeacherClassAdapter.ViewHolder holder, int position) {
-        Class currentClass = ClassList.get(position);
+        SchoolClass currentClass = ClassList.get(position);
 
         holder.tvClassName.setText(currentClass.getClassName());
         holder.tvClassId.setText("Class ID: " + currentClass.getClassId());

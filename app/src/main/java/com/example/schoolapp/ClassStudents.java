@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.schoolapp.adapters.StudentClassAdapter;
 import com.example.schoolapp.data_access.StudentDA;
 import com.example.schoolapp.data_access.StudentDAFactory;
-import com.example.schoolapp.models.Class;
+import com.example.schoolapp.models.SchoolClass;
 import com.example.schoolapp.models.Student;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -25,7 +25,7 @@ public class ClassStudents extends AppCompatActivity {
 
     private TextView tvClass, tvClassId;
     private RecyclerView rvStudents;
-    private Class selectedClass;
+    private SchoolClass selectedClass;
     private StudentDA studentDA;
 
     @Override
@@ -49,7 +49,7 @@ public class ClassStudents extends AppCompatActivity {
         Intent intent = getIntent();
         String classJson = intent.getStringExtra(AddSchedule.CLASS);
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new com.example.schoolapp.json_helpers.LocalDateAdapter()).create();
-        selectedClass = gson.fromJson(classJson, Class.class);
+        selectedClass = gson.fromJson(classJson, SchoolClass.class);
         tvClass.setText("Class: " + selectedClass.getClassName());
         tvClassId.setText("ID: " + selectedClass.getClassId());
     }

@@ -26,7 +26,7 @@ import com.example.schoolapp.data_access.ScheduleDA;
 import com.example.schoolapp.data_access.ScheduleDAFactory;
 import com.example.schoolapp.data_access.SubjectDA;
 import com.example.schoolapp.data_access.SubjectDAFactory;
-import com.example.schoolapp.models.Class;
+import com.example.schoolapp.models.SchoolClass;
 import com.example.schoolapp.models.Schedule;
 import com.example.schoolapp.models.ScheduleSubject;
 import com.example.schoolapp.models.Subject;
@@ -46,7 +46,7 @@ public class AddClassSchedule extends AppCompatActivity {
     private EditText etStartTime, etEndTime;
     private RecyclerView rvScheduleItems;
     private Button btnAdd, btnCancel;
-    private Class selectedClass;
+    private SchoolClass selectedClass;
     private List<ScheduleSubject> classSchedules;
     private ScheduleDA scheduleDA;
 
@@ -221,7 +221,7 @@ public class AddClassSchedule extends AppCompatActivity {
         Intent intent = getIntent();
         String classString = intent.getStringExtra(AddSchedule.CLASS);
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new com.example.schoolapp.json_helpers.LocalDateAdapter()).create();
-        selectedClass = gson.fromJson(classString, Class.class);
+        selectedClass = gson.fromJson(classString, SchoolClass.class);
         tvClass.setText("Class: " + selectedClass.getClassName());
         tvId.setText("ID: " + selectedClass.getClassId());
     }

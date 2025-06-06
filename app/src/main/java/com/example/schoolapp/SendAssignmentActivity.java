@@ -19,7 +19,7 @@ import com.example.schoolapp.data_access.SubjectDA;
 import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.Subject;
 import com.example.schoolapp.models.Teacher;
-import com.example.schoolapp.models.Class;
+import com.example.schoolapp.models.SchoolClass;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -74,7 +74,7 @@ public class SendAssignmentActivity extends AppCompatActivity {
         String teacherString = intent.getStringExtra(AddSchedule.TEACHER);
         String classString = intent.getStringExtra(AddSchedule.CLASS);
         Teacher teacher = gson.fromJson(teacherString, Teacher.class);
-        Class selectClass = gson.fromJson(classString, Class.class);
+        SchoolClass selectClass = gson.fromJson(classString, SchoolClass.class);
 
         // --- Load subjects for teacher and selected class ---
         SubjectDA subjectDA = new SubjectDA(this);

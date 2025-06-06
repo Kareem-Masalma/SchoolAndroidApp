@@ -2,25 +2,25 @@ package com.example.schoolapp.models;
 
 import androidx.annotation.NonNull;
 
-public class Class {
+public class SchoolClass {
     private int classId;
     private String className;
     private int classManagerId;
     private int scheduleId;
     private String manager;
 
-    public Class() {
+    public SchoolClass() {
 
     }
 
-    public Class(int classId, String className, int classManagerId, String manager) {
+    public SchoolClass(int classId, String className, int classManagerId, String manager) {
         this.classId = classId;
         this.className = className;
         this.classManagerId = classManagerId;
         this.manager = manager;
     }
 
-    public Class(int classId, String className, int classManagerId, String manager, int scheduleId) {
+    public SchoolClass(int classId, String className, int classManagerId, String manager, int scheduleId) {
         this(classId, className, classManagerId, manager);
         this.scheduleId = scheduleId;
     }

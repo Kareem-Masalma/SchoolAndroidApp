@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schoolapp.adapters.SubjectAdapter;
 import com.example.schoolapp.data_access.SubjectDA;
-import com.example.schoolapp.models.Class;
+import com.example.schoolapp.models.SchoolClass;
 import com.example.schoolapp.models.Subject;
 import com.example.schoolapp.models.Teacher;
 import com.google.gson.Gson;
@@ -31,7 +31,7 @@ public class TeacherClassSubjectsActivity extends AppCompatActivity {
 
     private TextView tvClass, tvClassId;
     private RecyclerView rvSubjects;
-    private Class selectedClass;
+    private SchoolClass selectedClass;
     private SubjectDA subjectDA;
     private Teacher teacher;
 
@@ -62,7 +62,7 @@ public class TeacherClassSubjectsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String classJson = intent.getStringExtra(AddSchedule.CLASS);
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new com.example.schoolapp.json_helpers.LocalDateAdapter()).create();
-        selectedClass = gson.fromJson(classJson, Class.class);
+        selectedClass = gson.fromJson(classJson, SchoolClass.class);
         tvClass.setText("Class: " + selectedClass.getClassName());
         tvClassId.setText("ID: " + selectedClass.getClassId());
 

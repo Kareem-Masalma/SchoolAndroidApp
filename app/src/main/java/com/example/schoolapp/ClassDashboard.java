@@ -16,7 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.schoolapp.json_helpers.LocalDateAdapter;
-import com.example.schoolapp.models.Class;
+import com.example.schoolapp.models.SchoolClass;
 import com.example.schoolapp.models.Teacher;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -27,7 +27,7 @@ public class ClassDashboard extends AppCompatActivity {
 
     private Button btnSubjects, btnNewAssignment, btnAttendance, btnStudents, btnSchedule, btnExamMarks;
     private TextView tvClassName;
-    private Class selectedClass;
+    private SchoolClass selectedClass;
     private Teacher teacher;
 
     @Override
@@ -118,7 +118,7 @@ public class ClassDashboard extends AppCompatActivity {
         Intent intent = getIntent();
         String classString = intent.getStringExtra(AddSchedule.CLASS);
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
-        selectedClass = gson.fromJson(classString, Class.class);
+        selectedClass = gson.fromJson(classString, SchoolClass.class);
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(ClassDashboard.this);
         boolean isLoggedIn = pref.getBoolean("Logged_in", false);

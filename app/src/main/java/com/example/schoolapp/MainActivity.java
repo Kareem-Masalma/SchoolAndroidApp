@@ -11,15 +11,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.schoolapp.json_helpers.LocalDateAdapter;
-import com.example.schoolapp.models.Class;
-import com.example.schoolapp.models.Role;
-import com.example.schoolapp.models.Teacher;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.time.LocalDate;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override

@@ -29,7 +29,7 @@ import com.example.schoolapp.data_access.ScheduleDAFactory;
 import com.example.schoolapp.data_access.SubjectDA;
 import com.example.schoolapp.data_access.SubjectDAFactory;
 import com.example.schoolapp.json_helpers.LocalDateAdapter;
-import com.example.schoolapp.models.Class;
+import com.example.schoolapp.models.SchoolClass;
 
 import com.example.schoolapp.data_access.DaysFactory;
 import com.example.schoolapp.models.Schedule;
@@ -103,7 +103,7 @@ public class AddTeacherSchedule extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Class selectedClass = (Class) spGrade.getSelectedItem();
+                SchoolClass selectedClass = (SchoolClass) spGrade.getSelectedItem();
                 Log.d("Teacher", "Class id after: " + selectedClass.getClassId());
                 Subject subject = (Subject) spSubject.getSelectedItem();
                 String day = spDay.getSelectedItem().toString();
@@ -202,8 +202,8 @@ public class AddTeacherSchedule extends AppCompatActivity {
 
         ClassDAFactory.getClassDA(AddTeacherSchedule.this).getAllClasses(new ClassDA.ClassListCallback() {
             @Override
-            public void onSuccess(List<Class> list) {
-                ArrayAdapter<Class> classesAdapter = new ArrayAdapter<>(AddTeacherSchedule.this, android.R.layout.simple_list_item_1, list);
+            public void onSuccess(List<SchoolClass> list) {
+                ArrayAdapter<SchoolClass> classesAdapter = new ArrayAdapter<>(AddTeacherSchedule.this, android.R.layout.simple_list_item_1, list);
                 spGrade.setAdapter(classesAdapter);
             }
 
@@ -216,7 +216,7 @@ public class AddTeacherSchedule extends AppCompatActivity {
         spGrade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Class selectedClass = (Class) spGrade.getSelectedItem();
+                SchoolClass selectedClass = (SchoolClass) spGrade.getSelectedItem();
                 if (selectedClass != null) {
                     int classId = selectedClass.getClassId();
 

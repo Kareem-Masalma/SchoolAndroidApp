@@ -21,7 +21,7 @@ import com.example.schoolapp.adapters.TeacherClassAdapter;
 import com.example.schoolapp.data_access.ClassDA;
 import com.example.schoolapp.data_access.ClassDAFactory;
 import com.example.schoolapp.json_helpers.LocalDateAdapter;
-import com.example.schoolapp.models.Class;
+import com.example.schoolapp.models.SchoolClass;
 import com.example.schoolapp.models.Teacher;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -53,10 +53,10 @@ public class SelectClass extends AppCompatActivity {
     private void getClasses() {
         ClassDAFactory.getClassDA(this).getTeacherClasses(teacher.getUser_id(), new ClassDA.ClassListCallback() {
             @Override
-            public void onSuccess(List<Class> list) {
+            public void onSuccess(List<SchoolClass> list) {
                 TeacherClassAdapter adapter = new TeacherClassAdapter(SelectClass.this, list, new TeacherClassAdapter.OnClassClickListener() {
                     @Override
-                    public void onClassClick(Class selectedClass) {
+                    public void onClassClick(SchoolClass selectedClass) {
                         Intent intent = new Intent(SelectClass.this, ClassDashboard.class);
                         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
                         String classString = gson.toJson(selectedClass);

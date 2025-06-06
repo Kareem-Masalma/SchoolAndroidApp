@@ -21,7 +21,7 @@ import com.example.schoolapp.adapters.ScheduleAdapter;
 import com.example.schoolapp.data_access.ScheduleDA;
 import com.example.schoolapp.data_access.ScheduleDAFactory;
 import com.example.schoolapp.json_helpers.LocalDateAdapter;
-import com.example.schoolapp.models.Class;
+import com.example.schoolapp.models.SchoolClass;
 
 import com.example.schoolapp.models.ScheduleSubject;
 import com.example.schoolapp.models.Teacher;
@@ -56,7 +56,7 @@ public class ViewSchedule extends AppCompatActivity {
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
         if (intent.hasExtra(AddSchedule.CLASS)) {
             String classJson = intent.getStringExtra(AddSchedule.CLASS);
-            Class selectedClass = gson.fromJson(classJson, Class.class);
+            SchoolClass selectedClass = gson.fromJson(classJson, SchoolClass.class);
 
             tvUser.setText("Class: " + selectedClass.getClassName());
             tvId.setText("ID: " + selectedClass.getClassId());

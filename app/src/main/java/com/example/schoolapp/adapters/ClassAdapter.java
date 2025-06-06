@@ -8,16 +8,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.schoolapp.models.Class;
+import com.example.schoolapp.models.SchoolClass;
 
 import java.util.List;
 
 public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHolder> {
 
-    private final List<Class> ClassList;
+    private final List<SchoolClass> ClassList;
     private final OnClassClickListener listener;
 
-    public ClassAdapter(List<Class> ClassList, OnClassClickListener listener) {
+    public ClassAdapter(List<SchoolClass> ClassList, OnClassClickListener listener) {
         this.ClassList = ClassList;
         this.listener = listener;
     }
@@ -32,7 +32,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
     @Override
     public void onBindViewHolder(@NonNull ClassViewHolder holder, int position) {
-        Class c = ClassList.get(position);
+        SchoolClass c = ClassList.get(position);
         holder.nameText.setText(c.getClassName());
 
         holder.itemView.setOnClickListener(v -> listener.onClassClick(c));
@@ -53,6 +53,6 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
     }
 
     public interface OnClassClickListener {
-        void onClassClick(Class c);
+        void onClassClick(SchoolClass c);
     }
 }

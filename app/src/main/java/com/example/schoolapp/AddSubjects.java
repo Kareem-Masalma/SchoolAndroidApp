@@ -16,7 +16,7 @@ import com.example.schoolapp.data_access.ClassDAFactory;
 import com.example.schoolapp.data_access.ISubjectDA;
 import com.example.schoolapp.data_access.SubjectDA;
 import com.example.schoolapp.data_access.SubjectDAFactory;
-import com.example.schoolapp.models.Class;
+import com.example.schoolapp.models.SchoolClass;
 import com.example.schoolapp.models.Subject;
 
 import java.util.List;
@@ -49,8 +49,8 @@ public class AddSubjects extends AppCompatActivity {
     private void setupGradeSP(){
         ClassDAFactory.getClassDA(this).getAllClasses(new ClassDA.ClassListCallback() {
             @Override
-            public void onSuccess(List<Class> list) {
-                ArrayAdapter<Class> gradeAdapter = new ArrayAdapter<>(AddSubjects.this, android.R.layout.simple_spinner_item, list);
+            public void onSuccess(List<SchoolClass> list) {
+                ArrayAdapter<SchoolClass> gradeAdapter = new ArrayAdapter<>(AddSubjects.this, android.R.layout.simple_spinner_item, list);
                 gradeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 assignGradeSP.setAdapter(gradeAdapter);
             }
@@ -65,7 +65,7 @@ public class AddSubjects extends AppCompatActivity {
     }
     private void addButton(){
         addBT.setOnClickListener(v -> {
-            Class selectedClass = (Class) assignGradeSP.getSelectedItem();
+            SchoolClass selectedClass = (SchoolClass) assignGradeSP.getSelectedItem();
             String title = subNameET.getText().toString().trim();
 
             if(selectedClass == null){

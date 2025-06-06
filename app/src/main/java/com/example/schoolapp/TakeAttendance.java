@@ -26,7 +26,7 @@ import com.example.schoolapp.data_access.StudentDAFactory;
 import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.Attendance;
 import com.example.schoolapp.models.Attendance_student;
-import com.example.schoolapp.models.Class;
+import com.example.schoolapp.models.SchoolClass;
 import com.example.schoolapp.models.Student;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -47,7 +47,7 @@ public class TakeAttendance extends AppCompatActivity {
     private Button btnFinish;
 
     // this class expects an intent that contains a Class object
-    private Class Class;
+    private SchoolClass Class;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +128,7 @@ public class TakeAttendance extends AppCompatActivity {
         Intent intent = getIntent();
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
         String json = intent.getStringExtra("Class");
-        Class = gson.fromJson(json, Class.class);
+        Class = gson.fromJson(json, SchoolClass.class);
         tvClassName.setText(Class.getClassName());
     }
 
