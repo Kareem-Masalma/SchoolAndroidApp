@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,11 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
 //        Intent intent = new Intent(MainActivity.this, UserSendMessage1.class);
 
-      // clear preferences before we open login.class
-        SharedPreferences preferences =getSharedPreferences(Login.LOGGED_IN_USER, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.clear();
-        editor.apply();
+      // logout before we open login.class
+        logout();
         Intent intent = new Intent(MainActivity.this, Login.class);
 
 //        Intent intent = new Intent(MainActivity.this, AddTeacherActivity.class);
@@ -59,6 +57,15 @@ public class MainActivity extends AppCompatActivity {
 
 //        Intent intent = new Intent(MainActivity.this, Profile.class);
         startActivity(intent);
+        finish();
+    }
+
+
+    public void logout(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.apply();
     }
 
 }
