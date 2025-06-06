@@ -18,14 +18,17 @@ import com.example.schoolapp.data_access.ILoginDA;
 import com.example.schoolapp.data_access.IUserDA;
 import com.example.schoolapp.data_access.LoginDAFactory;
 import com.example.schoolapp.data_access.UserDAFactory;
+import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.User;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONObject;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class Login extends AppCompatActivity {
@@ -53,23 +56,22 @@ public class Login extends AppCompatActivity {
     }
 
     private void handleLoginBtn() {
-        btnLogin.setOnClickListener(e->{
+        btnLogin.setOnClickListener(e -> {
             String user_id = etID.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
-            if(user_id.isEmpty() || password.isEmpty()){
+            if (user_id.isEmpty() || password.isEmpty()) {
                 // TODO display message
                 Log.i("input_data", user_id + " " + password);
-            }
-            else{
+            } else {
                 ILoginDA loginDA = LoginDAFactory.getLoginDA(this);
                 loginDA.login(user_id, password, new ILoginDA.LoginCallback() {
                     @Override
                     public void onSuccess(User user) {
-                        SharedPreferences   prefs = PreferenceManager.getDefaultSharedPreferences(Login.this);
-                        SharedPreferences.Editor editor =  prefs.edit();
-                        Gson gson = new Gson();
+                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Login.this);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
                         String json = gson.toJson(user);
-                        editor.putString(LOGGED_IN_USER,json);
+                        editor.putString(LOGGED_IN_USER, json);
                         editor.putBoolean(LOGGED_IN, true);
                         editor.apply();
                         Toast.makeText(Login.this, "Welcome " + user.getFirstName(), Toast.LENGTH_SHORT).show();

@@ -1,9 +1,9 @@
 package com.example.schoolapp;
 
 import android.annotation.SuppressLint;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,12 +30,14 @@ import com.example.schoolapp.models.Class;
 import com.example.schoolapp.models.Schedule;
 import com.example.schoolapp.models.ScheduleSubject;
 import com.example.schoolapp.models.Subject;
-import com.example.schoolapp.models.Teacher;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class AddClassSchedule extends AppCompatActivity {
 
@@ -68,6 +70,22 @@ public class AddClassSchedule extends AppCompatActivity {
         actionButtons();
     }
 
+    private void showTimePicker(EditText targetEditText) {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        TimePickerDialog timePicker = new TimePickerDialog(this,
+                (view, selectedHour, selectedMinute) -> {
+                    String formatted = String.format(Locale.getDefault(), "%02d:%02d", selectedHour, selectedMinute);
+                    targetEditText.setText(formatted);
+                },
+                hour, minute, true);
+
+        timePicker.show();
+    }
+
+
     private void actionButtons() {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,11 +100,22 @@ public class AddClassSchedule extends AppCompatActivity {
                 Subject subject = (Subject) spSubject.getSelectedItem();
                 String day = spDay.getSelectedItem().toString();
                 String semester = spSemester.getSelectedItem().toString();
-                String startTime = etStartTime.getText().toString();
-                String endTime = etEndTime.getText().toString();
+                String start = etStartTime.getText().toString().trim();
+                String end = etEndTime.getText().toString().trim();
+
+                if (!Schedule.isValidTimeFormat(start) || !Schedule.isValidTimeFormat(end)) {
+                    Toast.makeText(AddClassSchedule.this, "Please enter time in HH:mm format", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!Schedule.isTimeRangeValid(start, end)) {
+                    Toast.makeText(AddClassSchedule.this, "Start time must be before end time", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 int year = LocalDate.now().getYear();
                 ScheduleSubject schedule = new ScheduleSubject(selectedClass.getScheduleId(), subject.getSubjectId(), selectedClass.getClassId(),
-                        subject.getTitle(), selectedClass.getClassName(), day, startTime, endTime, semester, year);
+                        subject.getTitle(), selectedClass.getClassName(), day, start, end, semester, year);
 
                 if (classSchedules.isEmpty()) {
                     classSchedules.add(schedule);
@@ -182,7 +211,7 @@ public class AddClassSchedule extends AppCompatActivity {
 
             @Override
             public void onError(String error) {
-                Log.d("Error", error);
+                Toast.makeText(AddClassSchedule.this, error, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -191,7 +220,7 @@ public class AddClassSchedule extends AppCompatActivity {
     private void classData() {
         Intent intent = getIntent();
         String classString = intent.getStringExtra(AddSchedule.CLASS);
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new com.example.schoolapp.json_helpers.LocalDateAdapter()).create();
         selectedClass = gson.fromJson(classString, Class.class);
         tvClass.setText("Class: " + selectedClass.getClassName());
         tvId.setText("ID: " + selectedClass.getClassId());
@@ -209,5 +238,7 @@ public class AddClassSchedule extends AppCompatActivity {
         this.btnAdd = findViewById(R.id.btnAddSchedule);
         this.btnCancel = findViewById(R.id.btnCancel);
         rvScheduleItems.setLayoutManager(new LinearLayoutManager(this));
+        etStartTime.setOnClickListener(v -> showTimePicker(etStartTime));
+        etEndTime.setOnClickListener(v -> showTimePicker(etEndTime));
     }
 }

@@ -85,15 +85,19 @@
                 android:id="@+id/etStartTime"
                 style="@style/FormEditText"
                 android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:focusable="false"
                 android:hint="@string/start_time"
-                android:inputType="time" />
+                android:inputType="none" />
 
             <EditText
                 android:id="@+id/etEndTime"
                 style="@style/FormEditText"
                 android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:focusable="false"
                 android:hint="@string/end_time"
-                android:inputType="time" />
+                android:inputType="none" />
 
             <TextView
                 style="@style/SectionTitle"
