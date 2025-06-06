@@ -1,7 +1,7 @@
 package com.example.schoolapp.data_access;
 
 public class DA_Config {
-    public static final String BACKEND_IP_ADDRESS = "192.168.1.3";
-    public static final String BACKEND_DIR = "School";
+    public static final String BACKEND_IP_ADDRESS = "10.0.0.11";
+    public static final String BACKEND_DIR = "androidBackend";
 
 }

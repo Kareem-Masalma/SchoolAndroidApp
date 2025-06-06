@@ -78,6 +78,7 @@ public class UserDA implements IUserDA {
             body.put("address",    user.getAddress());
             body.put("phone",      user.getPhone());
             body.put("role",       user.getRole().name());
+//            body.put("password", user.getPassword());
             JsonObjectRequest req = new JsonObjectRequest(
                     Request.Method.POST,
                     BASE,
@@ -102,6 +103,7 @@ public class UserDA implements IUserDA {
             body.put("address",    user.getAddress());
             body.put("phone",      user.getPhone());
             body.put("role",       user.getRole().name());
+//            body.put("password", user.getPassword());
             JsonObjectRequest req = new JsonObjectRequest(
                     Request.Method.PUT,
                     BASE,

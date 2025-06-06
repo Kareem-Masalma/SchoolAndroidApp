@@ -64,7 +64,7 @@ public class ViewSchedule extends AppCompatActivity {
             loadSchedule(selectedClass.getScheduleId());
         } else {
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-            String teacherString = pref.getString("Logged_in_user", "");
+            String teacherString = pref.getString(Login.LOGGED_IN_USER, "");
             if (!teacherString.isEmpty()) {
                 Teacher teacher = gson.fromJson(teacherString, Teacher.class);
                 tvUser.setText("Teacher: " + teacher.getFirstName() + " " + teacher.getLastName());
