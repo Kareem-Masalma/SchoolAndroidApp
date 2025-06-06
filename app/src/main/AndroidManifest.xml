@@ -20,6 +20,27 @@
             android:name=".Profile"
             android:exported="false" />
         <activity
+            android:name=".ExamMarks"
+            android:exported="false" />
+        <activity
+            android:name=".TeacherClassSubjectsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ViewSchedule"
+            android:exported="false" />
+        <activity
+            android:name=".ClassStudents"
+            android:exported="false" />
+        <activity
+            android:name=".SendAssignmentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ClassDashboard"
+            android:exported="false" />
+        <activity
+            android:name=".SelectClass"
+            android:exported="false" />
+        <activity
             android:name=".Login"
             android:exported="false" />
         <activity

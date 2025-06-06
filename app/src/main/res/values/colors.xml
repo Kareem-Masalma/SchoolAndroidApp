@@ -6,8 +6,8 @@
     <color name="role_orange">#FFA500</color>
     <color name="role_blue">#2196F3</color>
     <color name="role_green">#4CAF50</color>
-    <color name="role_orange_dark">#CC8400</color> <!-- for primaryVariant -->
-    <color name="secondary_orange">#FFD180</color> <!-- secondary color -->
+    <color name="role_orange_dark">#CC8400</color>
+    <color name="secondary_orange">#FFD180</color>
     <color name="row_light_blue">#E3F2FD</color>
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>

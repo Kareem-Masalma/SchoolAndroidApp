@@ -15,7 +15,7 @@ try {
         if (isset($_GET['subject_id'])) {
             $sid = (int)$_GET['subject_id'];
             $stmt = $conn->prepare("
-                SELECT s.subject_id, s.class_id, s.title, c.class_name
+                SELECT *
                 FROM subject s
                 JOIN class c ON s.class_id = c.class_id
                 WHERE s.subject_id = ?
@@ -33,19 +33,39 @@ try {
 
         } elseif (isset($_GET['class_id'])) {
             $class_id = (int)$_GET['class_id'];
-            $stmt = $conn->prepare("
-                SELECT *
-                FROM subject s
-                WHERE s.class_id = ?
-            ");
-            $stmt->bind_param("i", $class_id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $subjects = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
-            echo json_encode($subjects);
+
+            if (isset($_GET['user_id'])) {
+                $user_id = (int)$_GET['user_id'];
+
+                $stmt = $conn->prepare("
+                    SELECT *
+                    FROM subject s
+                    JOIN schedule_subject ss ON ss.subject_id = s.subject_id
+                    JOIN class c ON s.class_id = c.class_id
+                    JOIN teacher t ON t.schedule_id = ss.schedule_id
+                    WHERE c.class_id = ? AND t.user_id = ?
+        ");
+                $stmt->bind_param("ii", $class_id, $user_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $subjects = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+                echo json_encode($subjects);
+
+            } else {
+                $stmt = $conn->prepare("
+            SELECT *
+            FROM subject s
+            WHERE s.class_id = ?
+        ");
+                $stmt->bind_param("i", $class_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $subjects = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+                echo json_encode($subjects);
+            }
         } else {
             $sql = "
-                SELECT s.subject_id, s.class_id, s.title, c.class_name
+                SELECT *
                 FROM subject s
                 JOIN class c ON s.class_id = c.class_id
             ";

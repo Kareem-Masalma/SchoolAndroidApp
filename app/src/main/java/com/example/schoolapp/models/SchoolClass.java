@@ -1,61 +1,73 @@
 package com.example.schoolapp.models;
 
-public class SchoolClass { // we cant have a class name called 'Class' in java, that causes issues
-    private Integer class_id;
-    private String name;
-    private Integer manager_id; // teacher.id
-    private Integer schedule_id;
+import androidx.annotation.NonNull;
+
+public class SchoolClass {
+    private int classId;
+    private String className;
+    private int classManagerId;
+    private int scheduleId;
+    private String manager;
 
     public SchoolClass() {
 
     }
 
-    public SchoolClass(Integer class_id, String name, Integer manager_id, Integer schedule_id) {
-        this.class_id = class_id;
-        this.name = name;
-        this.manager_id = manager_id;
-        this.schedule_id = schedule_id;
+    public SchoolClass(int classId, String className, int classManagerId, String manager) {
+        this.classId = classId;
+        this.className = className;
+        this.classManagerId = classManagerId;
+        this.manager = manager;
     }
 
-    public Integer getClass_id() {
-        return class_id;
+    public SchoolClass(int classId, String className, int classManagerId, String manager, int scheduleId) {
+        this(classId, className, classManagerId, manager);
+        this.scheduleId = scheduleId;
     }
 
-    public void setClass_id(Integer class_id) {
-        this.class_id = class_id;
+    public int getClassId() {
+        return classId;
     }
 
-    public String getName() {
-        return name;
+    public void setClassId(int classId) {
+        this.classId = classId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getClassName() {
+        return className;
     }
 
-    public Integer getManager_id() {
-        return manager_id;
+    public void setClassName(String className) {
+        this.className = className;
     }
 
-    public void setManager_id(Integer manager_id) {
-        this.manager_id = manager_id;
+    public int getClassManagerId() {
+        return classManagerId;
     }
 
-    public Integer getSchedule_id() {
-        return schedule_id;
+    public void setClassManagerId(int classManagerId) {
+        this.classManagerId = classManagerId;
     }
 
-    public void setSchedule_id(Integer schedule_id) {
-        this.schedule_id = schedule_id;
+    public int getScheduleId() {
+        return scheduleId;
     }
 
+    public void setScheduleId(int scheduleId) {
+        this.scheduleId = scheduleId;
+    }
+
+    public String getManager() {
+        return manager;
+    }
+
+    public void setManager(String manager) {
+        this.manager = manager;
+    }
+
+    @NonNull
     @Override
     public String toString() {
-        return "SchoolClass{" +
-                "id=" + class_id +
-                ", name='" + name + '\'' +
-                ", managerId=" + manager_id +
-                ", scheduleId=" + schedule_id +
-                '}';
+        return className;
     }
 }

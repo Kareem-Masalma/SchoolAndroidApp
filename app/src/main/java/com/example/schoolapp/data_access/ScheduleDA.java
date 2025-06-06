@@ -85,6 +85,7 @@ public class ScheduleDA implements IScheduleDA {
 
     public void getScheduleById(int id, ScheduleListCallback callback) {
         String url = BASE_URL + "?schedule_id=" + id;
+        Log.d("Schedule", "Schedule id: " + id);
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
