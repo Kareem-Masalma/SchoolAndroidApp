@@ -22,7 +22,7 @@ import com.example.schoolapp.data_access.TeacherDAFactory;
 import com.example.schoolapp.data_access.TeacherDA;
 import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.Teacher;
-import com.example.schoolapp.models.SchoolClass;
+import com.example.schoolapp.models.Class;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -88,11 +88,11 @@ public class AddSchedule extends AppCompatActivity {
                 } else if ("Class".equals(role)) {
                     ClassDAFactory.getClassDA(AddSchedule.this).getAllClasses(new ClassDA.ClassListCallback() {
                         @Override
-                        public void onSuccess(List<SchoolClass> schoolClasses) {
+                        public void onSuccess(List<Class> Classes) {
                             rvUsers.setLayoutManager(new LinearLayoutManager(AddSchedule.this));
-                            rvUsers.setAdapter(new ClassAdapter(schoolClasses, new ClassAdapter.OnClassClickListener() {
+                            rvUsers.setAdapter(new ClassAdapter(Classes, new ClassAdapter.OnClassClickListener() {
                                 @Override
-                                public void onClassClick(SchoolClass c) {
+                                public void onClassClick(Class c) {
                                     Intent intent = new Intent(AddSchedule.this, AddClassSchedule.class);
                                     Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
                                     String studentString = gson.toJson(c);

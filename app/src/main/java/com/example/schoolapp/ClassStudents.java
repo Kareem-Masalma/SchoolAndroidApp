@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.schoolapp.adapters.StudentClassAdapter;
 import com.example.schoolapp.data_access.StudentDA;
 import com.example.schoolapp.data_access.StudentDAFactory;
-import com.example.schoolapp.models.SchoolClass;
+import com.example.schoolapp.models.Class;
 import com.example.schoolapp.models.Student;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -25,7 +25,7 @@ public class ClassStudents extends AppCompatActivity {
 
     private TextView tvClass, tvClassId;
     private RecyclerView rvStudents;
-    private SchoolClass selectedSchoolClass;
+    private Class selectedClass;
     private StudentDA studentDA;
 
     @Override
@@ -49,14 +49,14 @@ public class ClassStudents extends AppCompatActivity {
         Intent intent = getIntent();
         String classJson = intent.getStringExtra(AddSchedule.CLASS);
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new com.example.schoolapp.json_helpers.LocalDateAdapter()).create();
-        selectedSchoolClass = gson.fromJson(classJson, SchoolClass.class);
-        tvClass.setText("Class: " + selectedSchoolClass.getClassName());
-        tvClassId.setText("ID: " + selectedSchoolClass.getClassId());
+        selectedClass = gson.fromJson(classJson, Class.class);
+        tvClass.setText("Class: " + selectedClass.getClassName());
+        tvClassId.setText("ID: " + selectedClass.getClassId());
     }
 
     private void fetchStudents() {
         studentDA = (StudentDA) StudentDAFactory.getStudentDA(ClassStudents.this);
-        studentDA.getClassStudents(selectedSchoolClass.getClassId(), new StudentDA.StudentListCallback() {
+        studentDA.getClassStudents(selectedClass.getClassId(), new StudentDA.StudentListCallback() {
 
             @Override
             public void onSuccess(List<Student> list) {

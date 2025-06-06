@@ -8,7 +8,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.schoolapp.models.SchoolClass;
+import com.example.schoolapp.models.Class;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,7 +46,7 @@ public class ClassDA implements IClassDA {
         JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, url, null,
                 resp -> {
                     try {
-                        List<SchoolClass> list = new ArrayList<>();
+                        List<Class> list = new ArrayList<>();
                         for (int i = 0; i < resp.length(); i++) {
                             list.add(parseClass(resp.getJSONObject(i)));
                         }
@@ -64,7 +64,7 @@ public class ClassDA implements IClassDA {
         JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, BASE, null,
                 resp -> {
                     try {
-                        List<SchoolClass> list = new ArrayList<>();
+                        List<Class> list = new ArrayList<>();
                         for (int i = 0; i < resp.length(); i++) {
                             list.add(parseClass(resp.getJSONObject(i)));
                         }
@@ -78,7 +78,7 @@ public class ClassDA implements IClassDA {
         queue.add(req);
     }
 
-    public void addClass(SchoolClass c, BaseCallback cb) {
+    public void addClass(Class c, BaseCallback cb) {
         StringRequest req = new StringRequest(Request.Method.POST, BASE,
                 resp -> cb.onSuccess("Class added successfully"),
                 err -> cb.onError("Add failed")
@@ -95,7 +95,7 @@ public class ClassDA implements IClassDA {
         queue.add(req);
     }
 
-    public void updateClass(SchoolClass c, BaseCallback cb) {
+    public void updateClass(Class c, BaseCallback cb) {
         StringRequest req = new StringRequest(Request.Method.PUT, BASE,
                 resp -> cb.onSuccess("Class updated successfully"),
                 err -> cb.onError("Update failed")
@@ -122,9 +122,9 @@ public class ClassDA implements IClassDA {
         queue.add(req);
     }
 
-    private SchoolClass parseClass(JSONObject o) throws JSONException {
+    private Class parseClass(JSONObject o) throws JSONException {
         int schedule_id = o.isNull("schedule_id") ? 0 : o.getInt("schedule_id");
-        return new SchoolClass(
+        return new Class(
                 o.getInt("class_id"),
                 o.getString("class_name"),
                 o.getInt("class_manager"),
@@ -134,13 +134,13 @@ public class ClassDA implements IClassDA {
     }
 
     public interface SingleClassCallback {
-        void onSuccess(SchoolClass c);
+        void onSuccess(Class c);
 
         void onError(String error);
     }
 
     public interface ClassListCallback {
-        void onSuccess(List<SchoolClass> list);
+        void onSuccess(List<Class> list);
 
         void onError(String error);
     }

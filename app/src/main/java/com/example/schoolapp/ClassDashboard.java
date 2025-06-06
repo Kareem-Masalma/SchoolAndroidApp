@@ -16,7 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.schoolapp.json_helpers.LocalDateAdapter;
-import com.example.schoolapp.models.SchoolClass;
+import com.example.schoolapp.models.Class;
 import com.example.schoolapp.models.Teacher;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -27,7 +27,7 @@ public class ClassDashboard extends AppCompatActivity {
 
     private Button btnSubjects, btnNewAssignment, btnAttendance, btnStudents, btnSchedule, btnExamMarks;
     private TextView tvClassName;
-    private SchoolClass selectedSchoolClass;
+    private Class selectedClass;
     private Teacher teacher;
 
     @Override
@@ -51,8 +51,8 @@ public class ClassDashboard extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ClassDashboard.this, TakeAttendance.class);
                 Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
-                String classString = gson.toJson(selectedSchoolClass);
-                intent.putExtra("schoolClass", classString);
+                String classString = gson.toJson(selectedClass);
+                intent.putExtra("Class", classString);
                 startActivity(intent);
             }
         });
@@ -62,7 +62,7 @@ public class ClassDashboard extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ClassDashboard.this, ClassStudents.class);
                 Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
-                String strClass = gson.toJson(selectedSchoolClass);
+                String strClass = gson.toJson(selectedClass);
                 intent.putExtra(AddSchedule.CLASS, strClass);
                 startActivity(intent);
             }
@@ -73,7 +73,7 @@ public class ClassDashboard extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ClassDashboard.this, ViewSchedule.class);
                 Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
-                String classJson = gson.toJson(selectedSchoolClass);
+                String classJson = gson.toJson(selectedClass);
                 intent.putExtra(AddSchedule.CLASS, classJson);
                 startActivity(intent);
             }
@@ -84,7 +84,7 @@ public class ClassDashboard extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ClassDashboard.this, TeacherClassSubjectsActivity.class);
                 Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new com.example.schoolapp.json_helpers.LocalDateAdapter()).create();
-                String classString = gson.toJson(selectedSchoolClass);
+                String classString = gson.toJson(selectedClass);
                 intent.putExtra(AddSchedule.CLASS, classString);
                 startActivity(intent);
             }
@@ -95,7 +95,7 @@ public class ClassDashboard extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ClassDashboard.this, SendAssignmentActivity.class);
                 Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
-                String stringClass = gson.toJson(selectedSchoolClass);
+                String stringClass = gson.toJson(selectedClass);
                 intent.putExtra(AddSchedule.CLASS, stringClass);
                 startActivity(intent);
             }
@@ -106,7 +106,7 @@ public class ClassDashboard extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ClassDashboard.this, ExamMarks.class);
                 Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new com.example.schoolapp.json_helpers.LocalDateAdapter()).create();
-                String classString = gson.toJson(selectedSchoolClass);
+                String classString = gson.toJson(selectedClass);
                 intent.putExtra(AddSchedule.CLASS, classString);
                 startActivity(intent);
             }
@@ -118,7 +118,7 @@ public class ClassDashboard extends AppCompatActivity {
         Intent intent = getIntent();
         String classString = intent.getStringExtra(AddSchedule.CLASS);
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
-        selectedSchoolClass = gson.fromJson(classString, SchoolClass.class);
+        selectedClass = gson.fromJson(classString, Class.class);
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(ClassDashboard.this);
         boolean isLoggedIn = pref.getBoolean("Logged_in", false);
@@ -141,7 +141,7 @@ public class ClassDashboard extends AppCompatActivity {
         this.btnSubjects = findViewById(R.id.btnSubjects);
         this.btnStudents = findViewById(R.id.btnStudents);
         this.btnExamMarks = findViewById(R.id.btnExamMarks);
-        this.btnAttendance.setEnabled(teacher.getUser_id() == selectedSchoolClass.getClassManagerId());
-        this.tvClassName.setText("Class: " + selectedSchoolClass.getClassName());
+        this.btnAttendance.setEnabled(teacher.getUser_id() == selectedClass.getClassManagerId());
+        this.tvClassName.setText("Class: " + selectedClass.getClassName());
     }
 }
