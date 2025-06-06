@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,7 +28,6 @@ public class AssignmentDetailsActivity extends AppCompatActivity {
         TextView textTitle = findViewById(R.id.textTitle);
         TextView textDeadline = findViewById(R.id.textDeadline);
         TextView textFile = findViewById(R.id.textFile);
-        textFile.setPaintFlags(textFile.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         TextView textDetails = findViewById(R.id.textDetails);
         Button btnSubmit = findViewById(R.id.btnSubmitWork);
 
@@ -38,13 +38,13 @@ public class AssignmentDetailsActivity extends AppCompatActivity {
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .create();
         Assignment assignment =gson.fromJson(json, Assignment.class);
-
         // Set text
         textClass.setText("Class: " + classTitle);
         textTitle.setText("Title: " + assignment.getTitle());
-        if (assignment.getFilePath() != null && !assignment.getFilePath().isEmpty()) {
+        if (assignment.getFilePath() != null && !assignment.getFilePath().trim().isEmpty() && !assignment.getFilePath().equalsIgnoreCase("null")) {
             textFile.setVisibility(View.VISIBLE);
             textFile.setText("Open attached file");
+            textFile.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
             textFile.setPaintFlags(textFile.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             textFile.setOnClickListener(v -> {
                 String fileUrl = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/" + assignment.getFilePath();
@@ -54,6 +54,8 @@ public class AssignmentDetailsActivity extends AppCompatActivity {
         } else {
             textFile.setVisibility(View.GONE);
         }
+
+
 
         textDeadline.setText("Deadline: " + assignment.getEnd_date());
         textDetails.setText(assignment.getDetails());
