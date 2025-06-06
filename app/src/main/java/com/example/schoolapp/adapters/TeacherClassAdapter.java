@@ -11,23 +11,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schoolapp.R;
-import com.example.schoolapp.models.Class;
+import com.example.schoolapp.models.SchoolClass;
 
 import java.util.List;
 
 public class TeacherClassAdapter extends RecyclerView.Adapter<TeacherClassAdapter.ViewHolder> {
 
-    private final List<Class> classList;
+    private final List<SchoolClass> schoolClassList;
     private final Context context;
     private final OnClassClickListener listener;
 
     public interface OnClassClickListener {
-        void onClassClick(Class selectedClass);
+        void onClassClick(SchoolClass selectedSchoolClass);
     }
 
-    public TeacherClassAdapter(Context context, List<Class> classList, OnClassClickListener listener) {
+    public TeacherClassAdapter(Context context, List<SchoolClass> schoolClassList, OnClassClickListener listener) {
         this.context = context;
-        this.classList = classList;
+        this.schoolClassList = schoolClassList;
         this.listener = listener;
     }
 
@@ -41,18 +41,18 @@ public class TeacherClassAdapter extends RecyclerView.Adapter<TeacherClassAdapte
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull TeacherClassAdapter.ViewHolder holder, int position) {
-        Class currentClass = classList.get(position);
+        SchoolClass currentSchoolClass = schoolClassList.get(position);
 
-        holder.tvClassName.setText(currentClass.getClassName());
-        holder.tvClassId.setText("Class ID: " + currentClass.getClassId());
-        holder.tvClassManager.setText("Manager ID: " + currentClass.getClassManagerId());
+        holder.tvClassName.setText(currentSchoolClass.getClassName());
+        holder.tvClassId.setText("Class ID: " + currentSchoolClass.getClassId());
+        holder.tvClassManager.setText("Manager ID: " + currentSchoolClass.getClassManagerId());
 
-        holder.itemView.setOnClickListener(v -> listener.onClassClick(currentClass));
+        holder.itemView.setOnClickListener(v -> listener.onClassClick(currentSchoolClass));
     }
 
     @Override
     public int getItemCount() {
-        return classList.size();
+        return schoolClassList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
