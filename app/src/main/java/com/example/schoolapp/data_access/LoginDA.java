@@ -1,6 +1,8 @@
 package com.example.schoolapp.data_access;
 
 import android.content.Context;
+import android.util.Log;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -34,7 +36,7 @@ public class LoginDA implements ILoginDA {
                         if (success) {
                             try{
                                 JSONObject userJson = resp.getJSONObject("user");
-
+//                                Log.i("birth_date_da" , userJson.getString("birth_date"));
                                 User user = new User(
                                         userJson.getInt("user_id"),
                                         userJson.getString("first_name"),

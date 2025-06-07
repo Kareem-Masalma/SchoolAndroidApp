@@ -12,9 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schoolapp.R;
 import com.example.schoolapp.UserSendMessage2;
+import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.User;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class UserSendMessageAdapter extends RecyclerView.Adapter<UserSendMessageAdapter.UserViewHolder> {
@@ -41,7 +44,7 @@ public class UserSendMessageAdapter extends RecyclerView.Adapter<UserSendMessage
 
         holder.btnSelect2.setOnClickListener(v -> {
             Intent intent = new Intent(holder.itemView.getContext(), UserSendMessage2.class);
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
             String json = gson.toJson(user);
             intent.putExtra("user", json);
             holder.itemView.getContext().startActivity(intent);

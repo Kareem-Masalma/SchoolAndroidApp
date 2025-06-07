@@ -52,6 +52,8 @@
         <activity android:name=".ClassStudents" android:exported="false" />
         <activity android:name=".ClassDashboard" android:exported="false" />
         <activity android:name=".SelectClass" android:exported="false" />
+        <activity android:name=".Profile" android:exported="false" />
+
 
     </application>
 

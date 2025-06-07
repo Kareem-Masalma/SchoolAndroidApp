@@ -25,7 +25,8 @@ try {
           u.phone,
           u.role,
           u.password,
-          t.speciality
+          t.speciality,
+          t.schedule_id
         FROM users u
         JOIN teacher t ON t.user_id = u.user_id
         WHERE u.user_id = ?
@@ -41,7 +42,6 @@ try {
             } else {
                 echo json_encode($row);
             }
-
         } else {
             $sql = "
         SELECT
@@ -53,7 +53,8 @@ try {
           u.phone,
           u.role,
           u.password,
-          t.speciality
+          t.speciality,
+          t.schedule_id
         FROM users u
         JOIN teacher t ON t.user_id = u.user_id
       ";
@@ -61,7 +62,6 @@ try {
             $teachers = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
             echo json_encode($teachers);
         }
-
     } elseif ($method === 'POST') {
         foreach (['first_name', 'last_name', 'birth_date', 'address', 'phone', 'role', 'password', 'speciality'] as $key) {
             if (empty($input[$key])) {
@@ -98,7 +98,6 @@ try {
             'message' => 'Teacher added',
             'user_id' => $uid
         ]);
-
     } elseif ($method === 'PUT') {
         if (empty($input['user_id'])) {
             throw new Exception("Missing user_id");
@@ -135,7 +134,6 @@ try {
             'success' => true,
             'message' => 'Teacher updated'
         ]);
-
     } elseif ($method === 'DELETE') {
         if (empty($_GET['user_id'])) {
             throw new Exception("Missing user_id");
@@ -158,20 +156,14 @@ try {
             'success' => true,
             'message' => 'Teacher deleted'
         ]);
-
     } else {
         http_response_code(405);
         echo json_encode(['error' => 'Method not allowed']);
     }
-
 } catch (Exception $ex) {
-    if ($conn->in_transaction) {
-        $conn->rollback();
-    }
     http_response_code(400);
     echo json_encode([
         'success' => false,
         'error'   => $ex->getMessage()
     ]);
 }
-?>

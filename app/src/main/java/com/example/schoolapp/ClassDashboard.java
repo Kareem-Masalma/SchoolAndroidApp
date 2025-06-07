@@ -121,10 +121,10 @@ public class ClassDashboard extends AppCompatActivity {
         selectedClass = gson.fromJson(classString, SchoolClass.class);
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(ClassDashboard.this);
-        boolean isLoggedIn = pref.getBoolean("Logged_in", false);
+        boolean isLoggedIn = pref.getBoolean(Login.LOGGED_IN, false);
         String teacherString = "";
         if (isLoggedIn) {
-            teacherString = pref.getString("Logged_in_user", "");
+            teacherString = pref.getString(Login.LOGGED_IN_USER, "");
             teacher = gson.fromJson(teacherString, Teacher.class);
         } else {
             intent = new Intent(this, Login.class);

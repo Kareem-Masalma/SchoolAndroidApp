@@ -79,10 +79,10 @@ public class SelectClass extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private void getTeacherData() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(SelectClass.this);
-        boolean isLoggedIn = pref.getBoolean("Logged_in", false);
+        boolean isLoggedIn = pref.getBoolean(Login.LOGGED_IN, false);
         String teacherString = "";
         if (isLoggedIn)
-            teacherString = pref.getString("Logged_in_user", "");
+            teacherString = pref.getString(Login.LOGGED_IN_USER, "");
         else {
             Intent intent = new Intent(SelectClass.this, Login.class);
             startActivity(intent);
