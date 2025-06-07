@@ -3,6 +3,7 @@ package com.example.schoolapp;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +11,13 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.schoolapp.json_helpers.LocalDateAdapter;
+import com.example.schoolapp.models.User;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.time.LocalDate;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,11 +46,33 @@ public class MainActivity extends AppCompatActivity {
 
 //        Intent intent = new Intent(MainActivity.this, TeacherSendMessage1.class);
 
-        SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("user_id", 3);
-        editor.apply();
+//        SharedPreferences prefs = getSharedPreferences(Login.LOGGED_IN_USER, MODE_PRIVATE);
+//        SharedPreferences.Editor editor = prefs.edit();
+//        editor.putInt("user_id", 3);
+//        editor.apply();
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isLoggedIn = prefs.getBoolean(Login.LOGGED_IN, false);
+
+        if (isLoggedIn) {
+            String json = prefs.getString(Login.LOGGED_IN_USER, null);
+            if (json != null) {
+                Gson gson = new GsonBuilder()
+                        .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                        .create();
+                User user = gson.fromJson(json, User.class);
+
+                // Access the user_id
+                int userId = user.getUser_id();
+
+                // If needed, pass user_id to next activity via intent
+                Intent intent = new Intent(MainActivity.this, AssignmentListActivity.class);
+                intent.putExtra("USER_ID", userId);
+                startActivity(intent);
+                finish();
+                return;
+            }
+        }
 
         Intent intent = new Intent(MainActivity.this,AssignmentListActivity.class);
 //        Class sClass = new Class(1, "10-A", 1, "John",11);
