@@ -124,9 +124,10 @@ public class Profile extends AppCompatActivity {
             startActivity(intent);
         });
 
+
+        // TODO
         cardBuildSchedule.setOnClickListener(e->{
-//            Intent intent = new Intent(Profile.this, AddSchedule.class);
-//            startActivity(intent);
+
         });
     }
 
@@ -172,13 +173,11 @@ public class Profile extends AppCompatActivity {
         cardClasses     = findViewById(R.id.card_classes);
 
 
-        // TODO Open the view schedule activity
         cardSchedule.setOnClickListener(e->{
             Intent intent = new Intent(Profile.this, ViewSchedule.class);
             startActivity(intent);
         });
 
-        // TODO Open the view classes activity
         cardClasses.setOnClickListener(e->{
             Intent intent = new Intent(Profile.this, SelectClass.class);
             startActivity(intent);
