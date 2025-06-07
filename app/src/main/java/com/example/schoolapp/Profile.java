@@ -31,15 +31,29 @@ import java.time.LocalDate;
 
 public class Profile extends AppCompatActivity {
 
+    //all
+    private CardView         cardInfo;
     private ImageView        imageProfile;
     private TextView         textFullName;
     private TextView         textRole;
     private TextView         textBirthDate;
     private TextView         textAddress;
     private TextView         textPhone;
-    private CardView         cardInfo;
+
+
+    //teacher/student
     private CardView         cardSchedule;
+
+    //teacher
     private CardView         cardClasses;
+
+    //registrar
+    private CardView         cardAddStudent;
+    private CardView         cardAddTeacher;
+    private CardView         cardAddSubject;
+    private CardView         cardBuildSchedule;
+
+    //all
     private FloatingActionButton fabMessage;
     User logged_in_user = null;
 
@@ -74,12 +88,40 @@ public class Profile extends AppCompatActivity {
                 }else{
                     setContentView(R.layout.activity_profile_registrar);
                     logged_in_user = gson.fromJson(json, Registrar.class);
+                    setupRegistrarViews();
                 }
 
             }
         }
 
 
+    }
+
+    private void setupRegistrarViews() {
+        cardAddStudent = findViewById(R.id.card_add_student);
+        cardAddTeacher = findViewById(R.id.card_add_teacher);
+        cardAddSubject = findViewById(R.id.card_add_subject);
+        cardBuildSchedule = findViewById(R.id.card_build_schedule);
+
+        cardAddStudent.setOnClickListener(e->{
+            Intent intent = new Intent(Profile.this, AddStudents.class);
+            startActivity(intent);
+        });
+
+        cardAddTeacher.setOnClickListener(e->{
+            Intent intent = new Intent(Profile.this, AddTeacherActivity.class);
+            startActivity(intent);
+        });
+
+        cardAddSubject.setOnClickListener(e->{
+            Intent intent = new Intent(Profile.this, AddSubjects.class);
+            startActivity(intent);
+        });
+
+        cardBuildSchedule.setOnClickListener(e->{
+            Intent intent = new Intent(Profile.this, AddSchedule.class);
+            startActivity(intent);
+        });
     }
 
     private void setupStudentViews() {
