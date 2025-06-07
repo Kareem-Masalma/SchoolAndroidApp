@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="50dp"
-    android:id="@+id/addStudentsMain">
+    android:id="@+id/addStudentsMain"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -162,8 +163,9 @@
                 android:layout_height="wrap_content"
                 android:text="Cancel"
                 android:layout_marginTop="24dp"
-                android:layout_marginRight="15dp"
-                android:gravity="center"/>
+                android:layout_marginRight="40dp"
+                android:gravity="center"
+                android:backgroundTint="@color/grey"/>
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAdd"
             style="@style/Widget.MaterialComponents.Button"
@@ -171,7 +173,8 @@
             android:layout_height="wrap_content"
             android:text="Add"
             android:layout_marginTop="24dp"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:backgroundTint="@color/role_orange"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -33,6 +33,7 @@ public class Profile extends AppCompatActivity {
 
     //all
     private CardView         cardInfo;
+    private CardView         cardInbox;
     private ImageView        imageProfile;
     private TextView         textFullName;
     private TextView         textRole;
@@ -52,6 +53,11 @@ public class Profile extends AppCompatActivity {
     private CardView         cardAddTeacher;
     private CardView         cardAddSubject;
     private CardView         cardBuildSchedule;
+
+    //student
+    private CardView         cardAssignments;
+    private CardView         cardExams;
+
 
     //all
     private FloatingActionButton fabMessage;
@@ -119,14 +125,26 @@ public class Profile extends AppCompatActivity {
         });
 
         cardBuildSchedule.setOnClickListener(e->{
-            Intent intent = new Intent(Profile.this, AddSchedule.class);
-            startActivity(intent);
+//            Intent intent = new Intent(Profile.this, AddSchedule.class);
+//            startActivity(intent);
         });
     }
 
     private void setupStudentViews() {
         cardSchedule    = findViewById(R.id.card_schedule);
-        // TODO Open the view schedule activity
+        cardAssignments = findViewById(R.id.card_assignments);
+        cardExams       = findViewById(R.id.card_exams);
+
+        // TODO
+        cardAssignments.setOnClickListener(e->{
+
+        });
+
+        // TODO
+        cardExams.setOnClickListener(e->{
+
+        });
+
         cardSchedule.setOnClickListener(e->{
             Intent intent = new Intent(Profile.this, ViewSchedule.class);
             int id = ((Student) logged_in_user).getClass_id();
@@ -176,8 +194,8 @@ public class Profile extends AppCompatActivity {
         textAddress     = findViewById(R.id.text_address);
         textPhone       = findViewById(R.id.text_phone);
         cardInfo        = findViewById(R.id.card_info);
-        fabMessage         = findViewById(R.id.fab_send_message);
-
+        fabMessage      = findViewById(R.id.fab_send_message);
+        cardInbox       = findViewById(R.id.card_inbox);
         fabMessage.setOnClickListener(e->{
             Intent intent = new Intent(Profile.this, UserSendMessage1.class);
             startActivity(intent);
@@ -190,5 +208,11 @@ public class Profile extends AppCompatActivity {
             textAddress.setText(logged_in_user.getAddress());
             textPhone.setText(logged_in_user.getPhone());
         }
+
+
+        // TODO
+        cardInbox.setOnClickListener(e->{
+
+        });
     }
 }
