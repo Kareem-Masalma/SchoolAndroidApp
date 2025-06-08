@@ -132,9 +132,17 @@ public class SendAssignmentActivity extends AppCompatActivity {
             Subject subject = (Subject) spinnerSubject.getSelectedItem();
 
             if (title.isEmpty()) { editTitle.setError("Required"); return; }
-            if (details.isEmpty()) { editDetails.setError("Required"); return; }
             if (deadline.isEmpty()) { editDeadline.setError("Required"); return; }
             if (percentageStr.isEmpty()) { editPercentage.setError("Required"); return; }
+
+            if (details.isEmpty() && selectedFileUris.isEmpty()) {
+                new android.app.AlertDialog.Builder(SendAssignmentActivity.this)
+                        .setTitle("Missing Information")
+                        .setMessage("Please provide either assignment details or attach a file (or both).")
+                        .setPositiveButton("OK", null)
+                        .show();
+                return;
+            }
 
             float percentage;
             try {
@@ -178,7 +186,7 @@ public class SendAssignmentActivity extends AppCompatActivity {
             );
         });
 
-        btnCancel.setOnClickListener(v -> finish());
+        btnCancel.setOnClickListener(v -> showDiscardChangesDialog());
     }
 
     // --- Handle file picker result ---
@@ -209,6 +217,26 @@ public class SendAssignmentActivity extends AppCompatActivity {
         }
         return result;
     }
+
+    @Override
+    public void onBackPressed() {
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("Discard Changes?")
+                .setMessage("You have unsaved input. Are you sure you want to cancel and lose your data?")
+                .setPositiveButton("Yes, Discard", (dialog, which) -> super.onBackPressed())
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void showDiscardChangesDialog() {
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("Discard Changes?")
+                .setMessage("You have unsaved input. Are you sure you want to cancel and lose your data?")
+                .setPositiveButton("Yes, Discard", (dialog, which) -> finish())
+                .setNegativeButton("No", null)
+                .show();
+    }
+
 
     private void clearFields() {
         editTitle.setText("");
