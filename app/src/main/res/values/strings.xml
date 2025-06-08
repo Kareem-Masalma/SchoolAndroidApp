@@ -104,4 +104,6 @@
     <string name="exam_date">Exam Date</string>
     <string name="duration">Duration</string>
     <string name="exam_percentage">Exam Percentage</string>
+    <string name="subject_name_assignment">"Subject "</string>
+    <string name="subject_assignment_details">Subject</string>
 </resources>

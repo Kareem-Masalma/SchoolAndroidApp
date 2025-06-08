@@ -30,16 +30,19 @@ public class AssignmentDetailsActivity extends AppCompatActivity {
         TextView textFile = findViewById(R.id.textFile);
         TextView textDetails = findViewById(R.id.textDetails);
         Button btnSubmit = findViewById(R.id.btnSubmitWork);
+        TextView textSubject = findViewById(R.id.textSubjectTitle);
 
         // Get data from intent
         String json = getIntent().getStringExtra("ASSIGNMENT_JSON");
         String classTitle = getIntent().getStringExtra("CLASS_TITLE");
+        String subjectTitle = getIntent().getStringExtra("SUBJECT_TITLE");
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .create();
         Assignment assignment =gson.fromJson(json, Assignment.class);
         // Set text
         textClass.setText("Class: " + classTitle);
+        textSubject.setText("Subject: " + subjectTitle);
         textTitle.setText("Title: " + assignment.getTitle());
         if (assignment.getFilePath() != null && !assignment.getFilePath().trim().isEmpty() && !assignment.getFilePath().equalsIgnoreCase("null")) {
             textFile.setVisibility(View.VISIBLE);

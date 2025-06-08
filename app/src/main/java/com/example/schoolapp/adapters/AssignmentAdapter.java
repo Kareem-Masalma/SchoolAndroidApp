@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.schoolapp.R;
 import com.example.schoolapp.models.Assignment;
 import java.util.List;
+import java.util.Map;
 
 public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.AssignmentViewHolder> {
 
@@ -17,12 +18,17 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
     }
 
     private final List<Assignment> assignments;
+    private final Map<Assignment, String> subjectTitleMap;
+
     private final OnAssignmentClickListener listener;
 
-    public AssignmentAdapter(List<Assignment> assignments, OnAssignmentClickListener listener) {
+    public AssignmentAdapter(List<Assignment> assignments, Map<Assignment, String> subjectTitleMap, OnAssignmentClickListener listener) {
         this.assignments = assignments;
+        this.subjectTitleMap = subjectTitleMap;
         this.listener = listener;
     }
+    
+
 
     @NonNull
     @Override
@@ -36,6 +42,10 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         Assignment assignment = assignments.get(position);
         holder.textTitle.setText(assignment.getTitle());
         holder.textDeadline.setText("Deadline: " + assignment.getEnd_date());
+        String subjectTitle = subjectTitleMap != null && subjectTitleMap.containsKey(assignment)
+                ? subjectTitleMap.get(assignment)
+                : "Unknown";
+        holder.textSubject.setText("Subject: " + subjectTitle);
         holder.itemView.setOnClickListener(v -> listener.onAssignmentClick(assignment));
     }
 
@@ -45,11 +55,12 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
     }
 
     static class AssignmentViewHolder extends RecyclerView.ViewHolder {
-        TextView textTitle, textDeadline;
+        TextView textTitle, textDeadline, textSubject;
 
         public AssignmentViewHolder(@NonNull View itemView) {
             super(itemView);
             textTitle = itemView.findViewById(R.id.textAssignmentTitle);
+            textSubject = itemView.findViewById(R.id.textAssignmentSubject);
             textDeadline = itemView.findViewById(R.id.textAssignmentDeadline);
         }
     }
