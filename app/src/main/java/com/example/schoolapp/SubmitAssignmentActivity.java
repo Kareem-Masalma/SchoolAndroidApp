@@ -135,9 +135,14 @@ public class SubmitAssignmentActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        showDiscardChangesDialog();
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("Discard Changes?")
+                .setMessage("You have unsaved input. Are you sure you want to go back and lose your data?")
+                .setPositiveButton("Yes, Discard", (dialog, which) -> super.onBackPressed())
+                .setNegativeButton("No", null)
+                .show();
     }
+
     private void showDiscardChangesDialog() {
         new android.app.AlertDialog.Builder(this)
                 .setTitle("Discard Changes?")

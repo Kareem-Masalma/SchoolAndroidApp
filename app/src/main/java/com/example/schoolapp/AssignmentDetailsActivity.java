@@ -59,9 +59,8 @@ public class AssignmentDetailsActivity extends AppCompatActivity {
         }
 
 
-
         textDeadline.setText("Deadline: " + assignment.getEnd_date());
-        textDetails.setText(assignment.getDetails());
+        textDetails.setText(assignment.getDetails() != null ? assignment.getDetails() : "");
 
         btnSubmit.setOnClickListener(v -> {
             Intent intent = new Intent(this, SubmitAssignmentActivity.class);
