@@ -15,6 +15,7 @@ public class Exam {
         this.subject = subject;
         this.date = date;
         this.duration = duration;
+        this.percentage = percentage;
     }
 
 

@@ -13,6 +13,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.schoolapp.json_helpers.LocalDateAdapter;
+import com.example.schoolapp.models.Role;
+import com.example.schoolapp.models.SchoolClass;
+import com.example.schoolapp.models.Teacher;
 import com.example.schoolapp.models.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -74,8 +77,9 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        }
 //
+
 //        Intent intent = new Intent(MainActivity.this,AssignmentListActivity.class);
-//        Class sClass = new Class(1, "10-A", 1, "John",11);
+//        SchoolClass sClass = new SchoolClass(1, "10-A", 1, "John",11);
 //        Teacher teacher = new Teacher(1,"Joan","Smith", LocalDate.parse("1980-03-15"), "123 Elm St","555-1001", Role.TEACHER,"Mathematics");
 //        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
 //        String json = gson.toJson(teacher);
@@ -84,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 //        intent.putExtra(AddSchedule.CLASS, json1);
 
 //        Intent intent = new Intent(MainActivity.this, AddTeacherActivity.class);
+
         Intent intent = new Intent(MainActivity.this, Login.class);
         startActivity(intent);
     }
