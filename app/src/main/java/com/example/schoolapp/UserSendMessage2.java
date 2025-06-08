@@ -1,7 +1,9 @@
 package com.example.schoolapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,7 +16,9 @@ import com.example.schoolapp.data_access.IMessageDA;
 import com.example.schoolapp.data_access.MessageDAFactory;
 import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.Message;
+import com.example.schoolapp.models.Registrar;
 import com.example.schoolapp.models.Role;
+import com.example.schoolapp.models.Student;
 import com.example.schoolapp.models.Teacher;
 import com.example.schoolapp.models.User;
 import com.google.gson.Gson;
@@ -28,7 +32,7 @@ public class UserSendMessage2 extends AppCompatActivity {
     private EditText etTitle, etContent;
     private Button btnCancel, btnSend;
     private User toUser;
-    private User fromUser;
+    private User logged_in_user = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,7 @@ public class UserSendMessage2 extends AppCompatActivity {
         setContentView(R.layout.activity_user_send_message2);
 
         bindViews();
+        checkPrefs();
         extractIntentExtras();
         setupSendAction();
     }
@@ -52,6 +57,28 @@ public class UserSendMessage2 extends AppCompatActivity {
 
         btnCancel.setOnClickListener(v -> finish());
     }
+    private void checkPrefs() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(UserSendMessage2.this);
+        boolean loggedin =  prefs.getBoolean(Login.LOGGED_IN, false);
+        if(loggedin){
+            String json = prefs.getString(Login.LOGGED_IN_USER , null);
+            if(json != null){
+                Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
+                User user = gson.fromJson(json, User.class);
+                logged_in_user = user;
+                if(user.getRole().equals(Role.STUDENT)){
+                    logged_in_user = gson.fromJson(json, Student.class);
+                } else if (user.getRole().equals(Role.TEACHER)) {
+                    logged_in_user = gson.fromJson(json, Teacher.class);
+                }else{
+                    logged_in_user = gson.fromJson(json, Registrar.class);
+                }
+
+            }
+        }
+
+
+    }
 
     private void extractIntentExtras() {
         Intent intent = getIntent();
@@ -59,9 +86,6 @@ public class UserSendMessage2 extends AppCompatActivity {
         String json = intent.getStringExtra("user");
 
         toUser = gson.fromJson(json, User.class);
-
-        // TODO this should be read from the logged in user environment variable in shared preferences
-        fromUser = new Teacher(1, "John", "Smith", LocalDate.now(), "123 Elm St", "555-1001", Role.TEACHER, "Mathematics");
 
         // update UI
         tvTitle.setText("Send Message");
@@ -75,7 +99,7 @@ public class UserSendMessage2 extends AppCompatActivity {
             String body = etContent.getText().toString().trim();
 
             Message msg = new Message(
-                    fromUser.getUser_id(),
+                    logged_in_user.getUser_id(),
                     toUser.getUser_id(),
                     subject,
                     body,

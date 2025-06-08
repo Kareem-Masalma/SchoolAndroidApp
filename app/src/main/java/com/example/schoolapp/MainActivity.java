@@ -51,30 +51,30 @@ public class MainActivity extends AppCompatActivity {
 //        editor.putInt("user_id", 3);
 //        editor.apply();
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean isLoggedIn = prefs.getBoolean(Login.LOGGED_IN, false);
-
-        if (isLoggedIn) {
-            String json = prefs.getString(Login.LOGGED_IN_USER, null);
-            if (json != null) {
-                Gson gson = new GsonBuilder()
-                        .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
-                        .create();
-                User user = gson.fromJson(json, User.class);
-
-                // Access the user_id
-                int userId = user.getUser_id();
-
-                // If needed, pass user_id to next activity via intent
-                Intent intent = new Intent(MainActivity.this, AssignmentListActivity.class);
-                intent.putExtra("USER_ID", userId);
-                startActivity(intent);
-                finish();
-                return;
-            }
-        }
-
-        Intent intent = new Intent(MainActivity.this,AssignmentListActivity.class);
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+//        boolean isLoggedIn = prefs.getBoolean(Login.LOGGED_IN, false);
+//
+//        if (isLoggedIn) {
+//            String json = prefs.getString(Login.LOGGED_IN_USER, null);
+//            if (json != null) {
+//                Gson gson = new GsonBuilder()
+//                        .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+//                        .create();
+//                User user = gson.fromJson(json, User.class);
+//
+//                // Access the user_id
+//                int userId = user.getUser_id();
+//
+//                // If needed, pass user_id to next activity via intent
+//                Intent intent = new Intent(MainActivity.this, AssignmentListActivity.class);
+//                intent.putExtra("USER_ID", userId);
+//                startActivity(intent);
+//                finish();
+//                return;
+//            }
+//        }
+//
+//        Intent intent = new Intent(MainActivity.this,AssignmentListActivity.class);
 //        Class sClass = new Class(1, "10-A", 1, "John",11);
 //        Teacher teacher = new Teacher(1,"Joan","Smith", LocalDate.parse("1980-03-15"), "123 Elm St","555-1001", Role.TEACHER,"Mathematics");
 //        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 //        intent.putExtra(AddSchedule.CLASS, json1);
 
 //        Intent intent = new Intent(MainActivity.this, AddTeacherActivity.class);
-
+        Intent intent = new Intent(MainActivity.this, Login.class);
         startActivity(intent);
     }
 }
