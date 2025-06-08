@@ -144,7 +144,9 @@ public class Profile extends AppCompatActivity {
 
         // TODO
         cardExams.setOnClickListener(e->{
-
+            Intent intent = new Intent(Profile.this, ExamListActivity.class);
+            intent.putExtra("USER_ID", logged_in_user.getUser_id());
+            startActivity(intent);
         });
 
         cardSchedule.setOnClickListener(e->{

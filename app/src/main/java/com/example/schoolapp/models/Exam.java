@@ -17,12 +17,17 @@ public class Exam {
         this.duration = duration;
     }
 
-    public Exam(int examId, String title, int subject, LocalDate date, int duration, int percentage) {
-        this(title, subject, date, duration, percentage);
+
+    public Exam(int examId, String title, int subjectId, LocalDate date, int duration, int percentage) {
         this.examId = examId;
+        this.title = title;
+        this.subject = subjectId;
+        this.date = date;
+        this.duration = duration;
+        this.percentage = percentage;
     }
 
-    public int getExamId() {
+        public int getExamId() {
         return examId;
     }
 

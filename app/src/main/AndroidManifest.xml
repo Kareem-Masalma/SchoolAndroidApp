@@ -64,6 +64,12 @@
             android:name=".AddSubjects"
             android:exported="false" />
         <activity
+            android:name=".ExamListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ExamDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".SendAssignmentActivity"
             android:exported="false" />
         <activity
