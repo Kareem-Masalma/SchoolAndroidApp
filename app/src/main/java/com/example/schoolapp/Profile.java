@@ -212,7 +212,8 @@ public class Profile extends AppCompatActivity {
 
         // TODO
         cardInbox.setOnClickListener(e->{
-
+            Intent intent = new Intent(Profile.this, Inbox.class);
+            startActivity(intent);
         });
     }
 }
