@@ -106,4 +106,10 @@
     <string name="exam_percentage">Exam Percentage</string>
     <string name="subject_name_assignment">"Subject "</string>
     <string name="subject_assignment_details">Subject</string>
+    <string name="deadline_radio">Deadline</string>
+    <string name="subject_radio">Subject</string>
+    <string name="title_radio">Title</string>
+    <string name="search_by_title_or_subject">Search by title or subject</string>
+    <string name="asc_radio_list">Asc</string>
+    <string name="desc_radio_list">Desc</string>
 </resources>

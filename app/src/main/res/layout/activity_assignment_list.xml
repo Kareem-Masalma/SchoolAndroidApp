@@ -5,28 +5,105 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    android:padding="16dp">
+    android:padding="0dp">
 
-    <!-- Section Header -->
-    <TextView
-        android:id="@+id/textTitle"
+    <!-- Header -->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/assignments"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="@color/role_green"
-        android:paddingTop="8dp"
-        android:layout_marginBottom="12dp"
-        android:gravity="center"
-        android:textAlignment="center" />
+        android:layout_height="72dp"
+        android:background="@color/role_green"
+        android:paddingTop="8dp">
 
+        <TextView
+            android:id="@+id/textTitle"
+            style="@style/HeaderTitle"
+            android:text="@string/assignments" />
+    </FrameLayout>
 
-    <!-- Assignment RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerAssignments"
+    <!-- Content Padding -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:scrollbars="vertical" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Search Field -->
+        <EditText
+            android:id="@+id/editSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/search_by_title_or_subject"
+            android:drawableStart="@android:drawable/ic_menu_search"
+            android:padding="10dp"
+            android:background="@android:drawable/editbox_background"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Sort Options Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <!-- Spinner With Border -->
+            <LinearLayout
+                android:id="@+id/spinnerContainer"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/edittext_border"
+                android:padding="8dp"
+                android:gravity="center_vertical">
+
+                <Spinner
+                    android:id="@+id/spinnerSortBy"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:padding="0dp"
+                    android:spinnerMode="dropdown" />
+
+                <ImageView
+                    android:id="@+id/arrow"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/spinner_arrow"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="@string/dropdown_icon" />
+            </LinearLayout>
+
+            <!-- Radio Group for Sort Order -->
+            <RadioGroup
+                android:id="@+id/radioGroupSortOrder"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="8dp">
+
+                <RadioButton
+                    android:id="@+id/radioAscending"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/asc_radio_list" />
+
+                <RadioButton
+                    android:id="@+id/radioDescending"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/desc_radio_list" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <!-- Assignment RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerAssignments"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="vertical" />
+    </LinearLayout>
 </LinearLayout>

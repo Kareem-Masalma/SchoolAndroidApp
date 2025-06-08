@@ -121,7 +121,7 @@ public class SubmitAssignmentActivity extends AppCompatActivity {
         });
 
 
-        btnCancel.setOnClickListener(v -> finish());
+        btnCancel.setOnClickListener(v -> showDiscardChangesDialog());
     }
 
     private String getFileName(Uri uri) {
@@ -133,6 +133,21 @@ public class SubmitAssignmentActivity extends AppCompatActivity {
         } catch (Exception ignored) {}
         return uri.getLastPathSegment();
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        showDiscardChangesDialog();
+    }
+    private void showDiscardChangesDialog() {
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("Discard Changes?")
+                .setMessage("You have unsaved input. Are you sure you want to cancel and lose your data?")
+                .setPositiveButton("Yes, Discard", (dialog, which) -> finish())
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+
     private void showErrorDialog(String message) {
         new android.app.AlertDialog.Builder(this)
                 .setTitle("Submission Error")

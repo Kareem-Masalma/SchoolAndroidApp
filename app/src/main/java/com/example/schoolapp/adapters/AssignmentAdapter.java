@@ -27,7 +27,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         this.subjectTitleMap = subjectTitleMap;
         this.listener = listener;
     }
-    
+
 
 
     @NonNull
@@ -36,6 +36,12 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_assignment, parent, false);
         return new AssignmentViewHolder(view);
     }
+    public void updateData(List<Assignment> newList) {
+        assignments.clear();
+        assignments.addAll(newList);
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public void onBindViewHolder(@NonNull AssignmentViewHolder holder, int position) {
