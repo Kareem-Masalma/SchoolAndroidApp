@@ -125,9 +125,9 @@ public class Profile extends AppCompatActivity {
         });
 
 
-        // TODO
         cardBuildSchedule.setOnClickListener(e->{
-
+            Intent intent = new Intent(Profile.this, AddSchedule.class);
+            startActivity(intent);
         });
     }
 
@@ -136,9 +136,10 @@ public class Profile extends AppCompatActivity {
         cardAssignments = findViewById(R.id.card_assignments);
         cardExams       = findViewById(R.id.card_exams);
 
-        // TODO
         cardAssignments.setOnClickListener(e->{
-
+            Intent intent = new Intent(Profile.this, AssignmentListActivity.class);
+            intent.putExtra("USER_ID", logged_in_user.getUser_id());
+            startActivity(intent);
         });
 
         // TODO
