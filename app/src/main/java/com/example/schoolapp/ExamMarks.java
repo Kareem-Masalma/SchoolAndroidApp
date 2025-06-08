@@ -114,9 +114,10 @@ public class ExamMarks extends AppCompatActivity {
                 }
 
                 ExamDA examDA = new ExamDA(ExamMarks.this);
-                examDA.publishExamResults(exam, studentMarks, new IExamDA.ExamCallback() {
+                examDA.publishExamResults(exam, studentMarks, new IExamDA.PublishCallback() {
+
                     @Override
-                    public void onSuccess(List<JSONObject> data) {
+                    public void onSuccess(String message) {
                         Toast.makeText(ExamMarks.this, "Results published", Toast.LENGTH_SHORT).show();
                         finish();
                     }

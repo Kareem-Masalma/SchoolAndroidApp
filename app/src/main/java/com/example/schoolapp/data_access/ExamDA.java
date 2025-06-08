@@ -45,7 +45,11 @@ public class ExamDA implements IExamDA {
                     Request.Method.POST,
                     BASE_URL,
                     finalJson,
-                    response -> callback.onSuccess(Collections.singletonList(response)),
+                    response -> {
+                        List<JSONObject> result = new ArrayList<>();
+                        result.add(response);
+                        callback.onSuccess(result);
+                    },
                     error -> callback.onError("Failed to publish results: " + error.toString())
             );
 
@@ -78,7 +82,11 @@ public class ExamDA implements IExamDA {
     public void findExamById(int examId, ExamCallback callback) {
         String url = BASE_URL + "?mode=find&exam_id=" + examId;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                response -> callback.onSuccess(Collections.singletonList(response)),
+                response -> {
+                    List<JSONObject> result = new ArrayList<>();
+                    result.add(response);
+                    callback.onSuccess(result);
+                },
                 error -> callback.onError("Error: " + error.getMessage())
         );
         queue.add(request);
@@ -100,7 +108,11 @@ public class ExamDA implements IExamDA {
                     Request.Method.POST,
                     BASE_URL,
                     examObject,
-                    response -> callback.onSuccess(Collections.singletonList(response)),
+                    response -> {
+                        List<JSONObject> result = new ArrayList<>();
+                        result.add(response);
+                        callback.onSuccess(result);
+                    },
                     error -> callback.onError("Update failed: " + error.toString())
             );
 
@@ -115,7 +127,11 @@ public class ExamDA implements IExamDA {
         String url = BASE_URL + "?mode=delete&exam_id=" + examId;
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                response -> callback.onSuccess(Collections.singletonList(response)),
+                response -> {
+                    List<JSONObject> result = new ArrayList<>();
+                    result.add(response);
+                    callback.onSuccess(result);
+                },
                 error -> callback.onError("Delete failed: " + error.toString())
         );
 
@@ -123,7 +139,7 @@ public class ExamDA implements IExamDA {
     }
 
     @Override
-    public void publishExamResults(Exam exam, List<StudentExamResult> results, ExamCallback callback) {
+    public void publishExamResults(Exam exam, List<StudentExamResult> results, PublishCallback callback) {
         try {
             JSONObject examObject = new JSONObject();
             examObject.put("title", exam.getTitle());
@@ -148,18 +164,14 @@ public class ExamDA implements IExamDA {
                     Request.Method.POST,
                     BASE_URL,
                     finalJson,
-                    response -> {
-                        List<JSONObject> result = new ArrayList<>();
-                        result.add(response);
-                        callback.onSuccess(result);
-                    },
+                    response -> callback.onSuccess("Results published"),
                     error -> callback.onError("Failed to publish results: " + error.toString())
             );
 
             queue.add(request);
+
         } catch (JSONException e) {
             callback.onError("JSON Error: " + e.getMessage());
         }
     }
-
 }
