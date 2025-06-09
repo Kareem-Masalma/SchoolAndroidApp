@@ -104,7 +104,8 @@ public class SendAssignmentActivity extends AppCompatActivity {
 
         // --- Deadline Picker ---
         View.OnClickListener deadlinePicker = v -> {
-            Calendar calendar = Calendar.getInstance();
+            Calendar calendar = Calendar.getInstance(); // today
+
             DatePickerDialog dialog = new DatePickerDialog(
                     this,
                     (view, year, month, dayOfMonth) -> {
@@ -117,8 +118,18 @@ public class SendAssignmentActivity extends AppCompatActivity {
                     calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.DAY_OF_MONTH)
             );
+
+            // Set minimum date to today
+            dialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+
+            // Set maximum date to 4 months from today
+            Calendar maxDate = (Calendar) calendar.clone();
+            maxDate.add(Calendar.MONTH, 4);
+            dialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
+
             dialog.show();
         };
+
         editDeadline.setOnClickListener(deadlinePicker);
         deadlineField.setOnClickListener(deadlinePicker);
 
