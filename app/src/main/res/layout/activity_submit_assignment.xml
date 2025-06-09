@@ -48,7 +48,7 @@
 
                     <TextView
                         style="@style/SectionTitle"
-                        android:text="Submission Details"
+                        android:text="@string/submission_details"
                         android:paddingBottom="10dp"
                         android:layout_gravity="center"
                         android:textSize="20dp"

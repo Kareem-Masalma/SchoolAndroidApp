@@ -30,6 +30,7 @@ public class AssignmentDetailsActivity extends AppCompatActivity {
         TextView textFile = findViewById(R.id.textFile);
         TextView textDetails = findViewById(R.id.textDetails);
         Button btnSubmit = findViewById(R.id.btnSubmitWork);
+        Button btnBack = findViewById(R.id.btnBack);
         TextView textSubject = findViewById(R.id.textSubjectTitle);
 
         // Get data from intent
@@ -68,5 +69,8 @@ public class AssignmentDetailsActivity extends AppCompatActivity {
             intent.putExtra("CLASS_TITLE", classTitle);
             startActivity(intent);
         });
+        btnBack.setOnClickListener(v -> finish());
     }
+
+
 }

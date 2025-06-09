@@ -112,4 +112,13 @@
     <string name="search_by_title_or_subject">Search by title or subject</string>
     <string name="asc_radio_list">Asc</string>
     <string name="desc_radio_list">Desc</string>
+    <string name="back">Back</string>
+    <string name="personal_information">Personal Information</string>
+    <string name="contact_details">Contact Details</string>
+    <string name="account_amp_role_details"><![CDATA[Account & Role Details]]></string>
+    <string name="assignment_details_send">Assignment Details</string>
+    <string name="percentage_amp_deadline"><![CDATA[Percentage & Deadline]]></string>
+    <string name="reminder_time_label">Reminder Time</string>
+    <string name="select_reminder_time">Select Reminder Time</string>
+    <string name="submission_details">Submission Details</string>
 </resources>

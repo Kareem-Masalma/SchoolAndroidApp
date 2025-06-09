@@ -47,7 +47,7 @@
                     android:orientation="vertical">
                     <TextView
                         style="@style/SectionTitle"
-                        android:text="Assignment Details"
+                        android:text="@string/assignment_details_send"
                         android:paddingBottom="10dp"
                         android:layout_gravity="center"
                         android:textSize="20dp"
@@ -142,7 +142,7 @@
 
                     <TextView
                         style="@style/SectionTitle"
-                        android:text="Percentage &amp; Deadline "
+                        android:text="@string/percentage_amp_deadline"
                         android:paddingBottom="10dp"
                         android:layout_gravity="center"
                         android:textSize="20dp"
@@ -194,7 +194,7 @@
                     </LinearLayout>
 
                     <!-- Reminder Time -->
-                    <TextView style="@style/SectionTitle" android:text="Reminder Time" />
+                    <TextView style="@style/SectionTitle" android:text="@string/reminder_time_label" />
                     <LinearLayout
                         android:id="@+id/reminderTimeField"
                         android:layout_width="match_parent"
@@ -210,7 +210,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="Select Reminder Time"
+                            android:hint="@string/select_reminder_time"
                             android:focusable="false"
                             android:inputType="none"
                             android:background="@android:color/transparent"

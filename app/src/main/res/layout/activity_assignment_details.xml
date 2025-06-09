@@ -115,13 +115,38 @@
                     android:layout_marginBottom="4dp" />
             </LinearLayout>
 
-            <!-- Submit Button -->
-            <Button
-                android:id="@+id/btnSubmitWork"
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/ButtonPrimary.Student"
-                android:text="@string/submit_assignment_student" />
+                android:orientation="horizontal"
+                android:layout_marginTop="24dp"
+                android:paddingHorizontal="16dp"
+                android:gravity="center"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/btnBack"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    style="@style/ButtonPrimary.Student"
+                    android:backgroundTint="@color/grey"
+                    android:text="@string/back" />
+
+                <Button
+                    android:id="@+id/btnSubmitWork"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    style="@style/ButtonPrimary.Student"
+                    android:text="@string/submit_assignment_student" />
+            </LinearLayout>
+
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

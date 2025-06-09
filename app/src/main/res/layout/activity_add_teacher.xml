@@ -53,7 +53,7 @@
 
                     <TextView
                         style="@style/SectionTitle"
-                        android:text="Personal Information"
+                        android:text="@string/personal_information"
                         android:paddingBottom="10dp"
                         android:layout_gravity="center"
                         android:textSize="20dp"
@@ -146,7 +146,7 @@
 
                     <TextView
                         style="@style/SectionTitle"
-                        android:text="Contact Details"
+                        android:text="@string/contact_details"
                         android:layout_gravity="center"
                         android:textSize="20dp"
                         android:textColor="@color/role_orange" />
@@ -215,7 +215,7 @@
 
                     <TextView
                         style="@style/SectionTitle"
-                        android:text="Account &amp; Role Details"
+                        android:text="@string/account_amp_role_details"
                         android:layout_gravity="center"
                         android:textSize="20dp"
                         android:textColor="@color/role_orange"
