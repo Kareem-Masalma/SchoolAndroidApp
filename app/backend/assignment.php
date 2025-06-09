@@ -138,10 +138,10 @@ if (isset($_GET['mode']) && $_GET['mode'] === 'all_submissions') {
     // Upload file
     $filePath = null;
     if ($fileData && $fileName) {
-        $uploadDir = __DIR__ . "/uploads/";
+        $uploadDir = __DIR__ . "uploads/";
         if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
         file_put_contents($uploadDir . basename($fileName), base64_decode($fileData));
-        $filePath = "/uploads/" . basename($fileName);
+        $filePath = "uploads/" . basename($fileName);
     }
 
     // Get assignment_id
@@ -183,10 +183,10 @@ if ($input['mode'] === 'update_submission') {
     $filePath = null;
 
     if ($fileData && $fileName) {
-        $uploadDir = __DIR__ . "/uploads/";
+        $uploadDir = __DIR__ . "uploads/";
         if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
         file_put_contents($uploadDir . basename($fileName), base64_decode($fileData));
-        $filePath = "/uploads/" . basename($fileName);
+        $filePath = "uploads/" . basename($fileName);
     }
 
     if ($filePath) {
@@ -257,16 +257,16 @@ if ($input['mode'] === 'delete_submission') {
     $fileName = $input['file_name'] ?? null;
 
     if ($fileData && $fileName) {
-        if (!is_writable(__DIR__ . "/uploads/")) {
+        if (!is_writable(__DIR__ . "uploads/")) {
             throw new Exception("Uploads directory is not writable");
         }
-        $uploadDir = __DIR__ . "/uploads/";
+        $uploadDir = __DIR__ . "uploads/";
         if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
 
         $safeFileName = basename($fileName);
         $fullPath = $uploadDir . $safeFileName;
         file_put_contents($fullPath, base64_decode($fileData));
-        $filePath = "/uploads/" . $safeFileName;
+        $filePath = "uploads/" . $safeFileName;
     }
 
     $startDate = isset($input['start_date']) ? $input['start_date'] : date('Y-m-d');
