@@ -104,4 +104,13 @@
     <string name="exam_date">Exam Date</string>
     <string name="duration">Duration</string>
     <string name="exam_percentage">Exam Percentage</string>
+    <string name="student_courses">Student Courses</string>
+    <string name="student_name_roaa">Student Name: Roaa</string>
+    <string name="id_123456">ID: 123456</string>
+    <string name="subject_name_tv">Subject Name</string>
+    <string name="_85">85%</string>
+    <string name="midterm">Midterm</string>
+    <string name="subject_math">Subject: Math</string>
+    <string name="view_marks_TV">View Marks</string>
+    <string name="back_to_profile">Back to Profile</string>
 </resources>

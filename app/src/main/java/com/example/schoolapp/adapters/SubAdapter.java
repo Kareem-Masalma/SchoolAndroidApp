@@ -12,11 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schoolapp.R;
 import com.example.schoolapp.models.Subject;
-import com.example.schoolapp.models.User;
 
 import java.util.List;
 
-public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectViewHolder> {
+public class SubAdapter extends RecyclerView.Adapter<SubAdapter.SubjectViewHolder> {
 
     public interface OnSubjectClickListener {
         void onClick(Subject subject);
@@ -25,7 +24,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     private final Context context;
     private List<Subject> subjectList;
 
-    public SubjectAdapter(Context context, List<Subject> subjectList) {
+    public SubAdapter(Context context, List<Subject> subjectList) {
         this.context = context;
         this.subjectList = subjectList;
     }
@@ -39,7 +38,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     @NonNull
     @Override
     public SubjectViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.row_subject_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_course, parent, false);
         return new SubjectViewHolder(view);
     }
 
@@ -48,9 +47,6 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
     public void onBindViewHolder(@NonNull SubjectViewHolder holder, int position) {
         Subject subject = subjectList.get(position);
         holder.tvSubjectTitle.setText(subject.getTitle());
-
-        holder.tvSubjectId.setText("ID: " + subject.getSubjectId());
-        holder.tvSubjectClass.setText("Class: " + subject.getClassTitle());
 
     }
 
@@ -64,9 +60,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectV
 
         public SubjectViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvSubjectTitle = itemView.findViewById(R.id.tvSubjectTitle);
-            tvSubjectId = itemView.findViewById(R.id.tvSubjectId);
-            tvSubjectClass = itemView.findViewById(R.id.tvSubjectClass);
+            tvSubjectTitle = itemView.findViewById(R.id.subjectNameTV);
         }
     }
 }
