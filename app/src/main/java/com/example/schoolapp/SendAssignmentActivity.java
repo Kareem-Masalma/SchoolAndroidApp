@@ -2,6 +2,7 @@ package com.example.schoolapp;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,14 +13,14 @@ import android.widget.*;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.preference.PreferenceManager;
 
 import com.example.schoolapp.data_access.AssignmentDA;
 import com.example.schoolapp.data_access.IAssignmentDA;
 import com.example.schoolapp.data_access.SubjectDA;
 import com.example.schoolapp.json_helpers.LocalDateAdapter;
-import com.example.schoolapp.models.Subject;
-import com.example.schoolapp.models.Teacher;
-import com.example.schoolapp.models.SchoolClass;
+import com.example.schoolapp.models.*;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -41,7 +42,6 @@ public class SendAssignmentActivity extends AppCompatActivity {
     private LinearLayout deadlineField, spinnerSubjectContainer;
 
     private final List<Uri> selectedFileUris = new ArrayList<>();
-    private final List<JSONObject> classSubjectOptions = new ArrayList<>();
     private int selectedDeadlineYear, selectedDeadlineMonth, selectedDeadlineDay;
 
     private IAssignmentDA assignmentDA;
@@ -68,17 +68,26 @@ public class SendAssignmentActivity extends AppCompatActivity {
 
         spinnerSubjectContainer.setOnClickListener(v -> spinnerSubject.performClick());
 
-        // --- Deserialize Teacher and Class from Intent Extras ---
-        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
-        Intent intent = getIntent();
-        String teacherString = intent.getStringExtra(AddSchedule.TEACHER);
-        String classString = intent.getStringExtra(AddSchedule.CLASS);
-        Teacher teacher = gson.fromJson(teacherString, Teacher.class);
-        SchoolClass selectClass = gson.fromJson(classString, SchoolClass.class);
+        // --- Load Teacher object from SharedPreferences ---
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String teacherJson = prefs.getString(Login.LOGGED_IN_USER, null);
+        if (teacherJson == null) {
+            Toast.makeText(this, "User not found. Please login again.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
-        // --- Load subjects for teacher and selected class ---
+        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
+        Teacher teacher = gson.fromJson(teacherJson, Teacher.class);
+
+        // --- Deserialize Class from Intent Extra ---
+        Intent intent = getIntent();
+        String classString = intent.getStringExtra(AddSchedule.CLASS);
+        SchoolClass selectedClass = gson.fromJson(classString, SchoolClass.class);
+
+        // --- Load subjects for this teacher & class ---
         SubjectDA subjectDA = new SubjectDA(this);
-        subjectDA.getClassTeacherSubject(selectClass.getClassId(), teacher.getUser_id(), new SubjectDA.ClassSubjectCallback() {
+        subjectDA.getClassTeacherSubject(selectedClass.getClassId(), teacher.getUser_id(), new SubjectDA.ClassSubjectCallback() {
             @Override
             public void onSuccess(List<Subject> list) {
                 ArrayAdapter<Subject> adapter = new ArrayAdapter<>(SendAssignmentActivity.this,
@@ -123,7 +132,7 @@ public class SendAssignmentActivity extends AppCompatActivity {
             startActivityForResult(Intent.createChooser(fileIntent, "Select File"), PICK_FILE_REQUEST_CODE);
         });
 
-        // --- Submit Assignment ---
+        // --- Send Assignment ---
         btnSend.setOnClickListener(v -> {
             String title = editTitle.getText().toString().trim();
             String details = editDetails.getText().toString().trim();
@@ -132,9 +141,17 @@ public class SendAssignmentActivity extends AppCompatActivity {
             Subject subject = (Subject) spinnerSubject.getSelectedItem();
 
             if (title.isEmpty()) { editTitle.setError("Required"); return; }
-            if (details.isEmpty()) { editDetails.setError("Required"); return; }
             if (deadline.isEmpty()) { editDeadline.setError("Required"); return; }
             if (percentageStr.isEmpty()) { editPercentage.setError("Required"); return; }
+
+            if (details.isEmpty() && selectedFileUris.isEmpty()) {
+                new android.app.AlertDialog.Builder(this)
+                        .setTitle("Missing Information")
+                        .setMessage("Please provide either assignment details or attach a file (or both).")
+                        .setPositiveButton("OK", null)
+                        .show();
+                return;
+            }
 
             float percentage;
             try {
@@ -149,8 +166,10 @@ public class SendAssignmentActivity extends AppCompatActivity {
             Calendar selectedDate = Calendar.getInstance();
             selectedDate.set(selectedDeadlineYear, selectedDeadlineMonth, selectedDeadlineDay, 0, 0, 0);
             Calendar today = Calendar.getInstance();
-            today.set(Calendar.HOUR_OF_DAY, 0); today.set(Calendar.MINUTE, 0);
-            today.set(Calendar.SECOND, 0); today.set(Calendar.MILLISECOND, 0);
+            today.set(Calendar.HOUR_OF_DAY, 0);
+            today.set(Calendar.MINUTE, 0);
+            today.set(Calendar.SECOND, 0);
+            today.set(Calendar.MILLISECOND, 0);
 
             if (selectedDate.before(today)) {
                 editDeadline.setError("Deadline must be today or in the future"); return;
@@ -178,10 +197,16 @@ public class SendAssignmentActivity extends AppCompatActivity {
             );
         });
 
-        btnCancel.setOnClickListener(v -> finish());
+        btnCancel.setOnClickListener(v -> {
+            if (hasUnsavedInput()) {
+                showDiscardChangesDialog();
+            } else {
+                finish(); // just go back
+            }
+        });
     }
 
-    // --- Handle file picker result ---
+    // --- File picker result ---
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -210,6 +235,29 @@ public class SendAssignmentActivity extends AppCompatActivity {
         return result;
     }
 
+    @Override
+    public void onBackPressed() {
+        if (hasUnsavedInput()) {
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("Discard Changes?")
+                .setMessage("You have unsaved input. Are you sure you want to cancel and lose your data?")
+                .setPositiveButton("Yes, Discard", (dialog, which) -> super.onBackPressed())
+                .setNegativeButton("No", null)
+                .show();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private void showDiscardChangesDialog() {
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("Discard Changes?")
+                .setMessage("You have unsaved input. Are you sure you want to cancel and lose your data?")
+                .setPositiveButton("Yes, Discard", (dialog, which) -> finish())
+                .setNegativeButton("No", null)
+                .show();
+    }
+
     private void clearFields() {
         editTitle.setText("");
         editDetails.setText("");
@@ -220,4 +268,12 @@ public class SendAssignmentActivity extends AppCompatActivity {
         textSelectedFiles.setVisibility(View.GONE);
         selectedFileUris.clear();
     }
+    private boolean hasUnsavedInput() {
+        return !editTitle.getText().toString().trim().isEmpty()
+                || !editDetails.getText().toString().trim().isEmpty()
+                || !editDeadline.getText().toString().trim().isEmpty()
+                || !editPercentage.getText().toString().trim().isEmpty()
+                || !selectedFileUris.isEmpty();
+    }
+
 }

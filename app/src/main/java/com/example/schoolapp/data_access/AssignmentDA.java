@@ -86,8 +86,8 @@ public class AssignmentDA implements IAssignmentDA {
     }
 
     @Override
-    public void getAllAssignments(AssignmentListCallback callback) {
-        String url = BASE_URL + "?mode=all";
+    public void getAllAssignments(int studentId, AssignmentListCallback callback) {
+        String url = BASE_URL + "?mode=all&student_id=" + studentId;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
@@ -104,12 +104,17 @@ public class AssignmentDA implements IAssignmentDA {
                 },
                 error -> {
                     String msg = "Failed to fetch assignments";
+                    if (error.networkResponse != null && error.networkResponse.data != null) {
+                        msg += ": " + new String(error.networkResponse.data);
+                    }
                     Log.e("AssignmentDA", msg, error);
                     callback.onError(msg);
                 }
         );
+
         queue.add(request);
     }
+
 
     @Override
     public void findAssignmentById(int id, SingleAssignmentCallback callback) {

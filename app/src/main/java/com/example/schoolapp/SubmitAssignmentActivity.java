@@ -120,8 +120,13 @@ public class SubmitAssignmentActivity extends AppCompatActivity {
             }
         });
 
-
-        btnCancel.setOnClickListener(v -> finish());
+        btnCancel.setOnClickListener(v -> {
+            if (hasUnsavedInput()) {
+                showDiscardChangesDialog();
+            } else {
+                finish();
+            }
+        });
     }
 
     private String getFileName(Uri uri) {
@@ -133,6 +138,36 @@ public class SubmitAssignmentActivity extends AppCompatActivity {
         } catch (Exception ignored) {}
         return uri.getLastPathSegment();
     }
+    @Override
+    public void onBackPressed() {
+        if (hasUnsavedInput()) {
+            new android.app.AlertDialog.Builder(this)
+                    .setTitle("Discard Changes?")
+                    .setMessage("You have unsaved input. Are you sure you want to go back and lose your data?")
+                    .setPositiveButton("Yes, Discard", (dialog, which) -> super.onBackPressed())
+                    .setNegativeButton("No", null)
+                    .show();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
+    private void showDiscardChangesDialog() {
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("Discard Changes?")
+                .setMessage("You have unsaved input. Are you sure you want to cancel and lose your data?")
+                .setPositiveButton("Yes, Discard", (dialog, which) -> finish())
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private boolean hasUnsavedInput() {
+        return !editDetails.getText().toString().trim().isEmpty()
+                || !selectedFileUris.isEmpty();
+    }
+
+
     private void showErrorDialog(String message) {
         new android.app.AlertDialog.Builder(this)
                 .setTitle("Submission Error")

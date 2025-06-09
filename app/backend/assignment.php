@@ -78,26 +78,48 @@ if (isset($_GET['mode']) && $_GET['mode'] === 'all_submissions') {
             return;
         }
 
-        // Default: return only active assignments (end_date today or in future)
-if (isset($_GET['mode']) && $_GET['mode'] === 'all') {
-     $sql = "SELECT 
+      if (isset($_GET['mode']) && $_GET['mode'] === 'all') {
+    $studentId = isset($_GET['student_id']) ? intval($_GET['student_id']) : null;
+
+    if ($studentId !== null) {
+        // Return only active assignments (future or today) for the class the student belongs to
+        $sql = "
+            SELECT 
                 a.*, 
                 s.title AS subject_title,
-                c.class_name AS class_title 
+                c.class_name AS class_title
             FROM assignment a
             JOIN subject s ON a.subject_id = s.subject_id
             JOIN class c ON s.class_id = c.class_id
-            WHERE a.end_date >= CURDATE()";
+            JOIN student st ON st.class_id = c.class_id
+            WHERE st.user_id = $studentId
+              AND a.end_date >= CURDATE()
+            ORDER BY a.end_date ASC
+        ";
+    } else {
+        // Return all active assignments if no student filter is provided
+        $sql = "
+            SELECT 
+                a.*, 
+                s.title AS subject_title,
+                c.class_name AS class_title
+            FROM assignment a
+            JOIN subject s ON a.subject_id = s.subject_id
+            JOIN class c ON s.class_id = c.class_id
+            WHERE a.end_date >= CURDATE()
+            ORDER BY a.end_date ASC
+        ";
+    }
 
     $result = $conn->query($sql);
     $assignments = [];
     while ($row = $result->fetch_assoc()) {
         $assignments[] = $row;
     }
+
     echo json_encode($assignments);
     return;
 }
-
 
     }
 
@@ -116,10 +138,10 @@ if (isset($_GET['mode']) && $_GET['mode'] === 'all') {
     // Upload file
     $filePath = null;
     if ($fileData && $fileName) {
-        $uploadDir = __DIR__ . "./uploads/";
+        $uploadDir = __DIR__ . "/uploads/";
         if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
         file_put_contents($uploadDir . basename($fileName), base64_decode($fileData));
-        $filePath = "./uploads/" . basename($fileName);
+        $filePath = "/uploads/" . basename($fileName);
     }
 
     // Get assignment_id
@@ -161,10 +183,10 @@ if ($input['mode'] === 'update_submission') {
     $filePath = null;
 
     if ($fileData && $fileName) {
-        $uploadDir = __DIR__ . "./uploads/";
+        $uploadDir = __DIR__ . "/uploads/";
         if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
         file_put_contents($uploadDir . basename($fileName), base64_decode($fileData));
-        $filePath = "./uploads/" . basename($fileName);
+        $filePath = "/uploads/" . basename($fileName);
     }
 
     if ($filePath) {
@@ -235,16 +257,16 @@ if ($input['mode'] === 'delete_submission') {
     $fileName = $input['file_name'] ?? null;
 
     if ($fileData && $fileName) {
-        if (!is_writable(__DIR__ . "./uploads/")) {
+        if (!is_writable(__DIR__ . "/uploads/")) {
             throw new Exception("Uploads directory is not writable");
         }
-        $uploadDir = __DIR__ . "./uploads/";
+        $uploadDir = __DIR__ . "/uploads/";
         if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
 
         $safeFileName = basename($fileName);
         $fullPath = $uploadDir . $safeFileName;
         file_put_contents($fullPath, base64_decode($fileData));
-        $filePath = "./uploads/" . $safeFileName;
+        $filePath = "/uploads/" . $safeFileName;
     }
 
     $startDate = isset($input['start_date']) ? $input['start_date'] : date('Y-m-d');

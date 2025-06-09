@@ -1,23 +1,14 @@
 package com.example.schoolapp.data_access;
 
 import android.content.Context;
-import android.util.Log;
-
 import com.android.volley.*;
 import com.android.volley.toolbox.*;
 import com.example.schoolapp.models.Exam;
 import com.example.schoolapp.models.StudentExamResult;
+import org.json.*;
+import java.util.*;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-public class ExamDA {
+public class ExamDA implements IExamDA {
 
     private final Context context;
     private final RequestQueue queue;
@@ -28,13 +19,127 @@ public class ExamDA {
         this.queue = Volley.newRequestQueue(context);
     }
 
-    public interface ExamCallback {
-        void onSuccess(String message);
+    @Override
+    public void sendExam(Exam exam, List<StudentExamResult> results, ExamCallback callback) {
+        try {
+            JSONObject examObject = new JSONObject();
+            examObject.put("title", exam.getTitle());
+            examObject.put("subject_id", exam.getSubject());
+            examObject.put("date", exam.getDate().toString());
+            examObject.put("duration", exam.getDuration());
+            examObject.put("percentage", exam.getPercentage());
 
-        void onError(String error);
+            JSONArray studentsArray = new JSONArray();
+            for (StudentExamResult res : results) {
+                JSONObject obj = new JSONObject();
+                obj.put("student_id", res.getStudentId());
+                obj.put("mark", res.getMark());
+                studentsArray.put(obj);
+            }
+
+            JSONObject finalJson = new JSONObject();
+            finalJson.put("exam", examObject);
+            finalJson.put("students", studentsArray);
+
+            JsonObjectRequest request = new JsonObjectRequest(
+                    Request.Method.POST,
+                    BASE_URL,
+                    finalJson,
+                    response -> {
+                        List<JSONObject> result = new ArrayList<>();
+                        result.add(response);
+                        callback.onSuccess(result);
+                    },
+                    error -> callback.onError("Failed to publish results: " + error.toString())
+            );
+
+            queue.add(request);
+
+        } catch (JSONException e) {
+            callback.onError("JSON Error: " + e.getMessage());
+        }
     }
 
-    public void publishExamResults(Exam exam, List<StudentExamResult> results, ExamCallback callback) {
+    @Override
+    public void getAllExams(int studentId, ExamCallback callback) {
+        String url = BASE_URL + "?mode=list&student_id=" + studentId;
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                response -> {
+                    List<JSONObject> examList = new ArrayList<>();
+                    for (int i = 0; i < response.length(); i++) {
+                        examList.add(response.optJSONObject(i));
+                    }
+                    callback.onSuccess(examList);
+                },
+                error -> callback.onError("Error: " + error.getMessage())
+        );
+
+        queue.add(request);
+    }
+
+    @Override
+    public void findExamById(int examId, ExamCallback callback) {
+        String url = BASE_URL + "?mode=find&exam_id=" + examId;
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    List<JSONObject> result = new ArrayList<>();
+                    result.add(response);
+                    callback.onSuccess(result);
+                },
+                error -> callback.onError("Error: " + error.getMessage())
+        );
+        queue.add(request);
+    }
+
+    @Override
+    public void updateExam(Exam exam, ExamCallback callback) {
+        try {
+            JSONObject examObject = new JSONObject();
+            examObject.put("mode", "update");
+            examObject.put("exam_id", exam.getExamId());
+            examObject.put("title", exam.getTitle());
+            examObject.put("subject_id", exam.getSubject());
+            examObject.put("date", exam.getDate().toString());
+            examObject.put("duration", exam.getDuration());
+            examObject.put("percentage", exam.getPercentage());
+
+            JsonObjectRequest request = new JsonObjectRequest(
+                    Request.Method.POST,
+                    BASE_URL,
+                    examObject,
+                    response -> {
+                        List<JSONObject> result = new ArrayList<>();
+                        result.add(response);
+                        callback.onSuccess(result);
+                    },
+                    error -> callback.onError("Update failed: " + error.toString())
+            );
+
+            queue.add(request);
+        } catch (JSONException e) {
+            callback.onError("JSON Error: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void deleteExam(int examId, ExamCallback callback) {
+        String url = BASE_URL + "?mode=delete&exam_id=" + examId;
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    List<JSONObject> result = new ArrayList<>();
+                    result.add(response);
+                    callback.onSuccess(result);
+                },
+                error -> callback.onError("Delete failed: " + error.toString())
+        );
+
+        queue.add(request);
+    }
+
+    @Override
+    public void publishExamResults(Exam exam, List<StudentExamResult> results, PublishCallback callback) {
         try {
             JSONObject examObject = new JSONObject();
             examObject.put("title", exam.getTitle());
@@ -69,5 +174,4 @@ public class ExamDA {
             callback.onError("JSON Error: " + e.getMessage());
         }
     }
-
 }

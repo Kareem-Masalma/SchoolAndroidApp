@@ -17,7 +17,7 @@
         <TextView
             android:id="@+id/textTitle"
             style="@style/HeaderTitle"
-            android:text="@string/assignments" />
+            android:text="Exams" />
     </FrameLayout>
 
     <!-- Content Padding -->
@@ -32,7 +32,7 @@
             android:id="@+id/editSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/search_by_title_or_subject"
+            android:hint="Search by title or subject"
             android:drawableStart="@android:drawable/ic_menu_search"
             android:padding="10dp"
             android:background="@android:drawable/editbox_background"
@@ -60,10 +60,9 @@
                 <Spinner
                     android:id="@+id/spinnerSortBy"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:padding="0dp"
                     android:spinnerMode="dropdown" />
 
                 <ImageView
@@ -72,7 +71,7 @@
                     android:layout_height="20dp"
                     android:src="@drawable/spinner_arrow"
                     android:layout_marginStart="8dp"
-                    android:contentDescription="@string/dropdown_icon" />
+                    android:contentDescription="Dropdown" />
             </LinearLayout>
 
             <!-- Radio Group for Sort Order -->
@@ -88,19 +87,19 @@
                     android:id="@+id/radioAscending"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/asc_radio_list" />
+                    android:text="Asc" />
 
                 <RadioButton
                     android:id="@+id/radioDescending"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/desc_radio_list" />
+                    android:text="Desc" />
             </RadioGroup>
         </LinearLayout>
 
-        <!-- Assignment RecyclerView -->
+        <!-- RecyclerView for Exams -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerAssignments"
+            android:id="@+id/recyclerExams"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"

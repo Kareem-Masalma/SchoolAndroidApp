@@ -8,6 +8,32 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 try {
     $input = json_decode(file_get_contents("php://input"), true);
 
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (isset($_GET['mode']) && $_GET['mode'] === 'list' && isset($_GET['student_id'])) {
+        $student_id = intval($_GET['student_id']);
+
+        $sql = "SELECT e.*, s.title AS subject_title, c.class_name AS class_title
+                FROM exam e
+                JOIN subject s ON e.subject_id = s.subject_id
+                JOIN class c ON s.class_id = c.class_id
+                JOIN student st ON c.class_id = st.class_id
+                WHERE st.user_id = ? AND e.date >= CURDATE()";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $student_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $exams = [];
+        while ($row = $result->fetch_assoc()) {
+            $exams[] = $row;
+        }
+
+        echo json_encode($exams);
+        exit;
+    }
+}
+
     if (empty($input['exam']) || empty($input['students'])) {
         echo json_encode(["success" => false, "message" => "Missing data"]);
         exit;
