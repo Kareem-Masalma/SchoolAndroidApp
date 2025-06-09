@@ -254,15 +254,17 @@ try {
             }
 
             $fileData = $input['file_data'] ?? null;
-            $fileName = $input['file_name'] ?? null;
-            $filePath = null;
-            if ($fileData && $fileName) {
+$fileName = $input['file_name'] ?? null;
+$filePath = null;
+$teacherId = intval($input['teacher_id']); 
+
+if ($fileData && $fileName) {
     $safeName = basename($fileName);
     $extension = pathinfo($safeName, PATHINFO_EXTENSION);
     $baseName = pathinfo($safeName, PATHINFO_FILENAME);
 
-    // Create unique filename with user_id
-    $finalName = $baseName . "_" . $studentId;
+    // Use teacher_id
+    $finalName = $baseName . "_" . $teacherId;
     $counter = 0;
 
     do {
@@ -272,10 +274,10 @@ try {
         $counter++;
     } while (file_exists($destPath));
 
-    // Save file and return relative path
     file_put_contents($destPath, base64_decode($fileData));
     $filePath = "/uploads/$newFileName";
 }
+
 
 
             $startDate = $input['start_date'] ?? date('Y-m-d');
