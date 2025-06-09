@@ -57,6 +57,7 @@ public class Profile extends AppCompatActivity {
     //student
     private CardView         cardAssignments;
     private CardView         cardExams;
+    private CardView         cardMarks;
 
 
     //all
@@ -135,18 +136,22 @@ public class Profile extends AppCompatActivity {
         cardSchedule    = findViewById(R.id.card_schedule);
         cardAssignments = findViewById(R.id.card_assignments);
         cardExams       = findViewById(R.id.card_exams);
-
+        cardMarks       = findViewById(R.id.card_marks);
         cardAssignments.setOnClickListener(e->{
             Intent intent = new Intent(Profile.this, AssignmentListActivity.class);
             intent.putExtra("USER_ID", logged_in_user.getUser_id());
             startActivity(intent);
         });
 
-        // TODO
+
         cardExams.setOnClickListener(e->{
             Intent intent = new Intent(Profile.this, ExamListActivity.class);
             intent.putExtra("USER_ID", logged_in_user.getUser_id());
             startActivity(intent);
+        });
+
+        cardMarks.setOnClickListener(e->{
+
         });
 
         cardSchedule.setOnClickListener(e->{
@@ -212,7 +217,7 @@ public class Profile extends AppCompatActivity {
         }
 
 
-        // TODO
+
         cardInbox.setOnClickListener(e->{
             Intent intent = new Intent(Profile.this, Inbox.class);
             startActivity(intent);
