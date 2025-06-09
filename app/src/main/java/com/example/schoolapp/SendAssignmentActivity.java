@@ -197,7 +197,11 @@ public class SendAssignmentActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(String message) {
                             Toast.makeText(SendAssignmentActivity.this, message, Toast.LENGTH_SHORT).show();
+                            Intent resultIntent = new Intent();
+                            resultIntent.putExtra("assignment_sent", true);
+                            setResult(RESULT_OK, resultIntent);
                             clearFields();
+                            finish();
                         }
 
                         @Override

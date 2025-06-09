@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.*;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceManager;
@@ -91,6 +92,16 @@ public class SubmitAssignmentActivity extends AppCompatActivity {
         btnSend.setOnClickListener(v -> {
             String details = editDetails.getText().toString().trim();
 
+            // Validate both fields are not empty
+            if (details.isEmpty() && selectedFileUris.isEmpty()) {
+                new android.app.AlertDialog.Builder(this)
+                        .setTitle("Missing Submission")
+                        .setMessage("Please fill in the assignment details or attach a file (or both) before submitting.")
+                        .setPositiveButton("OK", null)
+                        .show();
+                return;
+            }
+
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             String userJson = prefs.getString(Login.LOGGED_IN_USER, null);
 
@@ -118,6 +129,9 @@ public class SubmitAssignmentActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(String message) {
                                 Toast.makeText(SubmitAssignmentActivity.this, message, Toast.LENGTH_SHORT).show();
+                                Intent resultIntent = new Intent();
+                                resultIntent.putExtra("submission_success", true);
+                                setResult(RESULT_OK, resultIntent);
                                 finish();
                             }
 
@@ -162,6 +176,18 @@ public class SubmitAssignmentActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            boolean submitted = data != null && data.getBooleanExtra("submission_success", false);
+            if (submitted) {
+                Toast.makeText(this, "Assignment submitted successfully", Toast.LENGTH_SHORT).show();
+                // Optionally refresh list or finish this activity
+            }
+        }
+    }
+
 
 
     private void showDiscardChangesDialog() {
