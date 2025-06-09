@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <!-- Header -->
@@ -21,82 +21,110 @@
     <!-- Scrollable content -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="32dp">
+            android:background="@color/white"
+            android:padding="24dp">
 
-            <!-- Assignment Title Display -->
-            <TextView
-                android:id="@+id/textAssignmentTitle"
+            <!-- Card Container -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="24dp"
+                android:padding="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="6dp">
 
-            <!-- Details input -->
-            <TextView
-                style="@style/SectionTitle"
-                android:text="@string/details"
-                android:padding="5dp"
-                android:layout_marginTop="12dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/editDetails"
-                style="@style/FormEditText"
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:hint="@string/enter_assignment_details"
-                android:gravity="top"
-                android:inputType="textMultiLine"
-                android:background="@drawable/edittext_border"
-                android:padding="12dp"
-                android:layout_marginTop="4dp"/>
+                    <TextView
+                        style="@style/SectionTitle"
+                        android:text="Submission Details"
+                        android:paddingBottom="10dp"
+                        android:layout_gravity="center"
+                        android:textSize="20dp"
+                        android:textColor="@color/role_green" />
 
-            <!-- File Upload -->
-            <TextView
-                style="@style/SectionTitle"
-                android:text="@string/attachments"
-                android:padding="5dp"
-                android:layout_marginTop="24dp" />
+                    <!-- Assignment Title Display -->
+                    <TextView
+                        android:id="@+id/textAssignmentTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:layout_marginBottom="16dp" />
 
-            <Button
-                android:id="@+id/btnSelectFile"
-                style="@style/ButtonPrimary.Student"
-                android:text="@string/select_file" />
+                    <!-- Details input -->
+                    <TextView
+                        style="@style/SectionTitle"
+                        android:text="@string/details"
+                        android:padding="5dp"
+                        android:layout_marginTop="12dp" />
 
-            <TextView
-                android:id="@+id/textSelectedFile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="14sp"
-                android:layout_marginTop="8dp"
-                android:visibility="gone" />
+                    <EditText
+                        android:id="@+id/editDetails"
+                        style="@style/FormEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:hint="@string/enter_assignment_details"
+                        android:gravity="top"
+                        android:inputType="textMultiLine"
+                        android:background="@drawable/edittext_border"
+                        android:padding="12dp"
+                        android:layout_marginTop="4dp"/>
 
-            <!-- Submit/Cancel -->
+                    <!-- File Upload -->
+                    <TextView
+                        style="@style/SectionTitle"
+                        android:text="@string/attachments"
+                        android:padding="5dp"
+                        android:layout_marginTop="24dp" />
+
+                    <Button
+                        android:id="@+id/btnSelectFile"
+                        style="@style/ButtonPrimary.Student"
+                        android:text="@string/select_file" />
+
+                    <TextView
+                        android:id="@+id/textSelectedFile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="14sp"
+                        android:layout_marginTop="8dp"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Submit/Cancel Buttons -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="32dp"
-                android:gravity="end">
+                android:layout_marginTop="8dp"
+                android:gravity="center">
 
                 <Button
                     android:id="@+id/btnCancel"
                     style="@style/ButtonPrimary.Student"
+                    android:backgroundTint="@color/grey"
                     android:text="@string/cancel" />
 
                 <Button
                     android:id="@+id/btnSend"
                     style="@style/ButtonPrimary.Student"
                     android:layout_width="113dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="30dp"
                     android:text="@string/submit_assignment_student" />
             </LinearLayout>
         </LinearLayout>
