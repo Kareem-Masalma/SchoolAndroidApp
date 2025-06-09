@@ -58,27 +58,41 @@ public class AddTeacherActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSpecialty.setAdapter(adapter);
 
-        // Birth date click listener
-        View.OnClickListener openDatePicker = v -> {
+        // Birth date picker logic (youngest valid age = 5)
+        View.OnClickListener birthDatePicker = v -> {
             Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.YEAR, -30);
+
+            int defaultYear = calendar.get(Calendar.YEAR);
+            int defaultMonth = calendar.get(Calendar.MONTH);
+            int defaultDay = calendar.get(Calendar.DAY_OF_MONTH);
+
             DatePickerDialog dialog = new DatePickerDialog(this,
                     (view, year, month, dayOfMonth) -> {
                         String date = year + "-" + (month + 1) + "-" + dayOfMonth;
                         editBirthDate.setText(date);
                         editBirthDate.clearFocus();
                     },
-                    calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH),
-                    calendar.get(Calendar.DAY_OF_MONTH));
+                    defaultYear,
+                    defaultMonth,
+                    defaultDay);
+
+            Calendar maxDate = Calendar.getInstance();
+            maxDate.add(Calendar.YEAR, -20);
+            dialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
+
+            Calendar minDate = Calendar.getInstance();
+            minDate.add(Calendar.YEAR, -65);
+            dialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+
             dialog.show();
         };
 
-
-        editBirthDate.setOnClickListener(openDatePicker);
+        editBirthDate.setOnClickListener(birthDatePicker);
         LinearLayout birthDateField = findViewById(R.id.birthDateField);
-        birthDateField.setOnClickListener(openDatePicker);
+        birthDateField.setOnClickListener(birthDatePicker);
 
-        // Add Teacher
+        // Add Teacher button logic
         btnAdd.setOnClickListener(v -> {
             String firstName = editFirstName.getText().toString().trim();
             String lastName = editLastName.getText().toString().trim();
@@ -91,7 +105,6 @@ public class AddTeacherActivity extends AppCompatActivity {
 
             boolean valid = true;
 
-            // Clear previous errors
             editFirstName.setError(null);
             editLastName.setError(null);
             editBirthDate.setError(null);
@@ -100,31 +113,12 @@ public class AddTeacherActivity extends AppCompatActivity {
             editPhone.setError(null);
             editPassword.setError(null);
 
-            // Validate required fields
-            if (firstName.isEmpty()) {
-                editFirstName.setError("Required");
-                valid = false;
-            }
-            if (lastName.isEmpty()) {
-                editLastName.setError("Required");
-                valid = false;
-            }
-            if (birthDateStr.isEmpty()) {
-                editBirthDate.setError("Required a valid date");
-                valid = false;
-            }
-            if (city.isEmpty()) {
-                editCity.setError("Required");
-                valid = false;
-            }
-            if (address.isEmpty()) {
-                editAddress.setError("Required");
-                valid = false;
-            }
-            if (phone.isEmpty()) {
-                editPhone.setError("Required");
-                valid = false;
-            }
+            if (firstName.isEmpty()) { editFirstName.setError("Required"); valid = false; }
+            if (lastName.isEmpty()) { editLastName.setError("Required"); valid = false; }
+            if (birthDateStr.isEmpty()) { editBirthDate.setError("Required"); valid = false; }
+            if (city.isEmpty()) { editCity.setError("Required"); valid = false; }
+            if (address.isEmpty()) { editAddress.setError("Required"); valid = false; }
+            if (phone.isEmpty()) { editPhone.setError("Required"); valid = false; }
             if (password.isEmpty()) {
                 editPassword.setError("Required");
                 valid = false;
@@ -138,7 +132,6 @@ public class AddTeacherActivity extends AppCompatActivity {
                 return;
             }
 
-            // Phone validation
             if (!phone.matches("^05\\d{8}$")) {
                 editPhone.setError("Phone must start with 05 and be 10 digits");
                 return;
@@ -150,8 +143,12 @@ public class AddTeacherActivity extends AppCompatActivity {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
                 birthDate = LocalDate.parse(birthDateStr, formatter);
 
-                if (birthDate.isAfter(LocalDate.now())) {
-                    editBirthDate.setError("Birth date cannot be in the future");
+                LocalDate today = LocalDate.now();
+                LocalDate minAllowed = today.minusYears(65);
+                LocalDate maxAllowed = today.minusYears(20);
+
+                if (birthDate.isBefore(minAllowed) || birthDate.isAfter(maxAllowed)) {
+                    editBirthDate.setError("Teacher must be between 20 and 65 years old");
                     return;
                 }
             } catch (DateTimeParseException e) {
@@ -159,14 +156,13 @@ public class AddTeacherActivity extends AppCompatActivity {
                 return;
             }
 
-            // Specialty check
+
             if (specialty.equals("Select Specialty")) {
                 Toast.makeText(this, "Please select a valid specialty", Toast.LENGTH_SHORT).show();
                 spinnerSpecialty.requestFocus();
                 return;
             }
 
-            // Create teacher object
             Role role = Role.TEACHER;
             Teacher teacher = new Teacher();
             teacher.setFirstName(firstName);
@@ -178,12 +174,14 @@ public class AddTeacherActivity extends AppCompatActivity {
             teacher.setSpeciality(specialty);
             teacher.setPassword(password);
 
-            // Submit
             ITeacherDA teacherDA = new TeacherDA(this);
             teacherDA.addTeacher(teacher);
-            clearFields();
-        });
 
+            Toast.makeText(AddTeacherActivity.this, "Teacher added successfully", Toast.LENGTH_SHORT).show();
+            setResult(RESULT_OK);
+            finish();
+
+        });
 
         // Cancel button
         btnCancel.setOnClickListener(v -> {
@@ -214,6 +212,7 @@ public class AddTeacherActivity extends AppCompatActivity {
         editPassword.setText("");
         spinnerSpecialty.setSelection(0);
     }
+
     private void showDiscardChangesDialog() {
         new AlertDialog.Builder(this)
                 .setTitle("Discard Changes?")
@@ -233,7 +232,4 @@ public class AddTeacherActivity extends AppCompatActivity {
                 || !editPassword.getText().toString().trim().isEmpty()
                 || spinnerSpecialty.getSelectedItemPosition() != 0;
     }
-
-
-
 }

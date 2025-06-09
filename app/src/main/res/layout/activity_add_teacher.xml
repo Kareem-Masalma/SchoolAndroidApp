@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:cardview="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <!-- Top Bar -->
@@ -43,6 +43,7 @@
                 android:layout_marginBottom="16dp"
                 android:padding="16dp"
                 app:cardCornerRadius="16dp"
+                cardview:cardUseCompatPadding="true"
                 app:cardElevation="6dp">
 
                 <LinearLayout
@@ -142,6 +143,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
+                    cardview:cardUseCompatPadding="true"
                     android:orientation="vertical">
 
                     <TextView
@@ -192,6 +194,7 @@
                     <EditText
                         android:id="@+id/editPhone"
                         style="@style/FormEditText"
+                        android:maxLength="10"
                         android:hint="@string/enter_phone_number_starts_05"
                         android:inputType="phone"
                         android:layout_marginTop="8dp" />
@@ -205,6 +208,7 @@
                 android:layout_marginBottom="16dp"
                 android:padding="16dp"
                 app:cardCornerRadius="16dp"
+                cardview:cardUseCompatPadding="true"
                 app:cardElevation="6dp">
 
                 <LinearLayout
@@ -227,6 +231,7 @@
                         style="@style/FormEditText"
                         android:hint="@string/enter_password_at_least_8_charachters"
                         android:inputType="textPassword"
+                        android:maxLength="32"
                         android:layout_marginTop="8dp" />
 
                     <TextView style="@style/FormLabel" android:text="@string/specialty" />

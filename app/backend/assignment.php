@@ -133,11 +133,26 @@ try {
         $filePath = null;
 
         if ($fileData && $fileName) {
-            $safeName = basename($fileName);
-            $destPath = "$uploadDir/$safeName";
-            file_put_contents($destPath, base64_decode($fileData));
-            $filePath = "/uploads/$safeName";
-        }
+    $safeName = basename($fileName);
+    $extension = pathinfo($safeName, PATHINFO_EXTENSION);
+    $baseName = pathinfo($safeName, PATHINFO_FILENAME);
+
+    // Create unique filename with user_id
+    $finalName = $baseName . "_" . $studentId;
+    $counter = 0;
+
+    do {
+        $suffix = $counter === 0 ? "" : "_($counter)";
+        $newFileName = $finalName . $suffix . "." . $extension;
+        $destPath = "$uploadDir/$newFileName";
+        $counter++;
+    } while (file_exists($destPath));
+
+    // Save file and return relative path
+    file_put_contents($destPath, base64_decode($fileData));
+    $filePath = "/uploads/$newFileName";
+}
+
 
         $stmt = $conn->prepare("SELECT assignment_id FROM assignment WHERE title = ?");
         $stmt->bind_param("s", $assignmentTitle);
@@ -170,11 +185,26 @@ try {
         $filePath = null;
 
         if ($fileData && $fileName) {
-            $safeName = basename($fileName);
-            $destPath = "$uploadDir/$safeName";
-            file_put_contents($destPath, base64_decode($fileData));
-            $filePath = "/uploads/$safeName";
-        }
+    $safeName = basename($fileName);
+    $extension = pathinfo($safeName, PATHINFO_EXTENSION);
+    $baseName = pathinfo($safeName, PATHINFO_FILENAME);
+
+    // Create unique filename with user_id
+    $finalName = $baseName . "_" . $studentId;
+    $counter = 0;
+
+    do {
+        $suffix = $counter === 0 ? "" : "_($counter)";
+        $newFileName = $finalName . $suffix . "." . $extension;
+        $destPath = "$uploadDir/$newFileName";
+        $counter++;
+    } while (file_exists($destPath));
+
+    // Save file and return relative path
+    file_put_contents($destPath, base64_decode($fileData));
+    $filePath = "/uploads/$newFileName";
+}
+
 
         if ($filePath) {
             $stmt = $conn->prepare("UPDATE student_assignment_submission SET file_path=?, details=?, submitted_at=NOW() WHERE student_id=? AND assignment_id=?");
@@ -224,14 +254,31 @@ try {
             }
 
             $fileData = $input['file_data'] ?? null;
-            $fileName = $input['file_name'] ?? null;
-            $filePath = null;
-            if ($fileData && $fileName) {
-                $safeName = basename($fileName);
-                $destPath = "$uploadDir/$safeName";
-                file_put_contents($destPath, base64_decode($fileData));
-                $filePath = "/uploads/$safeName";
-            }
+$fileName = $input['file_name'] ?? null;
+$filePath = null;
+$teacherId = intval($input['teacher_id']); 
+
+if ($fileData && $fileName) {
+    $safeName = basename($fileName);
+    $extension = pathinfo($safeName, PATHINFO_EXTENSION);
+    $baseName = pathinfo($safeName, PATHINFO_FILENAME);
+
+    // Use teacher_id
+    $finalName = $baseName . "_" . $teacherId;
+    $counter = 0;
+
+    do {
+        $suffix = $counter === 0 ? "" : "_($counter)";
+        $newFileName = $finalName . $suffix . "." . $extension;
+        $destPath = "$uploadDir/$newFileName";
+        $counter++;
+    } while (file_exists($destPath));
+
+    file_put_contents($destPath, base64_decode($fileData));
+    $filePath = "/uploads/$newFileName";
+}
+
+
 
             $startDate = $input['start_date'] ?? date('Y-m-d');
             $stmt = $conn->prepare("INSERT INTO assignment (subject_id, title, details, file_path, start_date, end_date, percentage_of_grade)

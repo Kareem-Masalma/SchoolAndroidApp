@@ -1,14 +1,22 @@
 package com.example.schoolapp.data_access;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.OpenableColumns;
 import android.util.Base64;
 import android.util.Log;
 
+import androidx.preference.PreferenceManager;
+
 import com.android.volley.*;
 import com.android.volley.toolbox.*;
+import com.example.schoolapp.Login;
+import com.example.schoolapp.json_helpers.LocalDateAdapter;
+import com.example.schoolapp.models.Teacher;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.*;
 
@@ -37,6 +45,14 @@ public class AssignmentDA implements IAssignmentDA {
             json.put("deadline", deadline);
             json.put("percentage", percentage);
 
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            String userJson = prefs.getString(Login.LOGGED_IN_USER, null);
+            if (userJson != null) {
+                Gson gson = new GsonBuilder().registerTypeAdapter(java.time.LocalDate.class, new LocalDateAdapter()).create();
+                Teacher teacher = gson.fromJson(userJson, Teacher.class);
+                json.put("teacher_id", teacher.getUser_id());
+            }
+
             // Add current date as start_date
             String startDate = new java.text.SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new java.util.Date());
             json.put("start_date", startDate);
@@ -50,7 +66,6 @@ public class AssignmentDA implements IAssignmentDA {
                     json.put("file_data", encoded);
                     json.put("file_name", fileName);
 
-                    // Add file_path as expected by backend (optional but helpful)
                     String filePath = "uploads/" + fileName;
                     json.put("file_path", filePath);
                 }
