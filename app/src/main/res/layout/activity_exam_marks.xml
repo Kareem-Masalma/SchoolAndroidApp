@@ -1,104 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
+    xmlns:cardview="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/main"
     android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="64dp">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/role_blue" />
+        android:layout_height="72dp"
+        android:background="@color/role_blue"
+        android:paddingTop="8dp">
 
         <TextView
             android:id="@+id/titleText"
             style="@style/HeaderTitle"
-            android:layout_gravity="center"
-            android:text="@string/exam_marks" />
+            android:text="@string/exam_marks"
+            android:layout_gravity="center_vertical|start"
+            android:paddingStart="16dp"
+            cardview:ignore="RtlSymmetry" />
     </FrameLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp"
+        android:background="@color/white"
+        android:fillViewport="true">
 
-        <TextView
-            android:id="@+id/tvClass"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/Class"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/etExamTitle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="@string/exam_title"
-            android:inputType="text" />
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/etDuration"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="@string/duration"
-            android:inputType="numberDecimal" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:padding="16dp"
+                app:cardCornerRadius="16dp"
+                cardview:cardUseCompatPadding="true"
+                app:cardElevation="6dp">
 
-        <EditText
-            android:id="@+id/etPercentage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="@string/exam_percentage"
-            android:inputType="numberDecimal" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
-        <EditText
-            android:id="@+id/etExamDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:clickable="true"
-            android:drawableEnd="@android:drawable/ic_menu_today"
-            android:focusable="false"
-            android:hint="@string/exam_date"
-            android:inputType="none"
-            android:padding="12dp" />
+                    <TextView
+                        style="@style/SectionTitle"
+                        android:text="@string/select_exam"
+                        android:textSize="20sp"
+                        android:textColor="@color/role_blue"
+                        android:layout_gravity="center"
+                        android:paddingBottom="10dp" />
 
-        <Spinner
-            android:id="@+id/spSubject"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
+                    <Spinner
+                        android:id="@+id/spExams"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_border"
+                        android:padding="12dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/enter_student_marks"
-            android:textStyle="bold" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="6dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvStudentMarks"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_weight="1" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
-        <Button
-            android:id="@+id/btnPublish"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="@color/role_blue"
-            android:text="@string/publish_results"
-            android:textColor="@android:color/white" />
-    </LinearLayout>
+                    <TextView
+                        style="@style/SectionTitle"
+                        android:text="@string/student_marks"
+                        android:textColor="@color/role_blue"
+                        android:textSize="20sp"
+                        android:layout_gravity="center"
+                        android:paddingBottom="10dp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvStudentMarks"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/btnPublish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/publish_results"
+                android:backgroundTint="@color/role_blue"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>

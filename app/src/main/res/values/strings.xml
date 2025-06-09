@@ -121,4 +121,6 @@
     <string name="reminder_time_label">Reminder Time</string>
     <string name="select_reminder_time">Select Reminder Time</string>
     <string name="submission_details">Submission Details</string>
+    <string name="select_exam">Select Exam</string>
+    <string name="student_marks">Student Marks</string>
 </resources>
