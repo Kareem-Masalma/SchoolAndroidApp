@@ -1,15 +1,18 @@
+// AddTeacherActivity.java
 package com.example.schoolapp;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.widget.*;
 import android.view.View;
+import android.widget.*;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import com.example.schoolapp.data_access.*;
-import com.example.schoolapp.models.*;
+import com.example.schoolapp.data_access.ITeacherDA;
+import com.example.schoolapp.data_access.TeacherDA;
+import com.example.schoolapp.models.Role;
+import com.example.schoolapp.models.Teacher;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -18,11 +21,20 @@ import java.util.Calendar;
 
 public class AddTeacherActivity extends AppCompatActivity {
 
-    private EditText editFirstName, editLastName, editBirthDate, editCity, editAddress, editPhone;
+    private ViewFlipper viewFlipper;
+    private Button btnNext, btnPrevious;
+    private int currentStep = 0;
+
+    // Step 1
+    private EditText editFirstName, editLastName, editBirthDate;
+
+    // Step 2
+    private EditText editCity, editAddress, editPhone;
+
+    // Step 3
     private Spinner spinnerSpecialty;
     private EditText editPassword;
     private TextView textRole;
-    private Button btnAdd, btnCancel;
 
     private final String[] specialties = {
             "Select Specialty", "Math", "Physics", "Chemistry", "Biology",
@@ -36,168 +48,125 @@ public class AddTeacherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_teacher);
 
-        // Link UI elements
+        viewFlipper = findViewById(R.id.viewFlipper);
+        btnNext = findViewById(R.id.btnNext);
+        btnPrevious = findViewById(R.id.btnPrevious);
+
+        // Step 1
         editFirstName = findViewById(R.id.editFirstName);
         editLastName = findViewById(R.id.editLastName);
         editBirthDate = findViewById(R.id.editBirthDate);
+
+        // Step 2
         editCity = findViewById(R.id.editCity);
         editAddress = findViewById(R.id.editAddress);
         editPhone = findViewById(R.id.editPhone);
-        spinnerSpecialty = findViewById(R.id.spinnerSpecialty);
+
+        // Step 3
         editPassword = findViewById(R.id.editPassword);
+        spinnerSpecialty = findViewById(R.id.spinnerSpecialty);
         textRole = findViewById(R.id.textRole);
-        btnAdd = findViewById(R.id.btnAdd);
-        btnCancel = findViewById(R.id.btnCancel);
 
-        // Spinner container click opens dropdown
-        LinearLayout spinnerContainer = findViewById(R.id.spinnerContainer);
-        spinnerContainer.setOnClickListener(v -> spinnerSpecialty.performClick());
-
-        // Populate Spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, specialties);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSpecialty.setAdapter(adapter);
 
-        // Birth date click listener
-        View.OnClickListener openDatePicker = v -> {
-            Calendar calendar = Calendar.getInstance();
-            DatePickerDialog dialog = new DatePickerDialog(this,
-                    (view, year, month, dayOfMonth) -> {
-                        String date = year + "-" + (month + 1) + "-" + dayOfMonth;
-                        editBirthDate.setText(date);
-                        editBirthDate.clearFocus();
-                    },
-                    calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH),
-                    calendar.get(Calendar.DAY_OF_MONTH));
-            dialog.show();
-        };
+        editBirthDate.setOnClickListener(v -> showDatePicker());
 
-
-        editBirthDate.setOnClickListener(openDatePicker);
-        LinearLayout birthDateField = findViewById(R.id.birthDateField);
-        birthDateField.setOnClickListener(openDatePicker);
-
-        // Add Teacher
-        btnAdd.setOnClickListener(v -> {
-            String firstName = editFirstName.getText().toString().trim();
-            String lastName = editLastName.getText().toString().trim();
-            String birthDateStr = editBirthDate.getText().toString().trim();
-            String city = editCity.getText().toString().trim();
-            String address = editAddress.getText().toString().trim();
-            String phone = editPhone.getText().toString().trim();
-            String specialty = spinnerSpecialty.getSelectedItem().toString();
-            String password = editPassword.getText().toString().trim();
-
-            boolean valid = true;
-
-            // Clear previous errors
-            editFirstName.setError(null);
-            editLastName.setError(null);
-            editBirthDate.setError(null);
-            editCity.setError(null);
-            editAddress.setError(null);
-            editPhone.setError(null);
-            editPassword.setError(null);
-
-            // Validate required fields
-            if (firstName.isEmpty()) {
-                editFirstName.setError("Required");
-                valid = false;
+        btnNext.setOnClickListener(v -> {
+            if (!validateCurrentStep()) return;
+            if (currentStep < 2) {
+                currentStep++;
+                viewFlipper.showNext();
+                updateButtonState();
+            } else {
+                submitTeacher();
             }
-            if (lastName.isEmpty()) {
-                editLastName.setError("Required");
-                valid = false;
-            }
-            if (birthDateStr.isEmpty()) {
-                editBirthDate.setError("Required a valid date");
-                valid = false;
-            }
-            if (city.isEmpty()) {
-                editCity.setError("Required");
-                valid = false;
-            }
-            if (address.isEmpty()) {
-                editAddress.setError("Required");
-                valid = false;
-            }
-            if (phone.isEmpty()) {
-                editPhone.setError("Required");
-                valid = false;
-            }
-            if (password.isEmpty()) {
-                editPassword.setError("Required");
-                valid = false;
-            } else if (password.length() < 8) {
-                editPassword.setError("Password must be at least 8 characters");
-                return;
-            }
-
-            if (!valid) {
-                Toast.makeText(this, "Please fill all required fields", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // Phone validation
-            if (!phone.matches("^05\\d{8}$")) {
-                editPhone.setError("Phone must start with 05 and be 10 digits");
-                return;
-            }
-
-            // Birth date parsing and logic
-            LocalDate birthDate;
-            try {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
-                birthDate = LocalDate.parse(birthDateStr, formatter);
-
-                if (birthDate.isAfter(LocalDate.now())) {
-                    editBirthDate.setError("Birth date cannot be in the future");
-                    return;
-                }
-            } catch (DateTimeParseException e) {
-                editBirthDate.setError("Invalid date format");
-                return;
-            }
-
-            // Specialty check
-            if (specialty.equals("Select Specialty")) {
-                Toast.makeText(this, "Please select a valid specialty", Toast.LENGTH_SHORT).show();
-                spinnerSpecialty.requestFocus();
-                return;
-            }
-
-            // Create teacher object
-            Role role = Role.TEACHER;
-            Teacher teacher = new Teacher();
-            teacher.setFirstName(firstName);
-            teacher.setLastName(lastName);
-            teacher.setBirthDate(birthDate);
-            teacher.setAddress(city + " " + address);
-            teacher.setPhone(phone);
-            teacher.setRole(role);
-            teacher.setSpeciality(specialty);
-            teacher.setPassword(password);
-
-            // Submit
-            ITeacherDA teacherDA = new TeacherDA(this);
-            teacherDA.addTeacher(teacher);
-            clearFields();
         });
 
+        btnPrevious.setOnClickListener(v -> {
+            if (currentStep > 0) {
+                currentStep--;
+                viewFlipper.showPrevious();
+                updateButtonState();
+            }
+        });
 
-        // Cancel button
-        btnCancel.setOnClickListener(v -> finish());
-    }
-    private void clearFields() {
-        editFirstName.setText("");
-        editLastName.setText("");
-        editBirthDate.setText("");
-        editCity.setText("");
-        editAddress.setText("");
-        editPhone.setText("");
-        editPassword.setText("");
-        spinnerSpecialty.setSelection(0);
+        updateButtonState();
     }
 
+    private void showDatePicker() {
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog dialog = new DatePickerDialog(this,
+                (view, year, month, dayOfMonth) -> editBirthDate.setText(year + "-" + (month + 1) + "-" + dayOfMonth),
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));
+        dialog.show();
+    }
 
+    private void updateButtonState() {
+        btnPrevious.setVisibility(currentStep == 0 ? View.INVISIBLE : View.VISIBLE);
+        btnNext.setText(currentStep == 2 ? "Finish" : "Next");
+    }
+
+    private boolean validateCurrentStep() {
+        switch (currentStep) {
+            case 0:
+                if (editFirstName.getText().toString().isEmpty()) {
+                    editFirstName.setError("Required");
+                    return false;
+                }
+                if (editLastName.getText().toString().isEmpty()) {
+                    editLastName.setError("Required");
+                    return false;
+                }
+                if (editBirthDate.getText().toString().isEmpty()) {
+                    editBirthDate.setError("Required");
+                    return false;
+                }
+                break;
+            case 1:
+                if (editCity.getText().toString().isEmpty()) {
+                    editCity.setError("Required");
+                    return false;
+                }
+                if (editAddress.getText().toString().isEmpty()) {
+                    editAddress.setError("Required");
+                    return false;
+                }
+                if (!editPhone.getText().toString().matches("^05\\d{8}$")) {
+                    editPhone.setError("Phone must start with 05 and be 10 digits");
+                    return false;
+                }
+                break;
+            case 2:
+                if (editPassword.getText().toString().length() < 8) {
+                    editPassword.setError("Min 8 characters");
+                    return false;
+                }
+                if (spinnerSpecialty.getSelectedItem().toString().equals("Select Specialty")) {
+                    Toast.makeText(this, "Please select a valid specialty", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                break;
+        }
+        return true;
+    }
+
+    private void submitTeacher() {
+        Teacher teacher = new Teacher();
+        teacher.setFirstName(editFirstName.getText().toString());
+        teacher.setLastName(editLastName.getText().toString());
+        teacher.setBirthDate(LocalDate.parse(editBirthDate.getText().toString(), DateTimeFormatter.ofPattern("yyyy-M-d")));
+        teacher.setAddress(editCity.getText().toString() + " " + editAddress.getText().toString());
+        teacher.setPhone(editPhone.getText().toString());
+        teacher.setPassword(editPassword.getText().toString());
+        teacher.setRole(Role.TEACHER);
+        teacher.setSpeciality(spinnerSpecialty.getSelectedItem().toString());
+
+        new TeacherDA(this).addTeacher(teacher);
+        Toast.makeText(this, "Teacher added successfully", Toast.LENGTH_SHORT).show();
+        finish();
+    }
 }

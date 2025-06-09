@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- step_review.xml -->
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/summaryTitle"
+            android:text="review_information"
+            style="@style/SectionTitle"
+            android:layout_marginBottom="16dp" />
+
+        <TextView android:id="@+id/tvSummaryName" style="@style/FormSummary" />
+        <TextView android:id="@+id/tvSummaryBirthDate" style="@style/FormSummary" />
+        <TextView android:id="@+id/tvSummaryCity" style="@style/FormSummary" />
+        <TextView android:id="@+id/tvSummaryAddress" style="@style/FormSummary" />
+        <TextView android:id="@+id/tvSummaryPhone" style="@style/FormSummary" />
+        <TextView android:id="@+id/tvSummarySpecialty" style="@style/FormSummary" />
+        <TextView android:id="@+id/tvSummaryRole" style="@style/FormSummary" />
+
+    </LinearLayout>
+</ScrollView>
