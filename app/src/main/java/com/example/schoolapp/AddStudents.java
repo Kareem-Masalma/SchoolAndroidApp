@@ -3,9 +3,12 @@ package com.example.schoolapp;
 import android.app.DatePickerDialog;
 import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -28,7 +31,7 @@ public class AddStudents extends AppCompatActivity {
 
     private TextInputEditText etFirstName;
     private TextInputEditText etLastName;
-    private TextInputEditText etBirthDate;
+    private EditText etBirthDate;
     private TextInputEditText etAddress;
     private TextInputEditText etPhone;
     private TextInputEditText etInitialPassword;
@@ -36,6 +39,8 @@ public class AddStudents extends AppCompatActivity {
     private Spinner spinnerClass;
     private Button btnAdd;
     private Button btnCancel;
+    private LinearLayout birthDateField;
+
 
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -66,29 +71,30 @@ public class AddStudents extends AppCompatActivity {
         btnAdd = findViewById(R.id.btnAdd);
         btnCancel = findViewById(R.id.btnCancel);
         etInitialPassword = findViewById(R.id.etInitialPassword);
+        birthDateField = findViewById(R.id.birthDateField);
 
-        etBirthDate.setOnClickListener(v -> {
-            Calendar cal = Calendar.getInstance();
-            int year = cal.get(Calendar.YEAR);
-            int month = cal.get(Calendar.MONTH);
-            int day = cal.get(Calendar.DAY_OF_MONTH);
-
-            new DatePickerDialog(
-                    AddStudents.this,
-                    (DatePicker view, int selectedYear, int selectedMonth, int selectedDay) -> {
-                        // month is zero-based in DatePicker
-                        LocalDate pickedDate = LocalDate.of(
-                                selectedYear,
-                                selectedMonth + 1,
-                                selectedDay
-                        );
-                        etBirthDate.setText(pickedDate.format(dateFormatter));
-                    },
-                    year, month, day
-            ).show();
-        });
+        setupDatePicker();
 
         fillSpinner();
+    }
+
+    private void setupDatePicker() {
+        View.OnClickListener openDatePicker = v -> {
+            Calendar calendar = Calendar.getInstance();
+            DatePickerDialog dialog = new DatePickerDialog(this,
+                    (view, year, month, dayOfMonth) -> {
+                        String date = year + "-" + String.format("%02d", month + 1) + "-" + String.format("%02d", dayOfMonth);
+                        etBirthDate.setText(date);
+                        etBirthDate.clearFocus();
+                    },
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH));
+            dialog.show();
+        };
+
+        etBirthDate.setOnClickListener(openDatePicker);
+        birthDateField.setOnClickListener(openDatePicker);
     }
 
     private void fillSpinner() { // fill it from 1 to 12
