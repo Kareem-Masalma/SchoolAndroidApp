@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schoolapp.adapters.StudentMarksAdapter;
 import com.example.schoolapp.data_access.ExamDA;
+import com.example.schoolapp.data_access.IExamDA;
 import com.example.schoolapp.data_access.StudentDA;
 import com.example.schoolapp.data_access.StudentDAFactory;
 import com.example.schoolapp.data_access.SubjectDA;
@@ -33,6 +34,8 @@ import com.example.schoolapp.models.StudentExamResult;
 import com.example.schoolapp.models.Subject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -111,10 +114,11 @@ public class ExamMarks extends AppCompatActivity {
                 }
 
                 ExamDA examDA = new ExamDA(ExamMarks.this);
-                examDA.publishExamResults(exam, studentMarks, new ExamDA.ExamCallback() {
+                examDA.publishExamResults(exam, studentMarks, new IExamDA.PublishCallback() {
+
                     @Override
                     public void onSuccess(String message) {
-                        Toast.makeText(ExamMarks.this, message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ExamMarks.this, "Results published", Toast.LENGTH_SHORT).show();
                         finish();
                     }
 
@@ -123,6 +127,7 @@ public class ExamMarks extends AppCompatActivity {
                         Toast.makeText(ExamMarks.this, error, Toast.LENGTH_SHORT).show();
                     }
                 });
+
 
             }
         });

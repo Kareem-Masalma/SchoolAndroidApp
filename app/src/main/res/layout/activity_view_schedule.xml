@@ -18,7 +18,8 @@
         <TextView
             android:id="@+id/titleText"
             style="@style/HeaderTitle"
-            android:text="@string/schedule" />
+            android:text="@string/schedule"
+            android:backgroundTint="@color/role_orange" />
     </FrameLayout>
 
     <androidx.appcompat.widget.LinearLayoutCompat

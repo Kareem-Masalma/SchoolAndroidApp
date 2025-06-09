@@ -83,7 +83,7 @@ public class StudentDA implements IStudentDA {
             JsonObjectRequest req = new JsonObjectRequest(
                     Request.Method.POST, BASE, b,
                     resp -> handle(cb, resp),
-                    err -> cb.onError("Add failed")
+                    err -> cb.onError("Add failed: " + err)
             );
             queue.add(req);
 

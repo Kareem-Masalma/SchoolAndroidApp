@@ -31,15 +31,36 @@ import java.time.LocalDate;
 
 public class Profile extends AppCompatActivity {
 
+    //all
+    private CardView         cardInfo;
+    private CardView         cardInbox;
     private ImageView        imageProfile;
     private TextView         textFullName;
     private TextView         textRole;
     private TextView         textBirthDate;
     private TextView         textAddress;
     private TextView         textPhone;
-    private CardView         cardInfo;
+
+
+    //teacher/student
     private CardView         cardSchedule;
+
+    //teacher
     private CardView         cardClasses;
+
+    //registrar
+    private CardView         cardAddStudent;
+    private CardView         cardAddTeacher;
+    private CardView         cardAddSubject;
+    private CardView         cardBuildSchedule;
+
+    //student
+    private CardView         cardAssignments;
+    private CardView         cardExams;
+    private CardView         cardMarks;
+
+
+    //all
     private FloatingActionButton fabMessage;
     User logged_in_user = null;
 
@@ -74,6 +95,7 @@ public class Profile extends AppCompatActivity {
                 }else{
                     setContentView(R.layout.activity_profile_registrar);
                     logged_in_user = gson.fromJson(json, Registrar.class);
+                    setupRegistrarViews();
                 }
 
             }
@@ -82,9 +104,56 @@ public class Profile extends AppCompatActivity {
 
     }
 
+    private void setupRegistrarViews() {
+        cardAddStudent = findViewById(R.id.card_add_student);
+        cardAddTeacher = findViewById(R.id.card_add_teacher);
+        cardAddSubject = findViewById(R.id.card_add_subject);
+        cardBuildSchedule = findViewById(R.id.card_build_schedule);
+
+        cardAddStudent.setOnClickListener(e->{
+            Intent intent = new Intent(Profile.this, AddStudents.class);
+            startActivity(intent);
+        });
+
+        cardAddTeacher.setOnClickListener(e->{
+            Intent intent = new Intent(Profile.this, AddTeacherActivity.class);
+            startActivity(intent);
+        });
+
+        cardAddSubject.setOnClickListener(e->{
+            Intent intent = new Intent(Profile.this, AddSubjects.class);
+            startActivity(intent);
+        });
+
+
+        cardBuildSchedule.setOnClickListener(e->{
+            Intent intent = new Intent(Profile.this, AddSchedule.class);
+            startActivity(intent);
+        });
+    }
+
     private void setupStudentViews() {
         cardSchedule    = findViewById(R.id.card_schedule);
-        // TODO Open the view schedule activity
+        cardAssignments = findViewById(R.id.card_assignments);
+        cardExams       = findViewById(R.id.card_exams);
+        cardMarks       = findViewById(R.id.card_marks);
+        cardAssignments.setOnClickListener(e->{
+            Intent intent = new Intent(Profile.this, AssignmentListActivity.class);
+            intent.putExtra("USER_ID", logged_in_user.getUser_id());
+            startActivity(intent);
+        });
+
+
+        cardExams.setOnClickListener(e->{
+            Intent intent = new Intent(Profile.this, ExamListActivity.class);
+            intent.putExtra("USER_ID", logged_in_user.getUser_id());
+            startActivity(intent);
+        });
+
+        cardMarks.setOnClickListener(e->{
+
+        });
+
         cardSchedule.setOnClickListener(e->{
             Intent intent = new Intent(Profile.this, ViewSchedule.class);
             int id = ((Student) logged_in_user).getClass_id();
@@ -112,13 +181,11 @@ public class Profile extends AppCompatActivity {
         cardClasses     = findViewById(R.id.card_classes);
 
 
-        // TODO Open the view schedule activity
         cardSchedule.setOnClickListener(e->{
             Intent intent = new Intent(Profile.this, ViewSchedule.class);
             startActivity(intent);
         });
 
-        // TODO Open the view classes activity
         cardClasses.setOnClickListener(e->{
             Intent intent = new Intent(Profile.this, SelectClass.class);
             startActivity(intent);
@@ -134,8 +201,8 @@ public class Profile extends AppCompatActivity {
         textAddress     = findViewById(R.id.text_address);
         textPhone       = findViewById(R.id.text_phone);
         cardInfo        = findViewById(R.id.card_info);
-        fabMessage         = findViewById(R.id.fab_send_message);
-
+        fabMessage      = findViewById(R.id.fab_send_message);
+        cardInbox       = findViewById(R.id.card_inbox);
         fabMessage.setOnClickListener(e->{
             Intent intent = new Intent(Profile.this, UserSendMessage1.class);
             startActivity(intent);
@@ -148,5 +215,12 @@ public class Profile extends AppCompatActivity {
             textAddress.setText(logged_in_user.getAddress());
             textPhone.setText(logged_in_user.getPhone());
         }
+
+
+
+        cardInbox.setOnClickListener(e->{
+            Intent intent = new Intent(Profile.this, Inbox.class);
+            startActivity(intent);
+        });
     }
 }
