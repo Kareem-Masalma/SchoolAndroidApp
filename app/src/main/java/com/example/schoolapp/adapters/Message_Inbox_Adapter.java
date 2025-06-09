@@ -71,7 +71,7 @@ public class Message_Inbox_Adapter extends RecyclerView.Adapter<Message_Inbox_Ad
             holder.imgProfile.setDefaultImageResId(R.drawable.profile_icon);
         }
 
-        // TODO get the name of the sender
+
         IUserDA userDA = UserDAFactory.getUserDA(context.getApplicationContext());
         userDA.getUserById(msg.getFrom_user_id(), new IUserDA.SingleUserCallback() {
             @Override
