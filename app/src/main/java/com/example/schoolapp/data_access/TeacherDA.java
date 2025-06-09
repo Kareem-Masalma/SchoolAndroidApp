@@ -125,24 +125,45 @@ public class TeacherDA implements ITeacherDA {
 
     @Override
     public void addTeacher(Teacher teacher) {
-        StringRequest request = new StringRequest(Request.Method.POST, BASE_URL, response -> Toast.makeText(context, "Teacher added successfully", Toast.LENGTH_SHORT).show(),
-                error -> Toast.makeText(context, "Failed to add teacher", Toast.LENGTH_SHORT).show()) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("first_name", teacher.getFirstName());
-                params.put("last_name", teacher.getLastName());
-                params.put("birth_date", teacher.getBirthDate().toString());
-                params.put("address", teacher.getAddress());
-                params.put("phone", teacher.getPhone());
-                params.put("role", teacher.getRole().toString());
-                params.put("speciality", teacher.getSpeciality());
-                params.put("password", teacher.getPassword());
-                return params;
-            }
-        };
-        queue.add(request);
+        try {
+            JSONObject json = new JSONObject();
+            json.put("first_name", teacher.getFirstName());
+            json.put("last_name", teacher.getLastName());
+            json.put("birth_date", teacher.getBirthDate().toString());
+            json.put("address", teacher.getAddress());
+            json.put("phone", teacher.getPhone());
+            json.put("role", teacher.getRole().toString());
+            json.put("password", teacher.getPassword());
+            json.put("speciality", teacher.getSpeciality());
+
+            Log.d("AddTeacherJSON", json.toString());
+
+            JsonObjectRequest request = new JsonObjectRequest(
+                    Request.Method.POST,
+                    BASE_URL,
+                    json,
+                    response -> Toast.makeText(context, "Teacher added successfully", Toast.LENGTH_SHORT).show(),
+                    error -> {
+                        error.printStackTrace();
+                        if (error.networkResponse != null && error.networkResponse.data != null) {
+                            try {
+                                String body = new String(error.networkResponse.data, "UTF-8");
+                                Log.e("VolleyErrorBody", body);
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        Toast.makeText(context, "Failed to add teacher", Toast.LENGTH_SHORT).show();
+                    }
+            );
+
+            queue.add(request);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Error creating request JSON", Toast.LENGTH_SHORT).show();
+        }
     }
+
 
     @Override
     public void updateTeacher(Teacher teacher) {

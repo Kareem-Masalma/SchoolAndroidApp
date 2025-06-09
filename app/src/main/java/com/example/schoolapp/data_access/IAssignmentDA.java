@@ -14,7 +14,7 @@ public interface IAssignmentDA {
                         List<Uri> files, IAssignmentDA.BaseCallback callback);
 
     // Read
-    void getAllAssignments(AssignmentListCallback callback);
+    void getAllAssignments(int studentId, AssignmentListCallback callback);
     void findAssignmentById(int id, SingleAssignmentCallback callback);
 
     // Update

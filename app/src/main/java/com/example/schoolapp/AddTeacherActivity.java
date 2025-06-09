@@ -186,8 +186,24 @@ public class AddTeacherActivity extends AppCompatActivity {
 
 
         // Cancel button
-        btnCancel.setOnClickListener(v -> finish());
+        btnCancel.setOnClickListener(v -> {
+            if (hasUnsavedInput()) {
+                showDiscardChangesDialog();
+            } else {
+                finish();
+            }
+        });
     }
+
+    @Override
+    public void onBackPressed() {
+        if (hasUnsavedInput()) {
+            showDiscardChangesDialog();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     private void clearFields() {
         editFirstName.setText("");
         editLastName.setText("");
@@ -198,6 +214,26 @@ public class AddTeacherActivity extends AppCompatActivity {
         editPassword.setText("");
         spinnerSpecialty.setSelection(0);
     }
+    private void showDiscardChangesDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Discard Changes?")
+                .setMessage("You have unsaved input. Are you sure you want to cancel and lose your data?")
+                .setPositiveButton("Yes, Discard", (dialog, which) -> finish())
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private boolean hasUnsavedInput() {
+        return !editFirstName.getText().toString().trim().isEmpty()
+                || !editLastName.getText().toString().trim().isEmpty()
+                || !editBirthDate.getText().toString().trim().isEmpty()
+                || !editCity.getText().toString().trim().isEmpty()
+                || !editAddress.getText().toString().trim().isEmpty()
+                || !editPhone.getText().toString().trim().isEmpty()
+                || !editPassword.getText().toString().trim().isEmpty()
+                || spinnerSpecialty.getSelectedItemPosition() != 0;
+    }
+
 
 
 }

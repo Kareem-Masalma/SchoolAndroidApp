@@ -12,10 +12,13 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.preference.PreferenceManager;
+
 import com.example.schoolapp.data_access.ISubmitAssignmentDA;
 import com.example.schoolapp.data_access.SubmitAssignmentDA;
 import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.Assignment;
+import com.example.schoolapp.models.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -88,13 +91,21 @@ public class SubmitAssignmentActivity extends AppCompatActivity {
         btnSend.setOnClickListener(v -> {
             String details = editDetails.getText().toString().trim();
 
-            SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
-            int studentId = prefs.getInt("user_id", -1);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            String userJson = prefs.getString(Login.LOGGED_IN_USER, null);
 
-            if (studentId == -1) {
-                showErrorDialog("Student ID not found. Please log in again.");
+            if (userJson == null) {
+                Toast.makeText(this, "User not found. Please login again.", Toast.LENGTH_SHORT).show();
+                finish();
                 return;
             }
+
+            Gson gsonUser = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                    .create();
+            User loggedInUser = gsonUser.fromJson(userJson, User.class);
+            int studentId = loggedInUser.getUser_id();  // or getId() depending on your model
+
 
             // Update DA with method that accepts studentId
             if (submitAssignmentDA instanceof SubmitAssignmentDA) {
@@ -120,8 +131,13 @@ public class SubmitAssignmentActivity extends AppCompatActivity {
             }
         });
 
-
-        btnCancel.setOnClickListener(v -> finish());
+        btnCancel.setOnClickListener(v -> {
+            if (hasUnsavedInput()) {
+                showDiscardChangesDialog();
+            } else {
+                finish();
+            }
+        });
     }
 
     private String getFileName(Uri uri) {
@@ -133,6 +149,36 @@ public class SubmitAssignmentActivity extends AppCompatActivity {
         } catch (Exception ignored) {}
         return uri.getLastPathSegment();
     }
+    @Override
+    public void onBackPressed() {
+        if (hasUnsavedInput()) {
+            new android.app.AlertDialog.Builder(this)
+                    .setTitle("Discard Changes?")
+                    .setMessage("You have unsaved input. Are you sure you want to go back and lose your data?")
+                    .setPositiveButton("Yes, Discard", (dialog, which) -> super.onBackPressed())
+                    .setNegativeButton("No", null)
+                    .show();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
+    private void showDiscardChangesDialog() {
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("Discard Changes?")
+                .setMessage("You have unsaved input. Are you sure you want to cancel and lose your data?")
+                .setPositiveButton("Yes, Discard", (dialog, which) -> finish())
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private boolean hasUnsavedInput() {
+        return !editDetails.getText().toString().trim().isEmpty()
+                || !selectedFileUris.isEmpty();
+    }
+
+
     private void showErrorDialog(String message) {
         new android.app.AlertDialog.Builder(this)
                 .setTitle("Submission Error")
