@@ -6,289 +6,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <!-- Top Bar -->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="72dp"
+        android:background="@color/role_orange"
+        android:paddingTop="8dp">
 
-        <!-- Top Bar -->
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:background="@color/role_orange"
-            android:paddingTop="8dp">
-
-            <TextView
-                android:id="@+id/titleText"
-                style="@style/HeaderTitle"
-                android:text="@string/add_teacher"
-                android:layout_gravity="center_vertical|start"
-                android:paddingStart="16dp" />
-        </FrameLayout>
-
-        <!-- Scrollable Content -->
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:padding="16dp"
-            android:fillViewport="true">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="16dp">
-
-                <!-- Card 1: Personal Info -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:padding="16dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="6dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        android:orientation="vertical">
-
-                        <!-- First & Last Name -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginEnd="8dp"
-                                android:orientation="vertical">
-
-                                <TextView style="@style/FormLabel" android:text="@string/first_name" />
-                                <EditText
-                                    android:id="@+id/editFirstName"
-                                    style="@style/FormEditText"
-                                    android:hint="@string/enter_first_name"
-                                    android:inputType="textPersonName" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView style="@style/FormLabel" android:text="@string/last_name" />
-                                <EditText
-                                    android:id="@+id/editLastName"
-                                    style="@style/FormEditText"
-                                    android:hint="@string/enter_last_name"
-                                    android:inputType="textPersonName" />
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <!-- Birth Date -->
-                        <TextView style="@style/SectionTitle" android:text="@string/birth_date" android:layout_marginTop="16dp" />
-                        <LinearLayout
-                            android:id="@+id/birthDateField"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:background="@drawable/edittext_border"
-                            android:padding="8dp"
-                            android:gravity="center_vertical"
-                            android:layout_marginTop="8dp">
-
-                            <EditText
-                                android:id="@+id/editBirthDate"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:hint="@string/select_birth_date"
-                                android:inputType="none"
-                                android:focusable="false"
-                                android:background="@android:color/transparent"
-                                android:padding="0dp" />
-
-                            <ImageView
-                                android:id="@+id/iconCalendar"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:src="@drawable/calendar"
-                                android:layout_marginStart="8dp"
-                                android:contentDescription="@string/calendar_icon" />
-                        </LinearLayout>
-
-                        <!-- City & Address -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="16dp">
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginEnd="8dp"
-                                android:orientation="vertical">
-
-                                <TextView style="@style/FormLabel" android:text="@string/city" />
-                                <EditText
-                                    android:id="@+id/editCity"
-                                    style="@style/FormEditText"
-                                    android:hint="@string/enter_city_name"
-                                    android:inputType="textPostalAddress" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView style="@style/FormLabel" android:text="@string/address" />
-                                <EditText
-                                    android:id="@+id/editAddress"
-                                    style="@style/FormEditText"
-                                    android:hint="@string/enter_address"
-                                    android:inputType="textPostalAddress" />
-                            </LinearLayout>
-                        </LinearLayout>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!-- Card 2: Contact & Credentials -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:padding="16dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="6dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        android:orientation="vertical">
-                        <TextView style="@style/SectionTitle" android:text="Contact Details"
-                            android:layout_gravity="center"
-                            android:textSize="25dp"
-                            android:textColor="@color/role_blue"
-
-                            />
-
-                        <TextView style="@style/SectionTitle" android:text="@string/phone" />
-                        <EditText
-                            android:id="@+id/editPhone"
-                            style="@style/FormEditText"
-                            android:hint="@string/enter_phone_number_starts_05"
-                            android:inputType="phone"
-                            android:layout_marginTop="8dp" />
-
-                        <TextView style="@style/SectionTitle" android:text="@string/password" android:layout_marginTop="16dp" />
-                        <EditText
-                            android:id="@+id/editPassword"
-                            style="@style/FormEditText"
-                            android:hint="@string/enter_password_at_least_8_charachters"
-                            android:inputType="textPassword"
-                            android:layout_marginTop="8dp" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!-- Card 3: Specialty & Role -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:padding="16dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="6dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        android:orientation="vertical">
-
-                        <TextView style="@style/SectionTitle" android:text="@string/specialty" />
-                        <LinearLayout
-                            android:id="@+id/spinnerContainer"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:background="@drawable/edittext_border"
-                            android:padding="8dp"
-                            android:gravity="center_vertical"
-                            android:layout_marginTop="8dp">
-
-                            <Spinner
-                                android:id="@+id/spinnerSpecialty"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@android:color/transparent"
-                                android:spinnerMode="dropdown" />
-
-                            <ImageView
-                                android:id="@+id/arrow"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:src="@drawable/spinner_arrow"
-                                android:layout_marginStart="8dp"
-                                android:contentDescription="@string/dropdown_icon" />
-                        </LinearLayout>
-
-                        <TextView style="@style/SectionTitle" android:text="@string/role" android:layout_marginTop="16dp" />
-                        <TextView
-                            android:id="@+id/textRole"
-                            android:layout_width="match_parent"
-                            android:layout_height="45dp"
-                            android:background="#EEEEEE"
-                            android:padding="8dp"
-                            android:text="@string/Teacher"
-                            android:layout_marginTop="8dp" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!-- Card 4: Buttons -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="6dp"
-                    android:padding="16dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="end">
-
-                        <Button
-                            android:id="@+id/btnCancel"
-                            style="@style/ButtonPrimary.Registrar"
-                            android:text="@string/cancel" />
-
-                        <Button
-                            android:id="@+id/btnAdd"
-                            style="@style/ButtonPrimary.Registrar"
-                            android:text="@string/add"
-                            android:layout_marginStart="16dp" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
-
+        <TextView
+            android:id="@+id/titleText"
+            style="@style/HeaderTitle"
+            android:text="@string/add_teacher"
+            android:layout_gravity="center_vertical|start"
+            android:paddingStart="16dp" />
+    </FrameLayout>
 
     <!-- Scrollable Content -->
     <ScrollView
@@ -296,5 +27,273 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:padding="16dp"
-        android:fillViewport="true"/>
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
+
+            <!-- Card 1: Personal Info -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:padding="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        style="@style/SectionTitle"
+                        android:text="Personal Information"
+                        android:paddingBottom="10dp"
+                        android:layout_gravity="center"
+                        android:textSize="25dp"
+                        android:textColor="@color/role_blue" />
+
+                    <!-- First & Last Name -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            android:orientation="vertical">
+
+                            <TextView style="@style/SectionTitle" android:text="@string/first_name" />
+                            <EditText
+                                android:id="@+id/editFirstName"
+                                style="@style/FormEditText"
+                                android:hint="@string/enter_first_name"
+                                android:inputType="textPersonName" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView style="@style/SectionTitle" android:text="@string/last_name" />
+                            <EditText
+                                android:id="@+id/editLastName"
+                                style="@style/FormEditText"
+                                android:hint="@string/enter_last_name"
+                                android:inputType="textPersonName" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Birth Date -->
+                    <TextView style="@style/SectionTitle" android:text="@string/birth_date" android:layout_marginTop="16dp" />
+                    <LinearLayout
+                        android:id="@+id/birthDateField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/edittext_border"
+                        android:padding="8dp"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="8dp">
+
+                        <EditText
+                            android:id="@+id/editBirthDate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="@string/select_birth_date"
+                            android:inputType="none"
+                            android:focusable="false"
+                            android:background="@android:color/transparent"
+                            android:padding="0dp" />
+
+                        <ImageView
+                            android:id="@+id/iconCalendar"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/calendar"
+                            android:layout_marginStart="8dp"
+                            android:contentDescription="@string/calendar_icon" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Card 2: Contact Info -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:padding="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/SectionTitle"
+                        android:text="Contact Details"
+                        android:layout_gravity="center"
+                        android:textSize="25dp"
+                        android:textColor="@color/role_blue" />
+
+                    <!-- City & Address -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            android:orientation="vertical">
+
+                            <TextView style="@style/SectionTitle" android:text="@string/city" />
+                            <EditText
+                                android:id="@+id/editCity"
+                                style="@style/FormEditText"
+                                android:hint="@string/enter_city_name"
+                                android:inputType="textPostalAddress" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView style="@style/SectionTitle" android:text="@string/address" />
+                            <EditText
+                                android:id="@+id/editAddress"
+                                style="@style/FormEditText"
+                                android:hint="@string/enter_address"
+                                android:inputType="textPostalAddress" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView style="@style/SectionTitle" android:text="@string/phone" />
+                    <EditText
+                        android:id="@+id/editPhone"
+                        style="@style/FormEditText"
+                        android:hint="@string/enter_phone_number_starts_05"
+                        android:inputType="phone"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Card 3: Account & Role -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:padding="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/SectionTitle"
+                        android:text="Account &amp; Role Details"
+                        android:layout_gravity="center"
+                        android:textSize="25dp"
+                        android:textColor="@color/role_blue"
+                        android:paddingBottom="5dp" />
+
+                    <TextView style="@style/SectionTitle" android:text="@string/password" android:layout_marginTop="16dp" />
+                    <EditText
+                        android:id="@+id/editPassword"
+                        style="@style/FormEditText"
+                        android:hint="@string/enter_password_at_least_8_charachters"
+                        android:inputType="textPassword"
+                        android:layout_marginTop="8dp" />
+
+                    <TextView style="@style/SectionTitle" android:text="@string/specialty" />
+                    <LinearLayout
+                        android:id="@+id/spinnerContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/edittext_border"
+                        android:padding="8dp"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="8dp">
+
+                        <Spinner
+                            android:id="@+id/spinnerSpecialty"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:spinnerMode="dropdown" />
+
+                        <ImageView
+                            android:id="@+id/arrow"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/spinner_arrow"
+                            android:layout_marginStart="8dp"
+                            android:contentDescription="@string/dropdown_icon" />
+                    </LinearLayout>
+
+                    <TextView style="@style/SectionTitle" android:text="@string/role" android:layout_marginTop="16dp" />
+                    <TextView
+                        android:id="@+id/textRole"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="#EEEEEE"
+                        android:padding="8dp"
+                        android:text="@string/Teacher"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Card 4: Buttons -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="6dp"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="end">
+
+                    <Button
+                        android:id="@+id/btnCancel"
+                        style="@style/ButtonPrimary.Registrar"
+                        android:text="@string/cancel" />
+
+                    <Button
+                        android:id="@+id/btnAdd"
+                        style="@style/ButtonPrimary.Registrar"
+                        android:text="@string/add"
+                        android:layout_marginStart="16dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
