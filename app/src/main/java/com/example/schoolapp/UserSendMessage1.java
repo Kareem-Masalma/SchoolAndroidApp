@@ -59,10 +59,6 @@ public class UserSendMessage1 extends AppCompatActivity {
                 userList    = list;
                 userAdapter = new UserSendMessageAdapter(userList);
                 rvUsers.setAdapter(userAdapter);
-                rvUsers.addItemDecoration(
-                        new DividerItemDecoration(UserSendMessage1.this,
-                                DividerItemDecoration.VERTICAL)
-                );
             }
 
             @Override
