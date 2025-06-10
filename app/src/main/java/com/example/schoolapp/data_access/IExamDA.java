@@ -2,8 +2,9 @@ package com.example.schoolapp.data_access;
 
 import com.example.schoolapp.models.Exam;
 import com.example.schoolapp.models.StudentExamResult;
-import org.json.JSONObject;
+
 import java.util.List;
+import java.util.Map;
 
 public interface IExamDA {
 
@@ -19,10 +20,14 @@ public interface IExamDA {
 
     void publishExamResults(Exam exam, List<StudentExamResult> results, PublishCallback callback);
 
-
     interface ExamCallback {
-        void onSuccess(List<JSONObject> data);
+        void onSuccess(List<Exam> data);
         void onError(String error);
+    }
+
+    // ✅ Place the method here
+    interface ExamListWithTitleCallback extends ExamCallback {
+        void onSuccessWithTitles(List<Exam> exams, Map<Exam, String> subjectTitleMap, Map<Exam, String> classTitleMap);
     }
 
     interface PublishCallback {

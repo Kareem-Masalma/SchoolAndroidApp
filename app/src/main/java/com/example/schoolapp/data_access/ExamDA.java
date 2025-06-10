@@ -6,6 +6,8 @@ import com.android.volley.toolbox.*;
 import com.example.schoolapp.models.Exam;
 import com.example.schoolapp.models.StudentExamResult;
 import org.json.*;
+
+import java.time.LocalDate;
 import java.util.*;
 
 public class ExamDA implements IExamDA {
@@ -45,11 +47,7 @@ public class ExamDA implements IExamDA {
                     Request.Method.POST,
                     BASE_URL,
                     finalJson,
-                    response -> {
-                        List<JSONObject> result = new ArrayList<>();
-                        result.add(response);
-                        callback.onSuccess(result);
-                    },
+                    response -> callback.onSuccess(new ArrayList<>()), // Not used here
                     error -> callback.onError("Failed to publish results: " + error.toString())
             );
 
@@ -66,11 +64,43 @@ public class ExamDA implements IExamDA {
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
-                    List<JSONObject> examList = new ArrayList<>();
+                    List<Exam> examList = new ArrayList<>();
+                    Map<Exam, String> subjectTitleMap = new HashMap<>();
+                    Map<Exam, String> classTitleMap = new HashMap<>();
+
                     for (int i = 0; i < response.length(); i++) {
-                        examList.add(response.optJSONObject(i));
+                        try {
+                            JSONObject obj = response.getJSONObject(i);
+                            Exam exam = new Exam(
+                                    obj.getInt("exam_id"),
+                                    obj.getString("title"),
+                                    obj.getInt("subject_id"),
+                                    LocalDate.parse(obj.getString("date")),
+                                    obj.getInt("duration"),
+                                    (int) obj.getDouble("percentage_of_grade")
+                            );
+                            examList.add(exam);
+
+                            if (obj.has("subject_title")) {
+                                subjectTitleMap.put(exam, obj.getString("subject_title"));
+                            }
+                            if (obj.has("class_title")) {
+                                classTitleMap.put(exam, obj.getString("class_title"));
+                            } else {
+                                classTitleMap.put(exam, "Unknown");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
-                    callback.onSuccess(examList);
+
+                    // Extended callback for sending both exam list and mappings
+                    if (callback instanceof IExamDA.ExamListWithTitleCallback) {
+                        ((IExamDA.ExamListWithTitleCallback) callback).onSuccessWithTitles(examList, subjectTitleMap, classTitleMap);
+                    } else {
+                        callback.onSuccess(examList);
+                    }
+
                 },
                 error -> callback.onError("Error: " + error.getMessage())
         );
@@ -78,14 +108,25 @@ public class ExamDA implements IExamDA {
         queue.add(request);
     }
 
+
     @Override
     public void findExamById(int examId, ExamCallback callback) {
         String url = BASE_URL + "?mode=find&exam_id=" + examId;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
-                    List<JSONObject> result = new ArrayList<>();
-                    result.add(response);
-                    callback.onSuccess(result);
+                    try {
+                        Exam exam = new Exam(
+                                response.getInt("exam_id"),
+                                response.getString("title"),
+                                response.getInt("subject_id"),
+                                LocalDate.parse(response.getString("date")),
+                                response.getInt("duration"),
+                                (int) response.getDouble("percentage_of_grade")
+                        );
+                        callback.onSuccess(Collections.singletonList(exam));
+                    } catch (Exception e) {
+                        callback.onError("Parse error: " + e.getMessage());
+                    }
                 },
                 error -> callback.onError("Error: " + error.getMessage())
         );
@@ -108,11 +149,7 @@ public class ExamDA implements IExamDA {
                     Request.Method.POST,
                     BASE_URL,
                     examObject,
-                    response -> {
-                        List<JSONObject> result = new ArrayList<>();
-                        result.add(response);
-                        callback.onSuccess(result);
-                    },
+                    response -> callback.onSuccess(new ArrayList<>()),
                     error -> callback.onError("Update failed: " + error.toString())
             );
 
@@ -127,18 +164,14 @@ public class ExamDA implements IExamDA {
         String url = BASE_URL + "?mode=delete&exam_id=" + examId;
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                response -> {
-                    List<JSONObject> result = new ArrayList<>();
-                    result.add(response);
-                    callback.onSuccess(result);
-                },
+                response -> callback.onSuccess(new ArrayList<>()),
                 error -> callback.onError("Delete failed: " + error.toString())
         );
 
         queue.add(request);
     }
 
-    @Override
+        @Override
     public void publishExamResults(Exam exam, List<StudentExamResult> results, PublishCallback callback) {
         try {
             JSONObject examObject = new JSONObject();
