@@ -54,6 +54,7 @@
         <activity android:name=".SelectClass" android:exported="false" />
         <activity android:name=".Profile" android:exported="false" />
         <activity android:name=".StudentCoursesActivity" android:exported="false" />
+        <activity android:name=".ViewStudentMarks" android:exported="false"  />
 
 
 

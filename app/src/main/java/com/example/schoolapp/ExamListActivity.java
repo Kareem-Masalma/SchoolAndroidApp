@@ -11,6 +11,7 @@ import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.schoolapp.adapters.ExamAdapter;
 import com.example.schoolapp.data_access.ExamDA;
 import com.example.schoolapp.data_access.IExamDA;
@@ -19,11 +20,12 @@ import com.example.schoolapp.models.Exam;
 import com.example.schoolapp.models.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.json.JSONObject;
+
 import java.time.LocalDate;
 import java.util.*;
 
 public class ExamListActivity extends AppCompatActivity {
+
     private RecyclerView recyclerView;
     private ExamAdapter adapter;
     private List<Exam> examList = new ArrayList<>();
@@ -54,19 +56,16 @@ public class ExamListActivity extends AppCompatActivity {
         editSearch.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            @Override
-            public void afterTextChanged(Editable s) {
+            @Override public void afterTextChanged(Editable s) {
                 filterAndSortExams(s.toString());
             }
         });
 
         spinnerSortBy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 filterAndSortExams(editSearch.getText().toString());
             }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
 
         radioGroupSortOrder.setOnCheckedChangeListener((group, checkedId) -> {
@@ -87,7 +86,6 @@ public class ExamListActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-
         recyclerView.setAdapter(adapter);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -100,39 +98,26 @@ public class ExamListActivity extends AppCompatActivity {
                     .create();
             user = gson.fromJson(json, User.class);
         }
+
         int studentId = user.getUser_id();
 
-        new ExamDA(this).getAllExams(studentId, new IExamDA.ExamCallback() {
+        new ExamDA(this).getAllExams(studentId, new IExamDA.ExamListWithTitleCallback() {
             @Override
-            public void onSuccess(List<JSONObject> data) {
-                for (JSONObject obj : data) {
-                    try {
-                        Gson gson = new GsonBuilder()
-                                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
-                                .create();
-                        Exam exam = new Exam(
-                                obj.getInt("exam_id"),
-                                obj.getString("title"),
-                                obj.getInt("subject_id"),
-                                LocalDate.parse(obj.getString("date")),
-                                obj.getInt("duration"),
-                                (int) obj.getDouble("percentage_of_grade")
-                        );
-                        examList.add(exam);
-                        fullExamList.add(exam);
+            public void onSuccess(List<Exam> data) {
+            }
 
-                        if (obj.has("subject_title")) {
-                            subjectTitleMap.put(exam, obj.getString("subject_title"));
-                        }
-                        if (obj.has("class_title")) {
-                            classTitleMap.put(exam, obj.getString("class_title"));
-                        } else {
-                            classTitleMap.put(exam, "Unknown");
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+            @Override
+            public void onSuccessWithTitles(List<Exam> exams, Map<Exam, String> subjectMap, Map<Exam, String> classMap) {
+                examList.clear();
+                fullExamList.clear();
+                subjectTitleMap.clear();
+                classTitleMap.clear();
+
+                examList.addAll(exams);
+                fullExamList.addAll(exams);
+                subjectTitleMap.putAll(subjectMap);
+                classTitleMap.putAll(classMap);
+
                 adapter.notifyDataSetChanged();
             }
 

@@ -17,16 +17,20 @@ import java.util.List;
 
 public class SubAdapter extends RecyclerView.Adapter<SubAdapter.SubjectViewHolder> {
 
-    public interface OnSubjectClickListener {
-        void onClick(Subject subject);
-    }
-
     private final Context context;
     private List<Subject> subjectList;
+    private final OnSubjectClickListener listener;
 
-    public SubAdapter(Context context, List<Subject> subjectList) {
+
+    public SubAdapter(Context context, List<Subject> subjectList,  OnSubjectClickListener listener) {
         this.context = context;
         this.subjectList = subjectList;
+        this.listener = listener;
+
+    }
+
+    public interface OnSubjectClickListener {
+        void onSubjectClick(Subject subject);
     }
 
     public void updateData(List<Subject> newList) {
@@ -47,7 +51,7 @@ public class SubAdapter extends RecyclerView.Adapter<SubAdapter.SubjectViewHolde
     public void onBindViewHolder(@NonNull SubjectViewHolder holder, int position) {
         Subject subject = subjectList.get(position);
         holder.tvSubjectTitle.setText(subject.getTitle());
-
+        holder.itemView.setOnClickListener(v -> listener.onSubjectClick(subject));
     }
 
     @Override
