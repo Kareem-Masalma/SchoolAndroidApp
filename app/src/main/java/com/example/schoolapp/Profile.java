@@ -153,7 +153,8 @@ public class Profile extends AppCompatActivity {
         });
 
         cardMarks.setOnClickListener(e->{
-
+            Intent intent = new Intent(Profile.this, StudentCoursesActivity.class);
+            startActivity(intent);
         });
 
         cardSchedule.setOnClickListener(e->{

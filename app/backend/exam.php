@@ -32,6 +32,24 @@ try {
         echo json_encode($exams);
         exit;
     }
+
+      // --- LIST EXAMS BY SUBJECT ---
+    if (isset($_GET['mode']) && $_GET['mode'] === 'list_by_subject' && isset($_GET['subject_id'])) {
+        $subject_id = intval($_GET['subject_id']);
+
+        $stmt = $conn->prepare("SELECT * FROM exam WHERE subject_id = ?");
+        $stmt->bind_param("i", $subject_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $exams = [];
+        while ($row = $result->fetch_assoc()) {
+            $exams[] = $row;
+        }
+
+        echo json_encode($exams);
+        exit;
+    }
 }
 
     if (empty($input['exam']) || empty($input['students'])) {

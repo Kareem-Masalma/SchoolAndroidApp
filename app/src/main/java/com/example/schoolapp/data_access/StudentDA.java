@@ -213,4 +213,28 @@ public class StudentDA implements IStudentDA {
 
         void onError(String error);
     }
+
+    public interface ClassIdCallback {
+        void onSuccess(int classId);
+        void onError(String error);
+    }
+
+    public void getClassIdByUserId(int userId, ClassIdCallback cb) {
+        String url = BASE + "?user_id=" + userId;
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        int classId = response.getInt("class_id");
+                        cb.onSuccess(classId);
+                    } catch (JSONException e) {
+                        cb.onError("Invalid data");
+                    }
+                },
+                error -> cb.onError("Request failed")
+        );
+
+        queue.add(req);
+    }
+
 }
