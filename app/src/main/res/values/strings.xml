@@ -121,4 +121,8 @@
     <string name="reminder_time_label">Reminder Time</string>
     <string name="select_reminder_time">Select Reminder Time</string>
     <string name="submission_details">Submission Details</string>
+    <string name="personal_info_name">"Name: "</string>
+    <string name="personal_info_bdate">"Birth Date: "</string>
+    <string name="personal_info_address">"Address: "</string>
+    <string name="personal_info_phone">"Phone: "</string>
 </resources>
