@@ -225,4 +225,14 @@ public class Profile extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
+    @Override
+    public void onBackPressed() {
+            new android.app.AlertDialog.Builder(this)
+                    .setTitle("Logout?")
+                    .setMessage("You will be logged out of the application.")
+                    .setPositiveButton("Yes, Logout", (dialog, which) -> super.onBackPressed())
+                    .setNegativeButton("Stay", null)
+                    .show();
+    }
 }
