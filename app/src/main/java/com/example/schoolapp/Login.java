@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,11 +51,13 @@ public class Login extends AppCompatActivity {
     private TextInputEditText etID;
     private TextInputEditText etPassword;
     private MaterialButton btnLogin;
-    private TextView tvForgotText;
+    private CheckBox cbRememberMe;
 
     public static final String LOGGED_IN_USER = "LOGGED_IN_USER";
     public static final String LOGGED_IN = "LOGGED_IN";
-
+    public static final String REMEMBER_ME = "REMEMBER_ME";
+    public static final String SAVED_ID = "SAVED_ID";
+    public static final String SAVED_PASSWORD = "SAVED_PASSWORD";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +67,20 @@ public class Login extends AppCompatActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setupViews();
+        checkPrefs();
         handleLoginBtn();
+    }
+
+    private void checkPrefs() {
+        SharedPreferences prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        boolean rememberMe = prefs.getBoolean(Login.REMEMBER_ME, false);
+        if (rememberMe) {
+            String savedID = prefs.getString(Login.SAVED_ID, "");
+            String savedPassword = prefs.getString(Login.SAVED_PASSWORD, "");
+            etID.setText(savedID);
+            etPassword.setText(savedPassword);
+            cbRememberMe.setChecked(true);
+        }
     }
 
     private void handleLoginBtn() {
@@ -73,7 +89,6 @@ public class Login extends AppCompatActivity {
 //            Log.i("login_user", user_id);
             String password = etPassword.getText().toString().trim();
             if(user_id.isEmpty() || password.isEmpty()){
-                // TODO display message
                 Log.i("input_data", user_id + " " + password);
             }
             else{
@@ -82,6 +97,18 @@ public class Login extends AppCompatActivity {
                 editor.remove(Login.LOGGED_IN_USER);
                 editor.remove(Login.LOGGED_IN);
                 editor.commit();
+
+                if (cbRememberMe.isChecked()) {
+                    editor.putBoolean(REMEMBER_ME, true);
+                    editor.putString(SAVED_ID, user_id);
+                    editor.putString(SAVED_PASSWORD, password);
+                } else {
+                    editor.remove(REMEMBER_ME);
+                    editor.remove(SAVED_ID);
+                    editor.remove(SAVED_PASSWORD);
+                }
+                editor.apply();
+
                 ILoginDA loginDA = LoginDAFactory.getLoginDA(this);
                 loginDA.login(user_id, password, new ILoginDA.LoginCallback() {
                     @Override
@@ -101,7 +128,6 @@ public class Login extends AppCompatActivity {
                                     editor.putString(LOGGED_IN_USER,json);
                                     editor.putBoolean(LOGGED_IN, true);
                                     editor.commit();
-                                    // TODO -- DELETE THESE LINES, THEY ARE FOR TESTING ONLY
 //                                    Log.i("loggedin_teacher", teacher.getFirstName() + " " + teacher.getLastName());
                                     Intent intent = new Intent(Login.this, Profile.class);
                                     startActivity(intent);
@@ -121,7 +147,6 @@ public class Login extends AppCompatActivity {
                                     editor.putString(LOGGED_IN_USER,json);
                                     editor.putBoolean(LOGGED_IN, true);
                                     editor.commit();
-                                    // TODO -- DELETE THESE LINES, THEY ARE FOR TESTING ONLY
                                     Intent intent = new Intent(Login.this, Profile.class);
                                     startActivity(intent);
 
@@ -137,7 +162,6 @@ public class Login extends AppCompatActivity {
                             editor.putString(LOGGED_IN_USER,json);
                             editor.putBoolean(LOGGED_IN, true);
                             editor.commit();
-                            // TODO -- DELETE THESE LINES, THEY ARE FOR TESTING ONLY
                             Intent intent = new Intent(Login.this, Profile.class);
                             startActivity(intent);
 
@@ -164,7 +188,10 @@ public class Login extends AppCompatActivity {
         etID = findViewById(R.id.etID);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
-        tvForgotText = findViewById(R.id.tvForgotText);
+        cbRememberMe = findViewById(R.id.cbRememberMe);
+
+
+
 
     }
 }
