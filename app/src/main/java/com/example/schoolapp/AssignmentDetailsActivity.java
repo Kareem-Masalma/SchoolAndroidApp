@@ -1,6 +1,7 @@
 package com.example.schoolapp;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ public class AssignmentDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assignment_details);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         TextView textClass = findViewById(R.id.textClassTitle);
         TextView textTitle = findViewById(R.id.textTitle);
