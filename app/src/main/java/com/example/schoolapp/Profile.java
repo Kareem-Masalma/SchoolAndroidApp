@@ -211,11 +211,11 @@ public class Profile extends AppCompatActivity {
         });
 
         if(logged_in_user!=null){
-            textFullName.setText(logged_in_user.getFirstName() + " " + logged_in_user.getLastName());
+            textFullName.setText("Name: " + logged_in_user.getFirstName() + " " + logged_in_user.getLastName());
 //            Log.i("birth_date", logged_in_user.getBirthDate().toString());
-            textBirthDate.setText(logged_in_user.getBirthDate().toString());
-            textAddress.setText(logged_in_user.getAddress());
-            textPhone.setText(logged_in_user.getPhone());
+            textBirthDate.setText("Birth Date: " + logged_in_user.getBirthDate().toString());
+            textAddress.setText("Address: " +logged_in_user.getAddress());
+            textPhone.setText("Phone: " + logged_in_user.getPhone());
         }
 
 
