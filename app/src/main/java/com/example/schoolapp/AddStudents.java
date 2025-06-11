@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.pm.ActivityInfo;
 import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -16,10 +17,14 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.schoolapp.data_access.ClassDA;
+import com.example.schoolapp.data_access.ClassDAFactory;
+import com.example.schoolapp.data_access.IClassDA;
 import com.example.schoolapp.data_access.IStudentDA;
 import com.example.schoolapp.data_access.StudentDA;
 import com.example.schoolapp.data_access.StudentDAFactory;
 import com.example.schoolapp.models.Role;
+import com.example.schoolapp.models.SchoolClass;
 import com.example.schoolapp.models.Student;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -99,20 +104,21 @@ public class AddStudents extends AppCompatActivity {
         birthDateField.setOnClickListener(openDatePicker);
     }
 
-    private void fillSpinner() { // fill it from 1 to 12
+    private void fillSpinner() {
+       IClassDA classDA =  ClassDAFactory.getClassDA(this);
+        classDA.getAllClasses(new ClassDA.ClassListCallback() {
+            @Override
+            public void onSuccess(List<SchoolClass> list) {
+                ArrayAdapter<SchoolClass> gradeAdapter = new ArrayAdapter<>(AddStudents.this, android.R.layout.simple_spinner_item, list);
+                gradeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerClass.setAdapter(gradeAdapter);
+            }
 
-        List<String> classNumbers = new ArrayList<>();
-        for (int i = 1; i <= 12; i++) {
-            classNumbers.add(String.valueOf(i));
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_spinner_item,
-                classNumbers
-        );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerClass.setAdapter(adapter);
+            @Override
+            public void onError(String error) {
+                Log.d("Error", error);
+            }
+        });
     }
 
 
@@ -124,7 +130,7 @@ public class AddStudents extends AppCompatActivity {
             LocalDate birth_date = LocalDate.parse(etBirthDate.getText().toString());
             String address = etAddress.getText().toString().trim();
             String phone = etPhone.getText().toString().trim();
-            Integer class_id = Integer.valueOf((String) spinnerClass.getSelectedItem());
+            Integer class_id = ((SchoolClass) spinnerClass.getSelectedItem()).getClassId();
             String initialPassword = etInitialPassword.getText().toString().trim();
 
             IStudentDA studentDA = StudentDAFactory.getStudentDA(this);
