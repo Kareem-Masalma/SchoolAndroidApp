@@ -117,6 +117,24 @@ try {
             return;
         }
 
+        // --- LIST ASSIGNMENTS BY SUBJECT ---
+        if (isset($_GET['mode']) && $_GET['mode'] === 'list_by_subject' && isset($_GET['subject_id'])) {
+            $subjectId = intval($_GET['subject_id']);
+
+            $stmt = $conn->prepare("SELECT * FROM assignment WHERE subject_id = ?");
+            $stmt->bind_param("i", $subjectId);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+            $assignments = [];
+            while ($row = $result->fetch_assoc()) {
+                $assignments[] = $row;
+            }
+
+            echo json_encode($assignments);
+            return;
+        }
+
     }
 
     // --- SUBMIT ASSIGNMENT ---

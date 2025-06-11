@@ -207,4 +207,40 @@ public class ExamDA implements IExamDA {
             callback.onError("JSON Error: " + e.getMessage());
         }
     }
+
+    public interface ExamTitleCallback {
+        void onSuccess(List<Exam> exams);
+        void onError(String error);
+    }
+
+    public void getExamsBySubject(int subjectId, ExamTitleCallback callback) {
+        String url = BASE_URL + "?mode=list_by_subject&subject_id=" + subjectId;
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                response -> {
+                    List<Exam> list = new ArrayList<>();
+                    try {
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject obj = response.getJSONObject(i);
+                            Exam exam = new Exam(
+                                    obj.getInt("exam_id"),
+                                    obj.getString("title"),
+                                    obj.getInt("subject_id"),
+                                    LocalDate.parse(obj.getString("date")),
+                                    obj.getInt("duration"),
+                                    obj.getInt("percentage_of_grade")
+                            );
+                            list.add(exam);
+                        }
+                        callback.onSuccess(list);
+                    } catch (JSONException e) {
+                        callback.onError("Malformed data");
+                    }
+                },
+                error -> callback.onError("Fetch failed")
+        );
+
+        queue.add(request);
+    }
+
 }
