@@ -2,6 +2,7 @@ package com.example.schoolapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -68,6 +69,7 @@ public class Profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         checkPrefs();
         setupViews();
@@ -223,5 +225,15 @@ public class Profile extends AppCompatActivity {
             Intent intent = new Intent(Profile.this, Inbox.class);
             startActivity(intent);
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+            new android.app.AlertDialog.Builder(this)
+                    .setTitle("Logout?")
+                    .setMessage("You will be logged out of the application.")
+                    .setPositiveButton("Yes, Logout", (dialog, which) -> super.onBackPressed())
+                    .setNegativeButton("Stay", null)
+                    .show();
     }
 }

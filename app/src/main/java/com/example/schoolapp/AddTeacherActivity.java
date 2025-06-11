@@ -2,6 +2,7 @@ package com.example.schoolapp;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.*;
 import android.view.View;
@@ -35,6 +36,7 @@ public class AddTeacherActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_teacher);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // Link UI elements
         editFirstName = findViewById(R.id.editFirstName);

@@ -1,6 +1,7 @@
 package com.example.schoolapp;
 
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -67,6 +68,8 @@ public class ViewStudentMarks extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_student_marks);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
 
         String subjectStr = getIntent().getStringExtra("SELECTED_SUBJECT");
         if (subjectStr != null) {

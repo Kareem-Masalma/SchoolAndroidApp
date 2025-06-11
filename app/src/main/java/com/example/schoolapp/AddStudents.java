@@ -1,6 +1,7 @@
 package com.example.schoolapp;
 
 import android.app.DatePickerDialog;
+import android.content.pm.ActivityInfo;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.View;
@@ -49,6 +50,7 @@ public class AddStudents extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_students);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setupViews();
         handleAddButton();
