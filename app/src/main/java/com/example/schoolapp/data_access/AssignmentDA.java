@@ -210,6 +210,38 @@ public class AssignmentDA implements IAssignmentDA {
         queue.add(request);
     }
 
+    public void getAssignmentsBySubject(int subjectId, AssignmentListTitleCallback callback) {
+        String url = BASE_URL + "?mode=list_by_subject&subject_id=" + subjectId;
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                response -> {
+                    List<Assignment> list = new ArrayList<>();
+                    try {
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject obj = response.getJSONObject(i);
+                            Assignment assignment = new Assignment(
+                                    obj.getInt("assignment_id"),
+                                    obj.getInt("subject_id"),
+                                    obj.getString("title"),
+                                    obj.optString("details", ""),
+                                    LocalDate.parse(obj.getString("start_date")),
+                                    obj.optString("file_path", null),
+                                    LocalDate.parse(obj.getString("end_date")),
+                                    (float) obj.getDouble("percentage_of_grade")
+                            );
+                            list.add(assignment);
+                        }
+                        callback.onSuccess(list);
+                    } catch (JSONException e) {
+                        callback.onError("Malformed data");
+                    }
+                },
+                error -> callback.onError("Fetch failed")
+        );
+
+        queue.add(request);
+    }
+
 //    @Override
 //    public void getSubjectPairs(Context context, SubjectCallback callback) {
 //        String url = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/assignment.php?mode=subject";
@@ -266,6 +298,11 @@ public class AssignmentDA implements IAssignmentDA {
         } catch (Exception ignored) {}
         return result;
     }
+    public interface AssignmentListTitleCallback {
+        void onSuccess(List<Assignment> assignments);
+        void onError(String error);
+    }
+
     public interface AssignmentListWithTitlesCallback {
         void onSuccess(List<Assignment> assignments, Map<Assignment, String> subjectTitles, Map<Assignment, String> classTitles);
         void onError(String error);
