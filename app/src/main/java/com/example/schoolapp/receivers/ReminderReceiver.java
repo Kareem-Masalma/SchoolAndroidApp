@@ -1,6 +1,7 @@
 package com.example.schoolapp.receivers;
 
 import android.Manifest;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,38 +15,40 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.schoolapp.R;
-
 public class ReminderReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String title = intent.getStringExtra("title");
         String message = intent.getStringExtra("message");
+        boolean isSnoozed = intent.getBooleanExtra("isSnoozed", false); // 👈
 
-        Log.d("Reminder", "Receiver triggered");
-
-        Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.smile);
-
+        int notificationId = (int) System.currentTimeMillis();
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "assignment_reminder_channel")
                 .setSmallIcon(R.drawable.notification)
-                .setLargeIcon(largeIcon)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.smile))
                 .setContentTitle(title)
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true);
 
-        NotificationManagerCompat manager = NotificationManagerCompat.from(context);
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED){
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        manager.notify((int) System.currentTimeMillis(), builder.build());
-    }
+        if (!isSnoozed) { // Only add action the first time
+            Intent snoozeIntent = new Intent(context, SnoozeReceiver.class);
+            snoozeIntent.putExtra("title", title);
+            snoozeIntent.putExtra("message", message);
+            snoozeIntent.putExtra("notificationId", notificationId);
 
+            PendingIntent snoozePendingIntent = PendingIntent.getBroadcast(
+                    context, notificationId, snoozeIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+            );
+
+            builder.addAction(R.drawable.snooze, "Remind Me Later", snoozePendingIntent);
+        }
+
+        NotificationManagerCompat manager = NotificationManagerCompat.from(context);
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+            manager.notify(notificationId, builder.build());
+        }
+    }
 }

@@ -64,6 +64,7 @@
 
         <!-- Broadcast Receiver -->
         <receiver android:name=".receivers.ReminderReceiver" />
+        <receiver android:name=".receivers.SnoozeReceiver" />
 
     </application>
 
