@@ -181,7 +181,7 @@ public class ExamDA implements IExamDA {
     }
 
     public void getClassExams(int teacher_id, int class_id, ExamListCallBack callback) {
-        String url = BASE_URL + "?mode=list&teacher_id=" + teacher_id + "&class_id=" + class_id;
+        String url = BASE_URL + "?mode=teacher_exams&teacher_id=" + teacher_id + "&class_id=" + class_id;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
