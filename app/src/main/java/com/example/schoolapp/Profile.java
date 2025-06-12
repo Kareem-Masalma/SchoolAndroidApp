@@ -35,6 +35,7 @@ public class Profile extends AppCompatActivity {
     //all
     private CardView         cardInfo;
     private CardView         cardInbox;
+    private CardView         cardAi;
     private ImageView        imageProfile;
     private TextView         textFullName;
     private TextView         textRole;
@@ -206,6 +207,7 @@ public class Profile extends AppCompatActivity {
         cardInfo        = findViewById(R.id.card_info);
         fabMessage      = findViewById(R.id.fab_send_message);
         cardInbox       = findViewById(R.id.card_inbox);
+        cardAi          = findViewById(R.id.card_ai);
         fabMessage.setOnClickListener(e->{
             Intent intent = new Intent(Profile.this, UserSendMessage1.class);
             startActivity(intent);
@@ -223,6 +225,11 @@ public class Profile extends AppCompatActivity {
 
         cardInbox.setOnClickListener(e->{
             Intent intent = new Intent(Profile.this, Inbox.class);
+            startActivity(intent);
+        });
+
+        cardAi.setOnClickListener(e->{
+            Intent intent = new Intent(Profile.this, AiAssistant.class);
             startActivity(intent);
         });
     }
