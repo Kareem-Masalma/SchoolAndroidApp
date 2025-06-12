@@ -104,39 +104,19 @@ public class AssignmentListActivity extends AppCompatActivity {
         }
         int studentId = user.getUser_id();
 
-        new AssignmentDA(this).getAllAssignments(studentId, new IAssignmentDA.AssignmentListCallback() {
+        new AssignmentDA(this).getAllAssignmentsWithTitles(studentId, new AssignmentDA.AssignmentListWithTitlesCallback() {
             @Override
-            public void onSuccess(List<JSONObject> data) {
-                for (JSONObject obj : data) {
-                    try {
-                        Gson gson = new GsonBuilder()
-                                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
-                                .create();
-                        Assignment assignment = new Assignment(
-                                obj.getInt("assignment_id"),
-                                obj.getInt("subject_id"),
-                                obj.getString("title"),
-                                obj.getString("details"),
-                                LocalDate.parse(obj.getString("start_date")),
-                                obj.getString("file_path"),
-                                LocalDate.parse(obj.getString("end_date")),
-                                (float) obj.getDouble("percentage_of_grade")
-                        );
-                        assignmentList.add(assignment);
-                        fullAssignmentList.add(assignment);
+            public void onSuccess(List<Assignment> data, Map<Assignment, String> subjectMap, Map<Assignment, String> classMap) {
+                assignmentList.clear();
+                fullAssignmentList.clear();
+                subjectTitleMap.clear();
+                classTitleMap.clear();
 
-                        if (obj.has("subject_title")) {
-                            subjectTitleMap.put(assignment, obj.getString("subject_title"));
-                        }
-                        if (obj.has("class_title")) {
-                            classTitleMap.put(assignment, obj.getString("class_title"));
-                        } else {
-                            classTitleMap.put(assignment, "Unknown");
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+                assignmentList.addAll(data);
+                fullAssignmentList.addAll(data);
+                subjectTitleMap.putAll(subjectMap);
+                classTitleMap.putAll(classMap);
+
                 adapter.notifyDataSetChanged();
             }
 
@@ -145,6 +125,8 @@ public class AssignmentListActivity extends AppCompatActivity {
                 Toast.makeText(AssignmentListActivity.this, error, Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
     private void filterAndSortAssignments(String query) {
