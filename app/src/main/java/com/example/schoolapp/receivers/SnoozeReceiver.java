@@ -24,7 +24,7 @@ public class SnoozeReceiver extends BroadcastReceiver {
         Intent reminderIntent = new Intent(context, ReminderReceiver.class);
         reminderIntent.putExtra("title", title);
         reminderIntent.putExtra("message", message);
-        reminderIntent.putExtra("isSnoozed", true); // 👈 Mark it as a snoozed notification
+        reminderIntent.putExtra("isSnoozed", true);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 context, (int) System.currentTimeMillis(),

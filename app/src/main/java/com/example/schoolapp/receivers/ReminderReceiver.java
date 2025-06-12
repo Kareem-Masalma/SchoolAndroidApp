@@ -20,7 +20,7 @@ public class ReminderReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String title = intent.getStringExtra("title");
         String message = intent.getStringExtra("message");
-        boolean isSnoozed = intent.getBooleanExtra("isSnoozed", false); // 👈
+        boolean isSnoozed = intent.getBooleanExtra("isSnoozed", false);
 
         int notificationId = (int) System.currentTimeMillis();
 
