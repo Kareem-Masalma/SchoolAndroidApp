@@ -23,7 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.schoolapp.adapters.MessagesAdapter;
 import com.example.schoolapp.data_access.DA_Config;
-import com.google.android.material.appbar.MaterialToolbar;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.example.schoolapp.models.AiMessage;
@@ -73,9 +73,6 @@ public class AiAssistant extends AppCompatActivity {
             return insets;
         });
 
-
-        MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
 
         rvMessages = findViewById(R.id.rv_messages);
