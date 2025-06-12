@@ -135,4 +135,5 @@
     <string name="assignments_RB">Assignments</string>
     <string name="exams_RB">Exams</string>
     <string name="total">Total:</string>
+    <string name="select_exam">Select Exam</string>
 </resources>
