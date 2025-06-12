@@ -2,6 +2,7 @@ package com.example.schoolapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -68,6 +69,7 @@ public class Profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         checkPrefs();
         setupViews();
@@ -151,7 +153,8 @@ public class Profile extends AppCompatActivity {
         });
 
         cardMarks.setOnClickListener(e->{
-
+            Intent intent = new Intent(Profile.this, StudentCoursesActivity.class);
+            startActivity(intent);
         });
 
         cardSchedule.setOnClickListener(e->{
@@ -211,9 +214,9 @@ public class Profile extends AppCompatActivity {
         if(logged_in_user!=null){
             textFullName.setText(logged_in_user.getFirstName() + " " + logged_in_user.getLastName());
 //            Log.i("birth_date", logged_in_user.getBirthDate().toString());
-            textBirthDate.setText(logged_in_user.getBirthDate().toString());
-            textAddress.setText(logged_in_user.getAddress());
-            textPhone.setText(logged_in_user.getPhone());
+            textBirthDate.setText("Birth Date: " + logged_in_user.getBirthDate().toString());
+            textAddress.setText("Address: " + logged_in_user.getAddress());
+            textPhone.setText("Phone: " + logged_in_user.getPhone());
         }
 
 
@@ -222,5 +225,15 @@ public class Profile extends AppCompatActivity {
             Intent intent = new Intent(Profile.this, Inbox.class);
             startActivity(intent);
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+            new android.app.AlertDialog.Builder(this)
+                    .setTitle("Logout?")
+                    .setMessage("You will be logged out of the application.")
+                    .setPositiveButton("Yes, Logout", (dialog, which) -> super.onBackPressed())
+                    .setNegativeButton("Stay", null)
+                    .show();
     }
 }

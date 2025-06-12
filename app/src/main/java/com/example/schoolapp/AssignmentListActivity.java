@@ -2,6 +2,7 @@ package com.example.schoolapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -39,6 +40,7 @@ public class AssignmentListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assignment_list);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         EditText editSearch = findViewById(R.id.editSearch);
         spinnerSortBy = findViewById(R.id.spinnerSortBy);

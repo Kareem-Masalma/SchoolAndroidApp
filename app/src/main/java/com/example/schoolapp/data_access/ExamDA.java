@@ -24,12 +24,6 @@ public class ExamDA implements IExamDA {
         this.queue = Volley.newRequestQueue(context);
     }
 
-    public interface ExamListCallBack {
-        void onSuccess(List<Exam> exams);
-
-        void onError(String error);
-    }
-
     @Override
     public void sendExam(Exam exam, List<StudentExamResult> results, ExamCallback callback) {
         try {
@@ -56,11 +50,7 @@ public class ExamDA implements IExamDA {
                     Request.Method.POST,
                     BASE_URL,
                     finalJson,
-                    response -> {
-                        List<JSONObject> result = new ArrayList<>();
-                        result.add(response);
-                        callback.onSuccess(result);
-                    },
+                    response -> callback.onSuccess(new ArrayList<>()), // Not used here
                     error -> callback.onError("Failed to publish results: " + error.toString())
             );
 
@@ -77,11 +67,43 @@ public class ExamDA implements IExamDA {
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
-                    List<JSONObject> examList = new ArrayList<>();
+                    List<Exam> examList = new ArrayList<>();
+                    Map<Exam, String> subjectTitleMap = new HashMap<>();
+                    Map<Exam, String> classTitleMap = new HashMap<>();
+
                     for (int i = 0; i < response.length(); i++) {
-                        examList.add(response.optJSONObject(i));
+                        try {
+                            JSONObject obj = response.getJSONObject(i);
+                            Exam exam = new Exam(
+                                    obj.getInt("exam_id"),
+                                    obj.getString("title"),
+                                    obj.getInt("subject_id"),
+                                    LocalDate.parse(obj.getString("date")),
+                                    obj.getInt("duration"),
+                                    (int) obj.getDouble("percentage_of_grade")
+                            );
+                            examList.add(exam);
+
+                            if (obj.has("subject_title")) {
+                                subjectTitleMap.put(exam, obj.getString("subject_title"));
+                            }
+                            if (obj.has("class_title")) {
+                                classTitleMap.put(exam, obj.getString("class_title"));
+                            } else {
+                                classTitleMap.put(exam, "Unknown");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
-                    callback.onSuccess(examList);
+
+                    // Extended callback for sending both exam list and mappings
+                    if (callback instanceof IExamDA.ExamListWithTitleCallback) {
+                        ((IExamDA.ExamListWithTitleCallback) callback).onSuccessWithTitles(examList, subjectTitleMap, classTitleMap);
+                    } else {
+                        callback.onSuccess(examList);
+                    }
+
                 },
                 error -> callback.onError("Error: " + error.getMessage())
         );
@@ -89,14 +111,25 @@ public class ExamDA implements IExamDA {
         queue.add(request);
     }
 
+
     @Override
     public void findExamById(int examId, ExamCallback callback) {
         String url = BASE_URL + "?mode=find&exam_id=" + examId;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
-                    List<JSONObject> result = new ArrayList<>();
-                    result.add(response);
-                    callback.onSuccess(result);
+                    try {
+                        Exam exam = new Exam(
+                                response.getInt("exam_id"),
+                                response.getString("title"),
+                                response.getInt("subject_id"),
+                                LocalDate.parse(response.getString("date")),
+                                response.getInt("duration"),
+                                (int) response.getDouble("percentage_of_grade")
+                        );
+                        callback.onSuccess(Collections.singletonList(exam));
+                    } catch (Exception e) {
+                        callback.onError("Parse error: " + e.getMessage());
+                    }
                 },
                 error -> callback.onError("Error: " + error.getMessage())
         );
@@ -119,11 +152,7 @@ public class ExamDA implements IExamDA {
                     Request.Method.POST,
                     BASE_URL,
                     examObject,
-                    response -> {
-                        List<JSONObject> result = new ArrayList<>();
-                        result.add(response);
-                        callback.onSuccess(result);
-                    },
+                    response -> callback.onSuccess(new ArrayList<>()),
                     error -> callback.onError("Update failed: " + error.toString())
             );
 
@@ -138,19 +167,21 @@ public class ExamDA implements IExamDA {
         String url = BASE_URL + "?mode=delete&exam_id=" + examId;
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                response -> {
-                    List<JSONObject> result = new ArrayList<>();
-                    result.add(response);
-                    callback.onSuccess(result);
-                },
+                response -> callback.onSuccess(new ArrayList<>()),
                 error -> callback.onError("Delete failed: " + error.toString())
         );
 
         queue.add(request);
     }
 
-    public void getClassExams(int teacher_id, ExamListCallBack callback) {
-        String url = BASE_URL + "?mode=list&teacher_id=" + teacher_id;
+    public interface ExamListCallBack {
+        void onSuccess(List<Exam> exams);
+
+        void onError(String error);
+    }
+
+    public void getClassExams(int teacher_id, int class_id, ExamListCallBack callback) {
+        String url = BASE_URL + "?mode=list&teacher_id=" + teacher_id + "&class_id=" + class_id;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
@@ -214,6 +245,42 @@ public class ExamDA implements IExamDA {
         } catch (JSONException e) {
             callback.onError("JSON Error: " + e.getMessage());
         }
+    }
+
+    public interface ExamTitleCallback {
+        void onSuccess(List<Exam> exams);
+
+        void onError(String error);
+    }
+
+    public void getExamsBySubject(int subjectId, ExamTitleCallback callback) {
+        String url = BASE_URL + "?mode=list_by_subject&subject_id=" + subjectId;
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                response -> {
+                    List<Exam> list = new ArrayList<>();
+                    try {
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject obj = response.getJSONObject(i);
+                            Exam exam = new Exam(
+                                    obj.getInt("exam_id"),
+                                    obj.getString("title"),
+                                    obj.getInt("subject_id"),
+                                    LocalDate.parse(obj.getString("date")),
+                                    obj.getInt("duration"),
+                                    obj.getInt("percentage_of_grade")
+                            );
+                            list.add(exam);
+                        }
+                        callback.onSuccess(list);
+                    } catch (JSONException e) {
+                        callback.onError("Malformed data");
+                    }
+                },
+                error -> callback.onError("Fetch failed")
+        );
+
+        queue.add(request);
     }
 
 }

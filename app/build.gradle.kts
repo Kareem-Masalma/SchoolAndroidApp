@@ -41,6 +41,7 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.cardview)
     implementation(libs.preference)
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

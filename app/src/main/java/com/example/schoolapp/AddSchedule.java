@@ -1,6 +1,7 @@
 package com.example.schoolapp;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -43,11 +44,8 @@ public class AddSchedule extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable((AppCompatActivity) this);
         setContentView(R.layout.activity_add_schedule);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         defineViews();
         getUsers();
     }

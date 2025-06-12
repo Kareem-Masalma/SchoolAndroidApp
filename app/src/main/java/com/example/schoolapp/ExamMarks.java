@@ -135,7 +135,7 @@ public class ExamMarks extends AppCompatActivity {
 
     private void getSpinnerData() {
         ExamDA examDA = new ExamDA(ExamMarks.this);
-        examDA.getClassExams(teacher.getUser_id(), new ExamDA.ExamListCallBack() {
+        examDA.getClassExams(teacher.getUser_id(), selectedClass.getClassId(), new ExamDA.ExamListCallBack() {
             @Override
             public void onSuccess(List<Exam> exams) {
                 ArrayAdapter<Exam> adapter = new ArrayAdapter<>(ExamMarks.this, android.R.layout.simple_list_item_1, exams);

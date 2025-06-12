@@ -5,13 +5,61 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f6712e54-6850-4889-b72d-68f6144c7e94" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/student_assignment_result.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/student_exam_result.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/StudentCoursesActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/ViewStudentMarks.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/MarksAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/OnResultClickListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/StudentAssignmentResultAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/StudentExamResultAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/SubAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/StudentAssignmentResultDA.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/StudentExamResultDA.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/models/StudentAssignmentResult.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/res/layout/activity_student_courses.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/res/layout/activity_view_student_marks.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/res/layout/item_course.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/res/layout/item_mark.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../.idea/deploymentTargetSelector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/deploymentTargetSelector.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assignment.php" beforeDir="false" afterPath="$PROJECT_DIR$/assignment.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/exam.php" beforeDir="false" afterPath="$PROJECT_DIR$/exam.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/ExamMarks.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/ExamMarks.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/DA_Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/DA_Config.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddClassSchedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddClassSchedule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddSchedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddSchedule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddStudents.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddStudents.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddSubjects.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddSubjects.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddTeacherActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddTeacherActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddTeacherSchedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AddTeacherSchedule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AssignmentDetailsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AssignmentDetailsActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AssignmentListActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/AssignmentListActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/ClassDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/ClassDashboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/ClassStudents.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/ClassStudents.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/ExamDetailsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/ExamDetailsActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/ExamListActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/ExamListActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/Inbox.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/Inbox.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/Login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/Profile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/SelectClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/SelectClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/SendAssignmentActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/SendAssignmentActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/SubmitAssignmentActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/SubmitAssignmentActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/TakeAttendance.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/TakeAttendance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/TeacherClassSubjectsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/TeacherClassSubjectsActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/UserSendMessage1.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/UserSendMessage1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/UserSendMessage2.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/UserSendMessage2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/ViewSchedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/ViewSchedule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/Message_Inbox_Adapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/Message_Inbox_Adapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/SubjectAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/adapters/SubjectAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/AssignmentDA.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/AssignmentDA.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/ExamDA.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/ExamDA.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/IExamDA.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/IExamDA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/res/layout/activity_exam_marks.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/res/layout/activity_exam_marks.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/StudentDA.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/data_access/StudentDA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/models/StudentExamResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/com/example/schoolapp/models/StudentExamResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/res/layout/activity_inbox.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/res/layout/activity_inbox.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/res/layout/activity_login.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/res/layout/activity_login.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -51,7 +99,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "activity/publishexam",
+    "git-widget-placeholder": "Merging activity/publishexam",
     "last_opened_file_path": "C:/Users/user/AndroidStudioProjects/SchoolAndroidApp/app/backend",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -92,6 +140,7 @@
       <workItem from="1748127081224" duration="2205000" />
       <workItem from="1748287431426" duration="4260000" />
       <workItem from="1749506710569" duration="1725000" />
+      <workItem from="1749752157720" duration="50000" />
     </task>
     <servers />
   </component>
