@@ -3,15 +3,7 @@ package com.example.schoolapp.models;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * Model for a chat message in the AI assistant UI.
- * Contains:
- * - role: USER, ASSISTANT, SYSTEM, or TYPING (or other if you extend)
- * - content: the text content (for TYPING role, content can be ignored or e.g. "...")
- * - timestamp: milliseconds since epoch when created
- *
- * You can extend this with message IDs, delivery status, etc., if needed.
- */
+
 public class AiMessage implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -26,7 +18,7 @@ public class AiMessage implements Serializable {
     private String content;
     private long timestamp;
 
-    // Constructors
+    // constructors
 
     /**
      * Main constructor. Timestamp is set to now.
@@ -51,32 +43,25 @@ public class AiMessage implements Serializable {
         this.timestamp = timestamp;
     }
 
-    // Convenience factory methods
 
-    /** Create a user-sent message. */
     public static AiMessage createUserMessage(String content) {
         return new AiMessage(Role.USER, content);
     }
 
-    /** Create an assistant (bot) message. */
     public static AiMessage createAssistantMessage(String content) {
         return new AiMessage(Role.ASSISTANT, content);
     }
 
-    /**
-     * Create a system message. You might use this internally (e.g., initial prompt).
-     * In UI you may or may not display system messages.
-     */
+
     public static AiMessage createSystemMessage(String content) {
         return new AiMessage(Role.SYSTEM, content);
     }
 
-    /** Create a typing indicator message. content can be ignored or a placeholder. */
     public static AiMessage createTypingIndicator() {
         return new AiMessage(Role.TYPING, null);
     }
 
-    // Getters & setters
+
 
     public Role getRole() {
         return role;
@@ -86,9 +71,7 @@ public class AiMessage implements Serializable {
         this.role = role;
     }
 
-    /**
-     * Get content. For TYPING role, this might be null or a placeholder.
-     */
+
     public String getContent() {
         return content;
     }
@@ -97,7 +80,7 @@ public class AiMessage implements Serializable {
         this.content = content;
     }
 
-    /** Timestamp in milliseconds since epoch. */
+
     public long getTimestamp() {
         return timestamp;
     }
@@ -108,22 +91,22 @@ public class AiMessage implements Serializable {
 
     // Convenience checks
 
-    /** true if this is a user message. */
+
     public boolean isUser() {
         return this.role == Role.USER;
     }
 
-    /** true if this is an assistant (bot) message. */
+
     public boolean isAssistant() {
         return this.role == Role.ASSISTANT;
     }
 
-    /** true if this is a system message. */
+
     public boolean isSystem() {
         return this.role == Role.SYSTEM;
     }
 
-    /** true if this is a typing indicator. */
+
     public boolean isTypingIndicator() {
         return this.role == Role.TYPING;
     }

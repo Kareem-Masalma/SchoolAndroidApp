@@ -38,12 +38,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Activity for AI Assistant chat using Volley to call OpenAI Chat Completions.
+ * Activity for AI Assistant chat using Volley to call Google Gemini generateContent endpoint.
  */
 public class AiAssistant extends AppCompatActivity {
 
     private static final String TAG_CHAT_REQUEST = "CHAT_REQUEST";
-    private static final String OPENAI_API_KEY = "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";
 
     private RecyclerView rvMessages;
     private MessagesAdapter adapter;
@@ -78,30 +77,23 @@ public class AiAssistant extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        // Optionally enable back button:
-        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // toolbar.setNavigationOnClickListener(v -> finish());
-
         rvMessages = findViewById(R.id.rv_messages);
         messageList = new ArrayList<>();
         adapter = new MessagesAdapter(messageList);
         LinearLayoutManager lm = new LinearLayoutManager(this);
-        lm.setStackFromEnd(true); // show latest at bottom
+        lm.setStackFromEnd(true);
         rvMessages.setLayoutManager(lm);
         rvMessages.setAdapter(adapter);
 
 
         etQuery = findViewById(R.id.et_query);
         btnSend = findViewById(R.id.btn_send);
-
         btnSend.setOnClickListener(v -> {
             String text = etQuery.getText() != null ? etQuery.getText().toString().trim() : "";
             if (!TextUtils.isEmpty(text)) {
                 sendUserMessage(text);
             }
         });
-
-
         etQuery.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEND) {
                 String text = etQuery.getText() != null ? etQuery.getText().toString().trim() : "";
@@ -114,7 +106,9 @@ public class AiAssistant extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * Sends a user message: appends to UI, shows typing indicator, builds Gemini JSON, and sends request.
+     */
     private void sendUserMessage(String text) {
         // 1. Add user message to RecyclerView
         AiMessage userMsg = AiMessage.createUserMessage(text);
@@ -122,7 +116,6 @@ public class AiAssistant extends AppCompatActivity {
         adapter.notifyItemInserted(messageList.size() - 1);
         rvMessages.scrollToPosition(messageList.size() - 1);
         etQuery.setText("");
-
 
         AiMessage typingMsg = AiMessage.createTypingIndicator();
         messageList.add(typingMsg);
@@ -132,16 +125,18 @@ public class AiAssistant extends AppCompatActivity {
 
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("model", "gpt-3.5-turbo");
-            JSONArray messagesArray = new JSONArray();
+            JSONArray contentsArray = new JSONArray();
 
-            // system prompt
-            JSONObject systemObj = new JSONObject();
-            systemObj.put("role", "system");
-            systemObj.put("content", "You are a helpful AI assistant.");
-            messagesArray.put(systemObj);
-
-
+            if (messageList.size() == 1) {
+                JSONObject sysEntry = new JSONObject();
+                sysEntry.put("role", "user");
+                JSONArray partsSys = new JSONArray();
+                JSONObject partSys = new JSONObject();
+                partSys.put("text", "You are a helpful AI assistant. Your job is to help students improve their grades, provide study tips, and provide any help the students need.");
+                partsSys.put(partSys);
+                sysEntry.put("parts", partsSys);
+                contentsArray.put(sysEntry);
+            }
             int windowSize = 12;
             int start = Math.max(0, messageList.size() - windowSize);
             for (int i = start; i < messageList.size(); i++) {
@@ -149,66 +144,76 @@ public class AiAssistant extends AppCompatActivity {
                 if (msg.isTypingIndicator()) {
                     continue;
                 }
-                JSONObject obj = new JSONObject();
+                JSONObject entry = new JSONObject();
                 if (msg.isUser()) {
-                    obj.put("role", "user");
+                    entry.put("role", "user");
                 } else if (msg.isAssistant()) {
-                    obj.put("role", "assistant");
-                } else if (msg.isSystem()) {
-                    obj.put("role", "system");
+                    entry.put("role", "model");
                 } else {
-
-                    obj.put("role", "assistant");
+                    // system or others: treat as user
+                    entry.put("role", "user");
                 }
+                JSONArray parts = new JSONArray();
+                JSONObject part = new JSONObject();
                 String content = msg.getContent();
-                if (content == null) {
-                    content = ""; //
-                }
-                obj.put("content", content);
-                messagesArray.put(obj);
+                if (content == null) content = "";
+                part.put("text", content);
+                parts.put(part);
+                entry.put("parts", parts);
+                contentsArray.put(entry);
             }
-            jsonBody.put("messages", messagesArray);
+            jsonBody.put("contents", contentsArray);
+
+            JSONObject generationConfig = new JSONObject();
+            generationConfig.put("temperature", 0.7);
+            generationConfig.put("maxOutputTokens", 1024);
+            generationConfig.put("topP", 0.95);
+            generationConfig.put("topK", 40);
+            jsonBody.put("generationConfig", generationConfig);
 
         } catch (JSONException e) {
-
             removeTypingIndicator(typingMsg);
             Toast.makeText(this, "JSON error: " + e.getMessage(), Toast.LENGTH_LONG).show();
             return;
         }
 
-        String url = "https://api.openai.com/v1/chat/completions";
+        String apiKey = "API_KEY";
+        String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + apiKey;
+
         JsonObjectRequest jsonRequest = new JsonObjectRequest(
                 Request.Method.POST,
                 url,
                 jsonBody,
                 response -> {
-
                     removeTypingIndicator(typingMsg);
 
-
                     try {
-                        JSONArray choices = response.optJSONArray("choices");
-                        if (choices != null && choices.length() > 0) {
-                            JSONObject firstChoice = choices.getJSONObject(0);
-                            JSONObject messageObj = firstChoice.getJSONObject("message");
-                            String reply = messageObj.optString("content", "").trim();
-                            if (!reply.isEmpty()) {
-                                AiMessage botMsg = AiMessage.createAssistantMessage(reply);
-                                messageList.add(botMsg);
-                                adapter.notifyItemInserted(messageList.size() - 1);
-                                rvMessages.scrollToPosition(messageList.size() - 1);
+                        JSONArray candidates = response.optJSONArray("candidates");
+                        if (candidates != null && candidates.length() > 0) {
+                            JSONObject firstCand = candidates.getJSONObject(0);
+                            JSONObject contentObj = firstCand.getJSONObject("content");
+                            JSONArray parts = contentObj.optJSONArray("parts");
+                            if (parts != null && parts.length() > 0) {
+                                String reply = parts.getJSONObject(0).optString("text", "").trim();
+                                if (!reply.isEmpty()) {
+                                    AiMessage botMsg = AiMessage.createAssistantMessage(reply);
+                                    messageList.add(botMsg);
+                                    adapter.notifyItemInserted(messageList.size() - 1);
+                                    rvMessages.scrollToPosition(messageList.size() - 1);
+                                } else {
+                                    Toast.makeText(AiAssistant.this, "Empty response from AI.", Toast.LENGTH_SHORT).show();
+                                }
                             } else {
-                                Toast.makeText(AiAssistant.this, "Empty response from AI.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AiAssistant.this, "No parts in AI response.", Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            Toast.makeText(AiAssistant.this, "No choices in AI response.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AiAssistant.this, "No candidates in AI response.", Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e) {
                         Toast.makeText(AiAssistant.this, "Response parse error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 },
                 error -> {
-
                     removeTypingIndicator(typingMsg);
                     String msgErr = "Network error";
                     if (error.networkResponse != null) {
@@ -216,7 +221,6 @@ public class AiAssistant extends AppCompatActivity {
                         msgErr += " (HTTP " + statusCode + ")";
                         if (error.networkResponse.data != null) {
                             String body = new String(error.networkResponse.data, StandardCharsets.UTF_8);
-
                         }
                     } else if (error.getMessage() != null) {
                         msgErr += ": " + error.getMessage();
@@ -227,11 +231,11 @@ public class AiAssistant extends AppCompatActivity {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Bearer " + OPENAI_API_KEY);
                 headers.put("Content-Type", "application/json");
                 return headers;
             }
         };
+
 
         jsonRequest.setTag(TAG_CHAT_REQUEST);
         jsonRequest.setRetryPolicy(new DefaultRetryPolicy(
@@ -243,6 +247,7 @@ public class AiAssistant extends AppCompatActivity {
 
         requestQueue.add(jsonRequest);
     }
+
 
     private void removeTypingIndicator(AiMessage typingMsg) {
         int idx = messageList.indexOf(typingMsg);
