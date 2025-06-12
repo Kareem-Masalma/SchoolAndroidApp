@@ -18,7 +18,7 @@ public interface IExamDA {
 
     void deleteExam(int examId, ExamCallback callback);
 
-    void publishExamResults(Exam exam, List<StudentExamResult> results, PublishCallback callback);
+    void publishExamResults(int exam_id, List<StudentExamResult> results, PublishCallback callback);
 
     interface ExamCallback {
         void onSuccess(List<Exam> data);

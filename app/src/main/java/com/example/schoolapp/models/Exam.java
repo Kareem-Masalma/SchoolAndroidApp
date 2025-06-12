@@ -1,5 +1,7 @@
 package com.example.schoolapp.models;
 
+import androidx.annotation.NonNull;
+
 import java.time.LocalDate;
 
 public class Exam {
@@ -28,7 +30,7 @@ public class Exam {
         this.percentage = percentage;
     }
 
-        public int getExamId() {
+    public int getExamId() {
         return examId;
     }
 
@@ -74,5 +76,11 @@ public class Exam {
 
     public void setPercentage(int percentage) {
         this.percentage = percentage;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return title;
     }
 }
