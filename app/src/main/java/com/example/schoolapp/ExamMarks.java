@@ -1,15 +1,14 @@
 package com.example.schoolapp;
 
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -27,32 +26,29 @@ import com.example.schoolapp.data_access.StudentDA;
 import com.example.schoolapp.data_access.StudentDAFactory;
 import com.example.schoolapp.data_access.SubjectDA;
 import com.example.schoolapp.data_access.SubjectDAFactory;
+import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.SchoolClass;
 import com.example.schoolapp.models.Student;
 import com.example.schoolapp.models.Exam;
 import com.example.schoolapp.models.StudentExamResult;
 import com.example.schoolapp.models.Subject;
+import com.example.schoolapp.models.Teacher;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class ExamMarks extends AppCompatActivity {
 
-    private TextView tvClass;
-    private Spinner spSubject;
-    private EditText edTitle, edDuration, edPercentage;
     private RecyclerView rvStudents;
-    private EditText etExamDate;
     private Button btnPublish;
-    private LocalDate examDate;
+    private Spinner spExams;
     private SchoolClass selectedClass;
     private StudentMarksAdapter adapter;
+    private Teacher teacher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,28 +72,9 @@ public class ExamMarks extends AppCompatActivity {
         btnPublish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String examTitle = edTitle.getText().toString();
-                Subject subject = (Subject) spSubject.getSelectedItem();
-                int duration = Integer.parseInt(edDuration.getText().toString());
-                int percentage = Integer.parseInt(edPercentage.getText().toString());
-
-                if (examTitle.isEmpty()) {
-                    Toast.makeText(ExamMarks.this, "Title is required", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (examDate == null) {
-                    Toast.makeText(ExamMarks.this, "Please select a date", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (percentage >= 100 || percentage <= 0) {
-                    Toast.makeText(ExamMarks.this, "Choose a Valid Percentage", Toast.LENGTH_SHORT).show();
-                    return;
-                }
 
 
-                Exam exam = new Exam(examTitle, subject.getSubjectId(), examDate, duration, percentage);
+                Exam exam = (Exam) spExams.getSelectedItem();
 
                 List<StudentExamResult> studentMarks = adapter.getStudentMarks();
 
@@ -114,7 +91,7 @@ public class ExamMarks extends AppCompatActivity {
                 }
 
                 ExamDA examDA = new ExamDA(ExamMarks.this);
-                examDA.publishExamResults(exam, studentMarks, new IExamDA.PublishCallback() {
+                examDA.publishExamResults(exam.getExamId(), studentMarks, new IExamDA.PublishCallback() {
 
                     @Override
                     public void onSuccess(String message) {
@@ -157,11 +134,12 @@ public class ExamMarks extends AppCompatActivity {
     }
 
     private void getSpinnerData() {
-        SubjectDAFactory.getSubjectDA(ExamMarks.this).getClassSubject(selectedClass.getClassId(), new SubjectDA.ClassSubjectCallback() {
+        ExamDA examDA = new ExamDA(ExamMarks.this);
+        examDA.getClassExams(teacher.getUser_id(), selectedClass.getClassId(), new ExamDA.ExamListCallBack() {
             @Override
-            public void onSuccess(List<Subject> list) {
-                ArrayAdapter<Subject> adapter = new ArrayAdapter<>(ExamMarks.this, android.R.layout.simple_list_item_1, list);
-                spSubject.setAdapter(adapter);
+            public void onSuccess(List<Exam> exams) {
+                ArrayAdapter<Exam> adapter = new ArrayAdapter<>(ExamMarks.this, android.R.layout.simple_list_item_1, exams);
+                spExams.setAdapter(adapter);
             }
 
             @Override
@@ -173,36 +151,27 @@ public class ExamMarks extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void getClassData() {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(ExamMarks.this);
+        boolean isLoggedIn = pref.getBoolean(Login.LOGGED_IN, false);
+        String teacherString = "";
+        if (isLoggedIn)
+            teacherString = pref.getString(Login.LOGGED_IN_USER, "");
+        else {
+            Intent intent = new Intent(ExamMarks.this, Login.class);
+            startActivity(intent);
+        }
+        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
+        teacher = gson.fromJson(teacherString, Teacher.class);
+
         Intent intent = getIntent();
         String classJson = intent.getStringExtra(AddSchedule.CLASS);
-        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new com.example.schoolapp.json_helpers.LocalDateAdapter()).create();
         selectedClass = gson.fromJson(classJson, SchoolClass.class);
-        tvClass.setText("Class: " + selectedClass.getClassName());
     }
 
     private void defineViews() {
-        this.edTitle = findViewById(R.id.etExamTitle);
-        this.tvClass = findViewById(R.id.tvClass);
-        this.spSubject = findViewById(R.id.spSubject);
         this.rvStudents = findViewById(R.id.rvStudentMarks);
-        this.etExamDate = findViewById(R.id.etExamDate);
         this.btnPublish = findViewById(R.id.btnPublish);
-        this.edDuration = findViewById(R.id.etDuration);
-        this.edPercentage = findViewById(R.id.etPercentage);
-        this.etExamDate.setOnClickListener(v -> showDatePicker());
+        this.spExams = findViewById(R.id.spExams);
         this.rvStudents.setLayoutManager(new LinearLayoutManager(ExamMarks.this));
-    }
-
-    private void showDatePicker() {
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, selectedYear, selectedMonth, selectedDay) -> {
-            examDate = LocalDate.of(selectedYear, selectedMonth + 1, selectedDay);
-            etExamDate.setText(examDate.toString());
-        }, year, month, day);
-        datePickerDialog.show();
     }
 }

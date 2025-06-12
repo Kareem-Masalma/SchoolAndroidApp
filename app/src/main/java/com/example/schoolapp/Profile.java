@@ -2,6 +2,7 @@ package com.example.schoolapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -34,6 +35,7 @@ public class Profile extends AppCompatActivity {
     //all
     private CardView         cardInfo;
     private CardView         cardInbox;
+    private CardView         cardAi;
     private ImageView        imageProfile;
     private TextView         textFullName;
     private TextView         textRole;
@@ -57,6 +59,7 @@ public class Profile extends AppCompatActivity {
     //student
     private CardView         cardAssignments;
     private CardView         cardExams;
+    private CardView         cardMarks;
 
 
     //all
@@ -67,6 +70,7 @@ public class Profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         checkPrefs();
         setupViews();
@@ -135,17 +139,22 @@ public class Profile extends AppCompatActivity {
         cardSchedule    = findViewById(R.id.card_schedule);
         cardAssignments = findViewById(R.id.card_assignments);
         cardExams       = findViewById(R.id.card_exams);
-
+        cardMarks       = findViewById(R.id.card_marks);
         cardAssignments.setOnClickListener(e->{
             Intent intent = new Intent(Profile.this, AssignmentListActivity.class);
             intent.putExtra("USER_ID", logged_in_user.getUser_id());
             startActivity(intent);
         });
 
-        // TODO
+
         cardExams.setOnClickListener(e->{
             Intent intent = new Intent(Profile.this, ExamListActivity.class);
             intent.putExtra("USER_ID", logged_in_user.getUser_id());
+            startActivity(intent);
+        });
+
+        cardMarks.setOnClickListener(e->{
+            Intent intent = new Intent(Profile.this, StudentCoursesActivity.class);
             startActivity(intent);
         });
 
@@ -198,6 +207,7 @@ public class Profile extends AppCompatActivity {
         cardInfo        = findViewById(R.id.card_info);
         fabMessage      = findViewById(R.id.fab_send_message);
         cardInbox       = findViewById(R.id.card_inbox);
+        cardAi          = findViewById(R.id.card_ai);
         fabMessage.setOnClickListener(e->{
             Intent intent = new Intent(Profile.this, UserSendMessage1.class);
             startActivity(intent);
@@ -206,16 +216,31 @@ public class Profile extends AppCompatActivity {
         if(logged_in_user!=null){
             textFullName.setText(logged_in_user.getFirstName() + " " + logged_in_user.getLastName());
 //            Log.i("birth_date", logged_in_user.getBirthDate().toString());
-            textBirthDate.setText(logged_in_user.getBirthDate().toString());
-            textAddress.setText(logged_in_user.getAddress());
-            textPhone.setText(logged_in_user.getPhone());
+            textBirthDate.setText("Birth Date: " + logged_in_user.getBirthDate().toString());
+            textAddress.setText("Address: " + logged_in_user.getAddress());
+            textPhone.setText("Phone: " + logged_in_user.getPhone());
         }
 
 
-        // TODO
+
         cardInbox.setOnClickListener(e->{
             Intent intent = new Intent(Profile.this, Inbox.class);
             startActivity(intent);
         });
+
+        cardAi.setOnClickListener(e->{
+            Intent intent = new Intent(Profile.this, AiAssistant.class);
+            startActivity(intent);
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+            new android.app.AlertDialog.Builder(this)
+                    .setTitle("Logout?")
+                    .setMessage("You will be logged out of the application.")
+                    .setPositiveButton("Yes, Logout", (dialog, which) -> super.onBackPressed())
+                    .setNegativeButton("Stay", null)
+                    .show();
     }
 }

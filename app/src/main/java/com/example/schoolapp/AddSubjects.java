@@ -1,5 +1,6 @@
 package com.example.schoolapp;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -33,6 +34,8 @@ public class AddSubjects extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_subjects);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         initializeViews();
         addButton();
         cancleButton();

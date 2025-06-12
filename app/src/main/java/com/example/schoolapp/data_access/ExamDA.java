@@ -1,13 +1,16 @@
 package com.example.schoolapp.data_access;
 
 import android.content.Context;
+
 import com.android.volley.*;
 import com.android.volley.toolbox.*;
 import com.example.schoolapp.models.Exam;
 import com.example.schoolapp.models.StudentExamResult;
+
 import org.json.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class ExamDA implements IExamDA {
@@ -171,15 +174,53 @@ public class ExamDA implements IExamDA {
         queue.add(request);
     }
 
-        @Override
-    public void publishExamResults(Exam exam, List<StudentExamResult> results, PublishCallback callback) {
+    public interface ExamListCallBack {
+        void onSuccess(List<Exam> exams);
+
+        void onError(String error);
+    }
+
+    public void getClassExams(int teacher_id, int class_id, ExamListCallBack callback) {
+        String url = BASE_URL + "?mode=teacher_exams&teacher_id=" + teacher_id + "&class_id=" + class_id;
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        List<Exam> examList = new ArrayList<>();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject obj = response.getJSONObject(i);
+
+                            int examId = obj.getInt("exam_id");
+                            String title = obj.getString("title");
+                            int subjectId = obj.getInt("subject_id");
+                            String dateStr = obj.getString("date");
+                            LocalDate date = LocalDate.parse(dateStr, formatter);
+                            int duration = obj.getInt("duration");
+                            int percentage = obj.getInt("percentage_of_grade");
+
+                            Exam exam = new Exam(examId, title, subjectId, date, duration, percentage);
+                            examList.add(exam);
+                        }
+
+                        callback.onSuccess(examList);
+                    } catch (Exception e) {
+                        callback.onError("Parsing error: " + e.getMessage());
+                    }
+                },
+                error -> callback.onError("Error: " + error.getMessage())
+        );
+
+        queue.add(request);
+    }
+
+
+    @Override
+    public void publishExamResults(int examId, List<StudentExamResult> results, PublishCallback callback) {
         try {
-            JSONObject examObject = new JSONObject();
-            examObject.put("title", exam.getTitle());
-            examObject.put("subject_id", exam.getSubject());
-            examObject.put("date", exam.getDate().toString());
-            examObject.put("duration", exam.getDuration());
-            examObject.put("percentage", exam.getPercentage());
+            JSONObject data = new JSONObject();
+            data.put("exam_id", examId);
 
             JSONArray studentsArray = new JSONArray();
             for (StudentExamResult res : results) {
@@ -189,14 +230,12 @@ public class ExamDA implements IExamDA {
                 studentsArray.put(obj);
             }
 
-            JSONObject finalJson = new JSONObject();
-            finalJson.put("exam", examObject);
-            finalJson.put("students", studentsArray);
+            data.put("students", studentsArray);
 
             JsonObjectRequest request = new JsonObjectRequest(
                     Request.Method.POST,
                     BASE_URL,
-                    finalJson,
+                    data,
                     response -> callback.onSuccess("Results published"),
                     error -> callback.onError("Failed to publish results: " + error.toString())
             );
@@ -207,4 +246,41 @@ public class ExamDA implements IExamDA {
             callback.onError("JSON Error: " + e.getMessage());
         }
     }
+
+    public interface ExamTitleCallback {
+        void onSuccess(List<Exam> exams);
+
+        void onError(String error);
+    }
+
+    public void getExamsBySubject(int subjectId, ExamTitleCallback callback) {
+        String url = BASE_URL + "?mode=list_by_subject&subject_id=" + subjectId;
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                response -> {
+                    List<Exam> list = new ArrayList<>();
+                    try {
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject obj = response.getJSONObject(i);
+                            Exam exam = new Exam(
+                                    obj.getInt("exam_id"),
+                                    obj.getString("title"),
+                                    obj.getInt("subject_id"),
+                                    LocalDate.parse(obj.getString("date")),
+                                    obj.getInt("duration"),
+                                    obj.getInt("percentage_of_grade")
+                            );
+                            list.add(exam);
+                        }
+                        callback.onSuccess(list);
+                    } catch (JSONException e) {
+                        callback.onError("Malformed data");
+                    }
+                },
+                error -> callback.onError("Fetch failed")
+        );
+
+        queue.add(request);
+    }
+
 }

@@ -2,6 +2,7 @@ package com.example.schoolapp;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -54,6 +55,7 @@ public class TakeAttendance extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_take_atendance);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setupViews();
         getClasses();

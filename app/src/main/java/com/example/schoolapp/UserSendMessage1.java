@@ -1,5 +1,6 @@
 package com.example.schoolapp;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +36,7 @@ public class UserSendMessage1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_user_send_message1);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setupViews();
         setupRecyclerView();
@@ -59,10 +61,6 @@ public class UserSendMessage1 extends AppCompatActivity {
                 userList    = list;
                 userAdapter = new UserSendMessageAdapter(userList);
                 rvUsers.setAdapter(userAdapter);
-                rvUsers.addItemDecoration(
-                        new DividerItemDecoration(UserSendMessage1.this,
-                                DividerItemDecoration.VERTICAL)
-                );
             }
 
             @Override

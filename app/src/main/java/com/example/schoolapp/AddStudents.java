@@ -1,21 +1,30 @@
 package com.example.schoolapp;
 
 import android.app.DatePickerDialog;
+import android.content.pm.ActivityInfo;
 import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.schoolapp.data_access.ClassDA;
+import com.example.schoolapp.data_access.ClassDAFactory;
+import com.example.schoolapp.data_access.IClassDA;
 import com.example.schoolapp.data_access.IStudentDA;
 import com.example.schoolapp.data_access.StudentDA;
 import com.example.schoolapp.data_access.StudentDAFactory;
 import com.example.schoolapp.models.Role;
+import com.example.schoolapp.models.SchoolClass;
 import com.example.schoolapp.models.Student;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -28,7 +37,7 @@ public class AddStudents extends AppCompatActivity {
 
     private TextInputEditText etFirstName;
     private TextInputEditText etLastName;
-    private TextInputEditText etBirthDate;
+    private EditText etBirthDate;
     private TextInputEditText etAddress;
     private TextInputEditText etPhone;
     private TextInputEditText etInitialPassword;
@@ -36,6 +45,8 @@ public class AddStudents extends AppCompatActivity {
     private Spinner spinnerClass;
     private Button btnAdd;
     private Button btnCancel;
+    private LinearLayout birthDateField;
+
 
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -44,6 +55,7 @@ public class AddStudents extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_students);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         setupViews();
         handleAddButton();
@@ -66,45 +78,47 @@ public class AddStudents extends AppCompatActivity {
         btnAdd = findViewById(R.id.btnAdd);
         btnCancel = findViewById(R.id.btnCancel);
         etInitialPassword = findViewById(R.id.etInitialPassword);
+        birthDateField = findViewById(R.id.birthDateField);
 
-        etBirthDate.setOnClickListener(v -> {
-            Calendar cal = Calendar.getInstance();
-            int year = cal.get(Calendar.YEAR);
-            int month = cal.get(Calendar.MONTH);
-            int day = cal.get(Calendar.DAY_OF_MONTH);
-
-            new DatePickerDialog(
-                    AddStudents.this,
-                    (DatePicker view, int selectedYear, int selectedMonth, int selectedDay) -> {
-                        // month is zero-based in DatePicker
-                        LocalDate pickedDate = LocalDate.of(
-                                selectedYear,
-                                selectedMonth + 1,
-                                selectedDay
-                        );
-                        etBirthDate.setText(pickedDate.format(dateFormatter));
-                    },
-                    year, month, day
-            ).show();
-        });
+        setupDatePicker();
 
         fillSpinner();
     }
 
-    private void fillSpinner() { // fill it from 1 to 12
+    private void setupDatePicker() {
+        View.OnClickListener openDatePicker = v -> {
+            Calendar calendar = Calendar.getInstance();
+            DatePickerDialog dialog = new DatePickerDialog(this,
+                    (view, year, month, dayOfMonth) -> {
+                        String date = year + "-" + String.format("%02d", month + 1) + "-" + String.format("%02d", dayOfMonth);
+                        etBirthDate.setText(date);
+                        etBirthDate.clearFocus();
+                    },
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH));
+            dialog.show();
+        };
 
-        List<String> classNumbers = new ArrayList<>();
-        for (int i = 1; i <= 12; i++) {
-            classNumbers.add(String.valueOf(i));
-        }
+        etBirthDate.setOnClickListener(openDatePicker);
+        birthDateField.setOnClickListener(openDatePicker);
+    }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_spinner_item,
-                classNumbers
-        );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerClass.setAdapter(adapter);
+    private void fillSpinner() {
+       IClassDA classDA =  ClassDAFactory.getClassDA(this);
+        classDA.getAllClasses(new ClassDA.ClassListCallback() {
+            @Override
+            public void onSuccess(List<SchoolClass> list) {
+                ArrayAdapter<SchoolClass> gradeAdapter = new ArrayAdapter<>(AddStudents.this, android.R.layout.simple_spinner_item, list);
+                gradeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerClass.setAdapter(gradeAdapter);
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.d("Error", error);
+            }
+        });
     }
 
 
@@ -116,7 +130,7 @@ public class AddStudents extends AppCompatActivity {
             LocalDate birth_date = LocalDate.parse(etBirthDate.getText().toString());
             String address = etAddress.getText().toString().trim();
             String phone = etPhone.getText().toString().trim();
-            Integer class_id = Integer.valueOf((String) spinnerClass.getSelectedItem());
+            Integer class_id = ((SchoolClass) spinnerClass.getSelectedItem()).getClassId();
             String initialPassword = etInitialPassword.getText().toString().trim();
 
             IStudentDA studentDA = StudentDAFactory.getStudentDA(this);
