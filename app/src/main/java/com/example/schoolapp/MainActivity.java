@@ -1,7 +1,10 @@
 package com.example.schoolapp;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -52,6 +55,30 @@ public class MainActivity extends AppCompatActivity {
 //        intent.putExtra(AddSchedule.TEACHER, json);
 //        String json1 = gson.toJson(sClass);
 //        intent.putExtra(AddSchedule.CLASS, json1);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    "assignment_reminder_channel",
+                    "Assignment Reminders",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            if (manager != null) {
+                manager.createNotificationChannel(channel);
+            }
+        }
+        NotificationChannel channel = new NotificationChannel(
+                "assignment_reminder_channel",
+                "Assignment Reminders",
+                NotificationManager.IMPORTANCE_HIGH
+        );
+        channel.enableLights(true);
+        channel.enableVibration(true);
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        manager.createNotificationChannel(channel);
+
+        new SendAssignmentActivity().scheduleReminder("Test Assignment", "", 0, 0);
+
+
 
         Intent intent = new Intent(MainActivity.this, Login.class);
 

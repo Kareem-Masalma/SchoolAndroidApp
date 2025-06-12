@@ -14,6 +14,7 @@ import com.android.volley.*;
 import com.android.volley.toolbox.*;
 import com.example.schoolapp.Login;
 import com.example.schoolapp.json_helpers.LocalDateAdapter;
+import com.example.schoolapp.models.Assignment;
 import com.example.schoolapp.models.Teacher;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,6 +22,7 @@ import com.google.gson.GsonBuilder;
 import org.json.*;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.*;
 
 public class AssignmentDA implements IAssignmentDA {
@@ -102,27 +104,48 @@ public class AssignmentDA implements IAssignmentDA {
 
     @Override
     public void getAllAssignments(int studentId, AssignmentListCallback callback) {
+
+    }
+
+    public void getAllAssignmentsWithTitles(int studentId, AssignmentListWithTitlesCallback callback) {
         String url = BASE_URL + "?mode=all&student_id=" + studentId;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
-                    List<JSONObject> result = new ArrayList<>();
+                    List<Assignment> result = new ArrayList<>();
+                    Map<Assignment, String> subjectMap = new HashMap<>();
+                    Map<Assignment, String> classMap = new HashMap<>();
+
                     for (int i = 0; i < response.length(); i++) {
                         try {
-                            result.add(response.getJSONObject(i));
+                            JSONObject obj = response.getJSONObject(i);
+                            Assignment assignment = new Assignment(
+                                    obj.getInt("assignment_id"),
+                                    obj.getInt("subject_id"),
+                                    obj.getString("title"),
+                                    obj.optString("details", ""),
+                                    LocalDate.parse(obj.getString("start_date")),
+                                    obj.optString("file_path", ""),
+                                    LocalDate.parse(obj.getString("end_date")),
+                                    (float) obj.getDouble("percentage_of_grade")
+                            );
+
+                            result.add(assignment);
+                            subjectMap.put(assignment, obj.optString("subject_title", "Unknown"));
+                            classMap.put(assignment, obj.optString("class_title", "Unknown"));
                         } catch (JSONException e) {
                             callback.onError("Invalid JSON at index " + i);
                             return;
                         }
                     }
-                    callback.onSuccess(result);
+
+                    callback.onSuccess(result, subjectMap, classMap);
                 },
                 error -> {
                     String msg = "Failed to fetch assignments";
                     if (error.networkResponse != null && error.networkResponse.data != null) {
                         msg += ": " + new String(error.networkResponse.data);
                     }
-                    Log.e("AssignmentDA", msg, error);
                     callback.onError(msg);
                 }
         );
@@ -242,5 +265,9 @@ public class AssignmentDA implements IAssignmentDA {
             }
         } catch (Exception ignored) {}
         return result;
+    }
+    public interface AssignmentListWithTitlesCallback {
+        void onSuccess(List<Assignment> assignments, Map<Assignment, String> subjectTitles, Map<Assignment, String> classTitles);
+        void onError(String error);
     }
 }
