@@ -22,6 +22,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.schoolapp.adapters.MessagesAdapter;
+import com.example.schoolapp.data_access.DA_Config;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -177,8 +178,7 @@ public class AiAssistant extends AppCompatActivity {
             return;
         }
 
-        String apiKey = "API_KEY";
-        String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + apiKey;
+        String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + DA_Config.AI_API_KEY;
 
         JsonObjectRequest jsonRequest = new JsonObjectRequest(
                 Request.Method.POST,
