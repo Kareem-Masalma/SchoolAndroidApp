@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        Intent intent = new Intent(MainActivity.this, Login.class);
+        Intent intent = new Intent(MainActivity.this, AiAssistant.class);
         startActivity(intent);
     }
 

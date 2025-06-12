@@ -18,6 +18,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".AiAssistant"
+            android:exported="false" />
+        <activity
             android:name=".Inbox"
             android:exported="false" /> <!-- Launcher Activity -->
         <activity
@@ -99,8 +102,12 @@
         <activity
             android:name=".Profile"
             android:exported="false" />
-        <activity android:name=".ViewStudentMarks" android:exported="false"  />
-        <activity android:name=".StudentCoursesActivity" android:exported="false" />
+        <activity
+            android:name=".ViewStudentMarks"
+            android:exported="false" />
+        <activity
+            android:name=".StudentCoursesActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
