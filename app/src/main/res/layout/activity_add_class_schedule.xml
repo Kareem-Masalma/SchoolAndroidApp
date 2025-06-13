@@ -1,38 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@android:color/white"
     tools:context=".AddClassSchedule">
 
+    <!-- Header Bar -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="72dp"
-        android:background="@color/role_orange">
+        android:background="@color/role_orange"
+        android:elevation="4dp">
 
         <TextView
             android:id="@+id/titleText"
             style="@style/HeaderTitle"
-            android:text="@string/add_schedule" />
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:text="@string/add_schedule"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
     </FrameLayout>
 
+    <!-- Content Scroll -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:paddingHorizontal="24dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Class Name + ID -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="25dp"
+                android:layout_marginBottom="20dp"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
@@ -42,7 +54,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/class_name" />
+                    android:text="@string/class_name"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tvId"
@@ -51,81 +64,74 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="@string/id" />
+                    android:text="@string/id"
+                    android:textSize="16sp" />
             </LinearLayout>
 
+            <!-- Subject Spinner -->
             <TextView
                 style="@style/SectionTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:text="@string/subject" />
-
             <Spinner
                 android:id="@+id/spSubject"
                 style="@style/FormSpinner"
-                android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:spinnerMode="dropdown" />
 
+            <!-- Day Spinner -->
             <TextView
                 style="@style/SectionTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/day" />
-
             <Spinner
                 android:id="@+id/spDay"
                 style="@style/FormSpinner"
-                android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:spinnerMode="dropdown" />
 
+            <!-- Time Pickers -->
             <EditText
                 android:id="@+id/etStartTime"
                 style="@style/FormEditText"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="20dp"
+                android:hint="@string/start_time"
                 android:clickable="true"
                 android:focusable="false"
-                android:hint="@string/start_time"
                 android:inputType="none" />
-
             <EditText
                 android:id="@+id/etEndTime"
                 style="@style/FormEditText"
                 android:layout_marginTop="16dp"
+                android:hint="@string/end_time"
                 android:clickable="true"
                 android:focusable="false"
-                android:hint="@string/end_time"
                 android:inputType="none" />
 
+            <!-- Semester Spinner -->
             <TextView
                 style="@style/SectionTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/semester" />
-
             <Spinner
                 android:id="@+id/spSemester"
                 style="@style/FormSpinner"
-                android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:spinnerMode="dropdown" />
 
+            <!-- Buttons Row -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="end"
+                android:layout_marginTop="24dp">
 
                 <Button
                     android:id="@+id/btnCancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_border"
-                    android:backgroundTint="#FFF"
+                    android:backgroundTint="@android:color/white"
                     android:text="@string/cancel"
                     android:textColor="@color/role_orange" />
 
@@ -138,13 +144,15 @@
                     android:text="@string/add" />
             </LinearLayout>
 
+            <!-- Schedule List -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvScheduleItems"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="16dp"
-                android:padding="8dp" />
+                android:clipToPadding="false"
+                android:padding="8dp"/>
         </LinearLayout>
     </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>
