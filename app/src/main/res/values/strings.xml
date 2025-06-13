@@ -140,5 +140,10 @@
     <string name="manage_your_school_life_in_one_place">Manage your school life in one place</string>
     <string name="welcome_to_the_school_app">Welcome to the School App</string>
     <string name="school_logo">School Logo</string>
+    <string name="delete_center">Delete Center</string>
+    <string name="subjects">Subjects</string>
+    <string name="students_RB">Students</string>
+    <string name="teachers_RB">Teachers</string>
+    <string name="back_to_profile_bt">Back to Profile</string>
 
 </resources>

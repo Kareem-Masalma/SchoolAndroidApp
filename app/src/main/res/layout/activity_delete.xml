@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:padding="16dp"
     android:orientation="vertical"
@@ -11,9 +10,9 @@
         android:id="@+id/deleteTitle_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete Center"
+        android:text="@string/delete_center"
         android:textStyle="bold"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="24dp"
         android:textColor="#D32F2F" />
@@ -30,45 +29,48 @@
             android:id="@+id/radioSubjects"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="Subjects"
-            android:textStyle="bold" />
+            android:checked="true"
+            android:text="@string/subjects"
+            android:textStyle="bold"
+            android:padding="8dp" />
 
         <RadioButton
             android:id="@+id/radioStudents"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:padding="8dp"
-            android:text="Students"
-            android:textStyle="bold" />
+            android:text="@string/students_RB"
+            android:textStyle="bold"
+            android:padding="8dp" />
 
         <RadioButton
             android:id="@+id/radioTeachers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="Teachers"
-            android:textStyle="bold" />
+            android:text="@string/teachers_RB"
+            android:textStyle="bold"
+            android:padding="8dp" />
     </RadioGroup>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/deleteItemsRV"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:paddingTop="8dp"
-        android:paddingBottom="30dp" />
+        android:paddingBottom="8dp" />
+
 
     <Button
         android:id="@+id/backToProfile_BT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back to Profile"
+        android:text="@string/back_to_profile_bt"
         android:textColor="@android:color/white"
-        android:backgroundTint="#D32F2F"
+        android:backgroundTint="@color/role_orange"
         android:paddingHorizontal="24dp"
         android:paddingVertical="8dp"
         android:textStyle="bold"
-        android:layout_gravity="right"
+        android:layout_gravity="center"
         android:layout_marginBottom="16dp" />
 </LinearLayout>

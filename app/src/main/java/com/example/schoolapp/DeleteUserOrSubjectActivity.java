@@ -9,20 +9,19 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.ConcatAdapter;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schoolapp.adapters.DeleteAdapter;
-import com.example.schoolapp.adapters.StudentAssignmentResultAdapter;
-import com.example.schoolapp.adapters.StudentExamResultAdapter;
+
 import com.example.schoolapp.data_access.StudentDA;
 import com.example.schoolapp.data_access.SubjectDA;
 import com.example.schoolapp.data_access.TeacherDA;
 import com.example.schoolapp.models.Student;
 import com.example.schoolapp.models.Subject;
 import com.example.schoolapp.models.Teacher;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +44,7 @@ public class DeleteUserOrSubjectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_delete);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+
         initViews();
         updateFilter();
     }
@@ -60,6 +60,7 @@ public class DeleteUserOrSubjectActivity extends AppCompatActivity {
         deleteItemsRV.setLayoutManager(new LinearLayoutManager(this));
 
         backToProfile_BT = findViewById(R.id.backToProfile_BT);
+
 
         studentDA = new StudentDA(this);
         teacherDA = new TeacherDA(this);
@@ -126,14 +127,24 @@ public class DeleteUserOrSubjectActivity extends AppCompatActivity {
         });
     }
 
+
     private void loadTeachers() {
         teacherDA.getAllTeachers(new TeacherDA.TeacherListCallback() {
             @Override
             public void onSuccess(List<Teacher> list) {
                 adapter = new DeleteAdapter<>(DeleteUserOrSubjectActivity.this, list, id -> {
-                    teacherDA.deleteTeacher(id);
-                    Toast.makeText(DeleteUserOrSubjectActivity.this, "Teacher deleted", Toast.LENGTH_SHORT).show();
-                    loadTeachers();
+                    teacherDA.deleteTeacher(id, new TeacherDA.BaseCallback() {
+                        @Override
+                        public void onSuccess(String msg) {
+                            Toast.makeText(DeleteUserOrSubjectActivity.this, msg, Toast.LENGTH_SHORT).show();
+                            loadTeachers();
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            Toast.makeText(DeleteUserOrSubjectActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 });
                 deleteItemsRV.setAdapter(adapter);
             }
@@ -144,6 +155,7 @@ public class DeleteUserOrSubjectActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void updateFilter() {
         if (radioSubjects.isChecked()) {

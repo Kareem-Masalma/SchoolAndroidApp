@@ -189,17 +189,21 @@ public class TeacherDA implements ITeacherDA {
     }
 
     @Override
-    public void deleteTeacher(int id) {
-        StringRequest request = new StringRequest(Request.Method.DELETE, BASE_URL, response -> Log.d("PUT_SUCCESS", response),
-                error -> Log.e("PUT_ERROR", error.toString())) {
+    public void deleteTeacher(int id, BaseCallback cb) {
 
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("user_id", Integer.toString(id));
-                return params;
-            }
-        };
+        String url = BASE_URL + "?user_id=" + id;
+
+        StringRequest request = new StringRequest(Request.Method.DELETE, url,
+                response -> {
+                    Log.d("DELETE_SUCCESS", response);
+                    cb.onSuccess("Teacher deleted");
+                },
+                error -> {
+                    Log.e("DELETE_ERROR", error.toString());
+                    cb.onError("Error deleting teacher");
+                }
+        );
+
         queue.add(request);
     }
 
