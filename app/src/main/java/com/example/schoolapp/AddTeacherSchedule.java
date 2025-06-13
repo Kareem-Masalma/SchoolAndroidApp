@@ -1,6 +1,7 @@
 package com.example.schoolapp;
 
 import android.annotation.SuppressLint;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -42,7 +43,9 @@ import com.google.gson.GsonBuilder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class AddTeacherSchedule extends AppCompatActivity {
 
@@ -253,6 +256,21 @@ public class AddTeacherSchedule extends AppCompatActivity {
         tvId.setText("ID: " + teacher.getUser_id());
     }
 
+    private void showTimePicker(EditText targetEditText) {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        TimePickerDialog timePicker = new TimePickerDialog(this,
+                (view, selectedHour, selectedMinute) -> {
+                    String formatted = String.format(Locale.getDefault(), "%02d:%02d", selectedHour, selectedMinute);
+                    targetEditText.setText(formatted);
+                },
+                hour, minute, true);
+
+        timePicker.show();
+    }
+
     private void defineViews() {
         this.btnAdd = findViewById(R.id.btnAddSchedule);
         this.btnCancel = findViewById(R.id.btnCancel);
@@ -267,6 +285,8 @@ public class AddTeacherSchedule extends AppCompatActivity {
         this.rvScheduleItems = findViewById(R.id.rvScheduleItems);
         this.rvScheduleItems.setLayoutManager(new LinearLayoutManager(this));
         spSubject.setEnabled(false);
+        etStartTime.setOnClickListener(v -> showTimePicker(etStartTime));
+        etEndTime.setOnClickListener(v -> showTimePicker(etEndTime));
     }
 }
 

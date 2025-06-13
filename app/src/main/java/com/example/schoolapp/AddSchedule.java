@@ -66,9 +66,9 @@ public class AddSchedule extends AppCompatActivity {
                         @Override
                         public void onSuccess(List<Teacher> teachers) {
                             rvUsers.setLayoutManager(new LinearLayoutManager(AddSchedule.this));
-                            rvUsers.setAdapter(new TeacherAdapter(teachers, new TeacherAdapter.OnTeacherClickListener() {
+                            rvUsers.setAdapter(new TeacherAdapter(AddSchedule.this, teachers, new TeacherAdapter.OnItemClickListener() {
                                 @Override
-                                public void onTeacherClick(Teacher teacher) {
+                                public void onItemClick(Teacher teacher) {
                                     Intent intent = new Intent(AddSchedule.this, AddTeacherSchedule.class);
                                     Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
                                     String teacherString = gson.toJson(teacher);
@@ -88,9 +88,9 @@ public class AddSchedule extends AppCompatActivity {
                         @Override
                         public void onSuccess(List<SchoolClass> Classes) {
                             rvUsers.setLayoutManager(new LinearLayoutManager(AddSchedule.this));
-                            rvUsers.setAdapter(new ClassAdapter(Classes, new ClassAdapter.OnClassClickListener() {
+                            rvUsers.setAdapter(new ClassAdapter(AddSchedule.this, Classes, new ClassAdapter.OnItemClickListener() {
                                 @Override
-                                public void onClassClick(SchoolClass c) {
+                                public void onItemClick(SchoolClass c) {
                                     Intent intent = new Intent(AddSchedule.this, AddClassSchedule.class);
                                     Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
                                     String studentString = gson.toJson(c);

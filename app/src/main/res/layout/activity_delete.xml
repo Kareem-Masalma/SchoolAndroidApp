@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/subjects"
+            android:text="@string/subjects_rb"
             android:textStyle="bold"
             android:padding="8dp" />
 
@@ -38,7 +38,7 @@
             android:id="@+id/radioStudents"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/students_RB"
+            android:text="@string/students_rb"
             android:textStyle="bold"
             android:padding="8dp" />
 
@@ -46,7 +46,7 @@
             android:id="@+id/radioTeachers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/teachers_RB"
+            android:text="@string/teachers_rb"
             android:textStyle="bold"
             android:padding="8dp" />
     </RadioGroup>
