@@ -26,7 +26,7 @@ import java.time.LocalDate;
 
 public class ClassDashboard extends AppCompatActivity {
 
-    private View cardSubjects, cardNewAssignment, cardAttendance, cardStudents, cardSchedule, cardExamMarks;
+    private View cardSubjects, cardNewAssignment, cardAttendance, cardStudents, cardSchedule, cardExamMarks, cardNewExam;
     private TextView tvClassName;
     private SchoolClass selectedClass;
     private Teacher teacher;
@@ -91,6 +91,14 @@ public class ClassDashboard extends AppCompatActivity {
             intent.putExtra(AddSchedule.CLASS, classString);
             startActivity(intent);
         });
+
+        cardNewExam.setOnClickListener(v -> {
+            Intent intent = new Intent(ClassDashboard.this, NewExamActivity.class);
+            Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
+            String classString = gson.toJson(selectedClass);
+            intent.putExtra(AddSchedule.CLASS, classString);
+            startActivity(intent);
+        });
     }
 
 
@@ -121,6 +129,7 @@ public class ClassDashboard extends AppCompatActivity {
         this.cardSubjects = findViewById(R.id.card_subjects);
         this.cardStudents = findViewById(R.id.card_students);
         this.cardExamMarks = findViewById(R.id.card_exam_marks);
+        this.cardNewExam = findViewById(R.id.card_new_exam);
 
         if (teacher.getUser_id() != selectedClass.getClassManagerId()) {
             cardAttendance.setVisibility(View.GONE);

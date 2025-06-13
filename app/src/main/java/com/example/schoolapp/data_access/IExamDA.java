@@ -9,7 +9,7 @@ import java.util.Map;
 public interface IExamDA {
 
     void getAllExams(int studentId, ExamCallback callback);
-
+    void addExam(Exam exam, CallBack callBack);
     void sendExam(Exam exam, List<StudentExamResult> results, ExamCallback callback);
 
     void findExamById(int examId, ExamCallback callback);
@@ -20,8 +20,15 @@ public interface IExamDA {
 
     void publishExamResults(int exam_id, List<StudentExamResult> results, PublishCallback callback);
 
+    interface CallBack {
+        void onSuccess(String message);
+
+        void onError(String message);
+    }
+
     interface ExamCallback {
         void onSuccess(List<Exam> data);
+
         void onError(String error);
     }
 
@@ -32,6 +39,7 @@ public interface IExamDA {
 
     interface PublishCallback {
         void onSuccess(String message);
+
         void onError(String error);
     }
 }

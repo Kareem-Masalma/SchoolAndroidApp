@@ -148,14 +148,15 @@ public class AiAssistant extends AppCompatActivity {
                 } else if (msg.isAssistant()) {
                     entry.put("role", "model");
                 } else {
-                    // system or others: treat as user
+
                     entry.put("role", "user");
                 }
                 JSONArray parts = new JSONArray();
                 JSONObject part = new JSONObject();
+                String sysPrompt = "You are a helpful AI assistant. Your job is to help students improve their grades, provide study tips, and provide any help the students need, reply without formatting, just paragraphs to this query, dont mention anything except the query response: ";
                 String content = msg.getContent();
                 if (content == null) content = "";
-                part.put("text", content);
+                part.put("text", sysPrompt+content);
                 parts.put(part);
                 entry.put("parts", parts);
                 contentsArray.put(entry);

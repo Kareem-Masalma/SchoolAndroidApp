@@ -39,7 +39,7 @@ public class UserSendMessageAdapter extends RecyclerView.Adapter<UserSendMessage
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         User user = userList.get(position);
-        holder.tvUserName2.setText(user.getFirstName() + " " + user.getLastName());
+        holder.tvUserName2.setText(user.getFirstName() + " " + user.getLastName() +" ("+user.getRole()+")");
         holder.tvUserId2.setText(String.valueOf(user.getUser_id()));
 
         holder.btnSelect2.setOnClickListener(v -> {
