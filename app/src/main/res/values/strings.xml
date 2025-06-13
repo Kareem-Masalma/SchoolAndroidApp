@@ -141,9 +141,11 @@
     <string name="welcome_to_the_school_app">Welcome to the School App</string>
     <string name="school_logo">School Logo</string>
     <string name="placeholder_name">Placeholder Name</string>
+
     <string name="back_to_profile_bt">Back to profile</string>
     <string name="teachers_rb">Teachers</string>
     <string name="students_rb">Students</string>
     <string name="subjects_rb">Subjects</string>
     <string name="delete_center">Delete Center</string>
+
 </resources>
