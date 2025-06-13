@@ -55,6 +55,7 @@ public class Profile extends AppCompatActivity {
     private CardView         cardAddTeacher;
     private CardView         cardAddSubject;
     private CardView         cardBuildSchedule;
+    private CardView         cardDelete;
 
     //student
     private CardView         cardAssignments;
@@ -112,6 +113,7 @@ public class Profile extends AppCompatActivity {
         cardAddTeacher = findViewById(R.id.card_add_teacher);
         cardAddSubject = findViewById(R.id.card_add_subject);
         cardBuildSchedule = findViewById(R.id.card_build_schedule);
+        cardDelete = findViewById(R.id.card_delete_user_or_subject);
 
         cardAddStudent.setOnClickListener(e->{
             Intent intent = new Intent(Profile.this, AddStudents.class);
@@ -131,6 +133,11 @@ public class Profile extends AppCompatActivity {
 
         cardBuildSchedule.setOnClickListener(e->{
             Intent intent = new Intent(Profile.this, AddSchedule.class);
+            startActivity(intent);
+        });
+
+        cardDelete.setOnClickListener(e->{
+            Intent intent = new Intent(Profile.this, DeleteUserOrSubjectActivity.class);
             startActivity(intent);
         });
     }

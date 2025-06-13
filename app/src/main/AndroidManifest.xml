@@ -108,6 +108,9 @@
         <activity
             android:name=".SplashActivity"
             android:exported="false" />
+        <activity
+            android:name=".DeleteUserOrSubjectActivity"
+            android:exported="false" />
 
     </application>
 

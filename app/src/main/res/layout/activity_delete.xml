@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="16dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/deleteTitle_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete Center"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="24dp"
+        android:textColor="#D32F2F" />
+
+    <RadioGroup
+        android:id="@+id/deleteFilterGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="16dp">
+
+        <RadioButton
+            android:id="@+id/radioSubjects"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Subjects"
+            android:textStyle="bold" />
+
+        <RadioButton
+            android:id="@+id/radioStudents"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:padding="8dp"
+            android:text="Students"
+            android:textStyle="bold" />
+
+        <RadioButton
+            android:id="@+id/radioTeachers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Teachers"
+            android:textStyle="bold" />
+    </RadioGroup>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/deleteItemsRV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:paddingBottom="30dp" />
+
+    <Button
+        android:id="@+id/backToProfile_BT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back to Profile"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#D32F2F"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="8dp"
+        android:textStyle="bold"
+        android:layout_gravity="right"
+        android:layout_marginBottom="16dp" />
+</LinearLayout>
