@@ -251,7 +251,7 @@ public class ViewStudentMarks extends AppCompatActivity {
 
         String text;
         if (totalOutOf == 0f) {
-            text = "No marks available.";
+            text = "No marks available";
         } else {
             text = String.format("Total: %.2f / %.0f", totalStudentMark, totalOutOf);
         }
