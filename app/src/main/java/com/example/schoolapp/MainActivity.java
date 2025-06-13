@@ -24,10 +24,35 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
+        reminderSetup();
         Intent intent = new Intent(MainActivity.this, SplashActivity.class);
 
 
         startActivity(intent);
+    }
+
+    private void reminderSetup(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    "assignment_reminder_channel",
+                    "Assignment Reminders",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            if (manager != null) {
+                manager.createNotificationChannel(channel);
+            }
+        }
+        NotificationChannel channel = new NotificationChannel(
+                "assignment_reminder_channel",
+                "Assignment Reminders",
+                NotificationManager.IMPORTANCE_HIGH
+        );
+        channel.enableLights(true);
+        channel.enableVibration(true);
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        manager.createNotificationChannel(channel);
+
+        new SendAssignmentActivity().scheduleReminder("Test Assignment", "", 0, 0);
     }
 }

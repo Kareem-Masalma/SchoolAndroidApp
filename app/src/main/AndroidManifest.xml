@@ -111,7 +111,8 @@
         <activity
             android:name=".DeleteUserOrSubjectActivity"
             android:exported="false" />
-
+        <receiver android:name=".receivers.ReminderReceiver" />
+        <receiver android:name=".receivers.SnoozeReceiver" />
     </application>
 
 </manifest>
