@@ -160,7 +160,7 @@ public class TakeAttendance extends AppCompatActivity {
                     }
                     StudentAttendanceAdapter adapter = new StudentAttendanceAdapter(classStudents);
                     rvStudents.setAdapter(adapter);
-                    Toast.makeText(TakeAttendance.this, "Displayed all students successfully", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(TakeAttendance.this, "Displayed all students successfully", Toast.LENGTH_SHORT).show();
                 });
             }
 
