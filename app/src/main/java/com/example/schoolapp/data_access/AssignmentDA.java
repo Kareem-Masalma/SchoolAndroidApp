@@ -104,27 +104,48 @@ public class AssignmentDA implements IAssignmentDA {
 
     @Override
     public void getAllAssignments(int studentId, AssignmentListCallback callback) {
+
+    }
+
+    public void getAllAssignmentsWithTitles(int studentId, AssignmentListWithTitlesCallback callback) {
         String url = BASE_URL + "?mode=all&student_id=" + studentId;
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
-                    List<JSONObject> result = new ArrayList<>();
+                    List<Assignment> result = new ArrayList<>();
+                    Map<Assignment, String> subjectMap = new HashMap<>();
+                    Map<Assignment, String> classMap = new HashMap<>();
+
                     for (int i = 0; i < response.length(); i++) {
                         try {
-                            result.add(response.getJSONObject(i));
+                            JSONObject obj = response.getJSONObject(i);
+                            Assignment assignment = new Assignment(
+                                    obj.getInt("assignment_id"),
+                                    obj.getInt("subject_id"),
+                                    obj.getString("title"),
+                                    obj.optString("details", ""),
+                                    LocalDate.parse(obj.getString("start_date")),
+                                    obj.optString("file_path", ""),
+                                    LocalDate.parse(obj.getString("end_date")),
+                                    (float) obj.getDouble("percentage_of_grade")
+                            );
+
+                            result.add(assignment);
+                            subjectMap.put(assignment, obj.optString("subject_title", "Unknown"));
+                            classMap.put(assignment, obj.optString("class_title", "Unknown"));
                         } catch (JSONException e) {
                             callback.onError("Invalid JSON at index " + i);
                             return;
                         }
                     }
-                    callback.onSuccess(result);
+
+                    callback.onSuccess(result, subjectMap, classMap);
                 },
                 error -> {
                     String msg = "Failed to fetch assignments";
                     if (error.networkResponse != null && error.networkResponse.data != null) {
                         msg += ": " + new String(error.networkResponse.data);
                     }
-                    Log.e("AssignmentDA", msg, error);
                     callback.onError(msg);
                 }
         );
@@ -189,6 +210,38 @@ public class AssignmentDA implements IAssignmentDA {
         queue.add(request);
     }
 
+    public void getAssignmentsBySubject(int subjectId, AssignmentListTitleCallback callback) {
+        String url = BASE_URL + "?mode=list_by_subject&subject_id=" + subjectId;
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                response -> {
+                    List<Assignment> list = new ArrayList<>();
+                    try {
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject obj = response.getJSONObject(i);
+                            Assignment assignment = new Assignment(
+                                    obj.getInt("assignment_id"),
+                                    obj.getInt("subject_id"),
+                                    obj.getString("title"),
+                                    obj.optString("details", ""),
+                                    LocalDate.parse(obj.getString("start_date")),
+                                    obj.optString("file_path", null),
+                                    LocalDate.parse(obj.getString("end_date")),
+                                    (float) obj.getDouble("percentage_of_grade")
+                            );
+                            list.add(assignment);
+                        }
+                        callback.onSuccess(list);
+                    } catch (JSONException e) {
+                        callback.onError("Malformed data");
+                    }
+                },
+                error -> callback.onError("Fetch failed")
+        );
+
+        queue.add(request);
+    }
+
 //    @Override
 //    public void getSubjectPairs(Context context, SubjectCallback callback) {
 //        String url = "http://" + DA_Config.BACKEND_IP_ADDRESS + "/" + DA_Config.BACKEND_DIR + "/assignment.php?mode=subject";
@@ -245,43 +298,16 @@ public class AssignmentDA implements IAssignmentDA {
         } catch (Exception ignored) {}
         return result;
     }
-
     public interface AssignmentListTitleCallback {
         void onSuccess(List<Assignment> assignments);
         void onError(String error);
     }
 
-    public void getAssignmentsBySubject(int subjectId, AssignmentListTitleCallback callback) {
-        String url = BASE_URL + "?mode=list_by_subject&subject_id=" + subjectId;
-
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
-                response -> {
-                    List<Assignment> list = new ArrayList<>();
-                    try {
-                        for (int i = 0; i < response.length(); i++) {
-                            JSONObject obj = response.getJSONObject(i);
-                            Assignment assignment = new Assignment(
-                                    obj.getInt("assignment_id"),
-                                    obj.getInt("subject_id"),
-                                    obj.getString("title"),
-                                    obj.optString("details", ""),
-                                    LocalDate.parse(obj.getString("start_date")),
-                                    obj.optString("file_path", null),
-                                    LocalDate.parse(obj.getString("end_date")),
-                                    (float) obj.getDouble("percentage_of_grade")
-                            );
-                            list.add(assignment);
-                        }
-                        callback.onSuccess(list);
-                    } catch (JSONException e) {
-                        callback.onError("Malformed data");
-                    }
-                },
-                error -> callback.onError("Fetch failed")
-        );
-
-        queue.add(request);
+    public interface AssignmentListWithTitlesCallback {
+        void onSuccess(List<Assignment> assignments, Map<Assignment, String> subjectTitles, Map<Assignment, String> classTitles);
+        void onError(String error);
     }
+
 
     public interface AssignmentListWithTitlesCallback {
         void onSuccess(List<Assignment> assignments, Map<Assignment, String> subjectTitles, Map<Assignment, String> classTitles);
@@ -333,5 +359,6 @@ public class AssignmentDA implements IAssignmentDA {
 
         queue.add(request);
     }
+
 
 }

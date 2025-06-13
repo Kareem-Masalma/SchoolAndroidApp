@@ -1,6 +1,10 @@
 package com.example.schoolapp;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -8,6 +12,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
@@ -22,6 +27,7 @@ import com.example.schoolapp.data_access.SubjectDA;
 import com.example.schoolapp.json_helpers.LocalDateAdapter;
 import com.example.schoolapp.models.*;
 
+import com.example.schoolapp.receivers.ReminderReceiver;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -31,12 +37,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class SendAssignmentActivity extends AppCompatActivity {
 
     private static final int PICK_FILE_REQUEST_CODE = 1;
 
-    private EditText editTitle, editDetails, editDeadline, editPercentage;
+    private EditText editTitle, editDetails, editDeadline, editPercentage, editReminderTime ;
     private TextView textSelectedFiles;
     private Spinner spinnerSubject;
     private Button btnSelectFile, btnSend, btnCancel;
@@ -60,6 +67,7 @@ public class SendAssignmentActivity extends AppCompatActivity {
         editDetails = findViewById(R.id.editDetails);
         editDeadline = findViewById(R.id.editDeadline);
         editPercentage = findViewById(R.id.editPercentage);
+        editReminderTime = findViewById(R.id.editReminderTime);
         textSelectedFiles = findViewById(R.id.textSelectedFile);
         spinnerSubject = findViewById(R.id.spinnerClass);
         btnSelectFile = findViewById(R.id.btnSelectFile);
@@ -67,6 +75,7 @@ public class SendAssignmentActivity extends AppCompatActivity {
         btnCancel = findViewById(R.id.btnCancel);
         deadlineField = findViewById(R.id.deadlineField);
         spinnerSubjectContainer = findViewById(R.id.spinnerSubjectContainer);
+
 
         spinnerSubjectContainer.setOnClickListener(v -> spinnerSubject.performClick());
 
@@ -92,6 +101,7 @@ public class SendAssignmentActivity extends AppCompatActivity {
         subjectDA.getClassTeacherSubject(selectedClass.getClassId(), teacher.getUser_id(), new SubjectDA.ClassSubjectCallback() {
             @Override
             public void onSuccess(List<Subject> list) {
+
                 ArrayAdapter<Subject> adapter = new ArrayAdapter<>(SendAssignmentActivity.this,
                         android.R.layout.simple_spinner_item, list);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -150,6 +160,15 @@ public class SendAssignmentActivity extends AppCompatActivity {
             String title = editTitle.getText().toString().trim();
             String details = editDetails.getText().toString().trim();
             String deadline = editDeadline.getText().toString().trim();
+            String reminderStr = editReminderTime.getText().toString().trim();
+            int hour = 8, minute = 0; // default
+
+            if (!reminderStr.isEmpty() && reminderStr.matches("\\d{2}:\\d{2}")) {
+                String[] timeParts = reminderStr.split(":");
+                hour = Integer.parseInt(timeParts[0]);
+                minute = Integer.parseInt(timeParts[1]);
+            }
+
             String percentageStr = editPercentage.getText().toString().trim();
             Subject subject = (Subject) spinnerSubject.getSelectedItem();
 
@@ -188,6 +207,8 @@ public class SendAssignmentActivity extends AppCompatActivity {
                 editDeadline.setError("Deadline must be today or in the future"); return;
             }
 
+            int finalMinute = minute;
+            int finalHour = hour;
             assignmentDA.sendAssignment(
                     title,
                     details,
@@ -198,6 +219,7 @@ public class SendAssignmentActivity extends AppCompatActivity {
                     new AssignmentDA.BaseCallback() {
                         @Override
                         public void onSuccess(String message) {
+                            scheduleReminder(title, deadline, finalHour, finalMinute);
                             Toast.makeText(SendAssignmentActivity.this, message, Toast.LENGTH_SHORT).show();
                             Intent resultIntent = new Intent();
                             resultIntent.putExtra("assignment_sent", true);
@@ -213,6 +235,27 @@ public class SendAssignmentActivity extends AppCompatActivity {
                     }
             );
         });
+
+        View.OnClickListener reminderTimePicker = v -> {
+            Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+
+            TimePickerDialog dialog = new TimePickerDialog(
+                    SendAssignmentActivity.this,
+                    (view, selectedHour, selectedMinute) -> {
+                        String time = String.format(Locale.getDefault(), "%02d:%02d", selectedHour, selectedMinute);
+                        editReminderTime.setText(time);
+                    },
+                    hour,
+                    minute,
+                    true
+            );
+            dialog.show();
+        };
+
+        editReminderTime.setOnClickListener(reminderTimePicker);
+        findViewById(R.id.reminderTimeField).setOnClickListener(reminderTimePicker);
 
         btnCancel.setOnClickListener(v -> {
             if (hasUnsavedInput()) {
@@ -274,6 +317,51 @@ public class SendAssignmentActivity extends AppCompatActivity {
                 .setNegativeButton("No", null)
                 .show();
     }
+    void scheduleReminder(String title, String deadlineDate, int hour, int minute) {
+        try {
+            String[] parts = deadlineDate.split("-");
+            int year = Integer.parseInt(parts[0]);
+            int month = Integer.parseInt(parts[1]) - 1;
+            int day = Integer.parseInt(parts[2]);
+
+            Calendar reminderTime = Calendar.getInstance();
+            reminderTime.set(Calendar.YEAR, year);
+            reminderTime.set(Calendar.MONTH, month);
+            reminderTime.set(Calendar.DAY_OF_MONTH, day);
+            reminderTime.set(Calendar.HOUR_OF_DAY, hour);
+            reminderTime.set(Calendar.MINUTE, minute);
+            reminderTime.set(Calendar.SECOND, 0);
+            reminderTime.set(Calendar.MILLISECOND, 0);
+
+            Log.d("Reminder", String.format("Scheduled: %d-%02d-%02d %02d:%02d (millis: %d)",
+                    year, month + 1, day, hour, minute, reminderTime.getTimeInMillis()));
+
+            if (reminderTime.getTimeInMillis() < System.currentTimeMillis()) {
+                Log.w("Reminder", "Reminder is in the past. Not setting it.");
+                return;
+            }
+
+            Intent intent = new Intent(this, ReminderReceiver.class);
+            intent.putExtra("title", "Assignment Reminder");
+            intent.putExtra("message", "Do not forget assignment \"" + title + "\" is due soon!");
+
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    this,
+                    (int) System.currentTimeMillis(),
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+            );
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager != null) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,reminderTime.getTimeInMillis(), pendingIntent);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void clearFields() {
         editTitle.setText("");
