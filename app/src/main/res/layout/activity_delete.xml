@@ -1,25 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:padding="16dp"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:background="#F0FFF4">
+    android:background="@color/white">
 
     <TextView
-        android:id="@+id/subjectTitle_tv"
+        android:id="@+id/deleteTitle_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/subject_math"
+        android:text="@string/delete_center"
         android:textStyle="bold"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="24dp"
-        android:textColor="#2E7D32" />
+        android:textColor="#D32F2F" />
 
     <RadioGroup
-        android:id="@+id/resultFilterGroup"
+        android:id="@+id/deleteFilterGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -27,62 +26,51 @@
         android:layout_marginBottom="16dp">
 
         <RadioButton
-            android:id="@+id/radioAll"
+            android:id="@+id/radioSubjects"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:padding="8dp"
-            android:text="@string/all_RB"
-            android:textStyle="bold" />
+            android:text="@string/subjects_rb"
+            android:textStyle="bold"
+            android:padding="8dp" />
 
         <RadioButton
-            android:id="@+id/radioAssignments"
+            android:id="@+id/radioStudents"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/assignments_RB"
-            android:textStyle="bold" />
+            android:text="@string/students_rb"
+            android:textStyle="bold"
+            android:padding="8dp" />
 
         <RadioButton
-            android:id="@+id/radioExams"
+            android:id="@+id/radioTeachers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/exams_RB"
-            android:textStyle="bold" />
+            android:text="@string/teachers_rb"
+            android:textStyle="bold"
+            android:padding="8dp" />
     </RadioGroup>
 
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/marksRV"
+        android:id="@+id/deleteItemsRV"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:paddingTop="8dp"
         android:paddingBottom="8dp" />
 
-    <TextView
-        android:id="@+id/totalMarkTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/total"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:layout_gravity="center"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="4dp"
-        android:textColor="#2E7D32" />
 
     <Button
-        android:id="@+id/btnBackToCourses"
+        android:id="@+id/backToProfile_BT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/back_to_student_courses"
+        android:text="@string/back_to_profile_bt"
         android:textColor="@android:color/white"
-        android:backgroundTint="#4CAF50"
+        android:backgroundTint="@color/role_orange"
         android:paddingHorizontal="24dp"
         android:paddingVertical="8dp"
         android:textStyle="bold"
         android:layout_gravity="center"
         android:layout_marginBottom="16dp" />
-
 </LinearLayout>

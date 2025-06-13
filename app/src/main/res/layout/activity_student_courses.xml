@@ -50,22 +50,23 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/viewCoursesRV"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:paddingTop="8dp"
-        android:paddingBottom="60dp" />
+        android:paddingBottom="8dp" />
+
 
     <Button
         android:id="@+id/backToProfileBT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/back_to_profile"
-        android:layout_gravity="right"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="24dp"
-        android:paddingHorizontal="24dp"
-        android:paddingVertical="6dp"
-        android:backgroundTint="#4CAF50"
+        android:text="@string/back_to_profile_bt"
         android:textColor="@android:color/white"
-        android:textSize="14sp"
-        android:textStyle="bold" />
+        android:backgroundTint="@color/role_green"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="8dp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp" />
+
 </LinearLayout>

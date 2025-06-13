@@ -8,5 +8,5 @@ public interface ITeacherDA {
     void getAllTeachers(TeacherDA.TeacherListCallback callback);
     void addTeacher(Teacher teacher);
     void updateTeacher(Teacher teacher);
-    void deleteTeacher(int id);
+    void deleteTeacher(int id, TeacherDA.BaseCallback callback);
 }
