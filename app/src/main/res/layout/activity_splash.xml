@@ -40,7 +40,7 @@
             android:id="@+id/splashSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Manage your school life in one place"
+            android:text="@string/manage_your_school_life_in_one_place"
             android:textSize="18sp"
             android:textColor="#555555"
             android:layout_marginTop="8dp"
