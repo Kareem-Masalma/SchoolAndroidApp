@@ -6,55 +6,77 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@android:color/white"
     tools:context=".AddSchedule">
 
+    <!-- Top Bar Header -->
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="64dp">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/role_orange" />
+        android:layout_height="72dp"
+        android:background="@color/role_orange"
+        android:elevation="4dp">
 
         <TextView
             android:id="@+id/titleText"
             style="@style/HeaderTitle"
-            android:text="@string/add_schedule" />
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:text="@string/add_schedule"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
     </FrameLayout>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <!-- Role Selector -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingHorizontal="24dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="16dp">
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/select_role"
-            style="@style/SectionTitle" />
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
 
         <RadioGroup
             android:id="@+id/rdRoles"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/rdClass"
                 style="@style/RoleRadioButton"
-                android:text="@string/Class" />
+                android:text="@string/Class"
+                android:layout_marginEnd="24dp"
+                android:buttonTint="@color/role_orange"
+                android:textSize="14sp" />
 
             <RadioButton
                 android:id="@+id/rdTeacher"
                 style="@style/RoleRadioButton"
-                android:text="@string/teacher" />
+                android:text="@string/teacher"
+                android:buttonTint="@color/role_orange"
+                android:textSize="14sp" />
         </RadioGroup>
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </LinearLayout>
 
+    <!-- User List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvUsers"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="16dp" />
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
