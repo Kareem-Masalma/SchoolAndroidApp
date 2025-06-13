@@ -136,4 +136,6 @@
     <string name="exams_RB">Exams</string>
     <string name="total">Total:</string>
     <string name="select_exam">Select Exam</string>
+    <string name="school_logo">School Logo</string>
+    <string name="welcome_to_the_school_app">Welcome to the School App</string>
 </resources>

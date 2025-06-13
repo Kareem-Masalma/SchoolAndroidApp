@@ -23,10 +23,14 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        Intent intent = new Intent(MainActivity.this, Login.class);
+
+
+        Intent intent = new Intent(MainActivity.this, SplashActivity.class);
         startActivity(intent);
+
     }
 
 }
