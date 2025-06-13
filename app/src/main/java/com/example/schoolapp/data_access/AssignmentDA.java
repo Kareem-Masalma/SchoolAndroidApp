@@ -283,4 +283,55 @@ public class AssignmentDA implements IAssignmentDA {
         queue.add(request);
     }
 
+    public interface AssignmentListWithTitlesCallback {
+        void onSuccess(List<Assignment> assignments, Map<Assignment, String> subjectTitles, Map<Assignment, String> classTitles);
+        void onError(String error);
+    }
+
+    public void getAllAssignmentsWithTitles(int studentId, AssignmentListWithTitlesCallback callback) {
+        String url = BASE_URL + "?mode=all&student_id=" + studentId;
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                response -> {
+                    List<Assignment> result = new ArrayList<>();
+                    Map<Assignment, String> subjectMap = new HashMap<>();
+                    Map<Assignment, String> classMap = new HashMap<>();
+
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject obj = response.getJSONObject(i);
+                            Assignment assignment = new Assignment(
+                                    obj.getInt("assignment_id"),
+                                    obj.getInt("subject_id"),
+                                    obj.getString("title"),
+                                    obj.optString("details", ""),
+                                    LocalDate.parse(obj.getString("start_date")),
+                                    obj.optString("file_path", ""),
+                                    LocalDate.parse(obj.getString("end_date")),
+                                    (float) obj.getDouble("percentage_of_grade")
+                            );
+
+                            result.add(assignment);
+                            subjectMap.put(assignment, obj.optString("subject_title", "Unknown"));
+                            classMap.put(assignment, obj.optString("class_title", "Unknown"));
+                        } catch (JSONException e) {
+                            callback.onError("Invalid JSON at index " + i);
+                            return;
+                        }
+                    }
+
+                    callback.onSuccess(result, subjectMap, classMap);
+                },
+                error -> {
+                    String msg = "Failed to fetch assignments";
+                    if (error.networkResponse != null && error.networkResponse.data != null) {
+                        msg += ": " + new String(error.networkResponse.data);
+                    }
+                    callback.onError(msg);
+                }
+        );
+
+        queue.add(request);
+    }
+
 }
