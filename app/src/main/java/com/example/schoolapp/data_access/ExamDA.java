@@ -24,6 +24,7 @@ public class ExamDA implements IExamDA {
         this.queue = Volley.newRequestQueue(context);
     }
 
+
     @Override
     public void sendExam(Exam exam, List<StudentExamResult> results, ExamCallback callback) {
         try {
@@ -109,6 +110,31 @@ public class ExamDA implements IExamDA {
         );
 
         queue.add(request);
+    }
+
+    @Override
+    public void addExam(Exam exam, CallBack callBack) {
+        try {
+            JSONObject examObject = new JSONObject();
+            examObject.put("title", exam.getTitle());
+            examObject.put("subject_id", exam.getSubject());
+            examObject.put("date", exam.getDate().toString());
+            examObject.put("duration", exam.getDuration());
+            examObject.put("percentage", exam.getPercentage());
+
+            JsonObjectRequest request = new JsonObjectRequest(
+                    Request.Method.POST,
+                    BASE_URL,
+                    examObject,
+                    response -> callBack.onSuccess("New exam added"),
+                    error -> callBack.onError("")
+            );
+
+            queue.add(request);
+
+        } catch (JSONException e) {
+            callBack.onError("Failed to publish results: " + e);
+        }
     }
 
 
@@ -198,7 +224,7 @@ public class ExamDA implements IExamDA {
                             String dateStr = obj.getString("date");
                             LocalDate date = LocalDate.parse(dateStr, formatter);
                             int duration = obj.getInt("duration");
-                            int percentage = obj.getInt("percentage_of_grade");
+                            int percentage = obj.optInt("percentage_of_grade", 0);
 
                             Exam exam = new Exam(examId, title, subjectId, date, duration, percentage);
                             examList.add(exam);
@@ -216,8 +242,10 @@ public class ExamDA implements IExamDA {
     }
 
 
+
     @Override
     public void publishExamResults(int examId, List<StudentExamResult> results, PublishCallback callback) {
+        String url = BASE_URL + "?exam_id=" + examId;
         try {
             JSONObject data = new JSONObject();
             data.put("exam_id", examId);
@@ -234,7 +262,7 @@ public class ExamDA implements IExamDA {
 
             JsonObjectRequest request = new JsonObjectRequest(
                     Request.Method.POST,
-                    BASE_URL,
+                    url,
                     data,
                     response -> callback.onSuccess("Results published"),
                     error -> callback.onError("Failed to publish results: " + error.toString())

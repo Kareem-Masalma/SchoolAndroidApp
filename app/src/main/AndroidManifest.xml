@@ -21,7 +21,18 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
-        <!-- Launcher Activity -->
+
+        <activity
+
+            android:name=".NewExamActivity"
+
+            android:name=".AiAssistant"
+
+            android:exported="false" />
+        <activity
+            android:name=".Inbox"
+            android:exported="false" /> <!-- Launcher Activity -->
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

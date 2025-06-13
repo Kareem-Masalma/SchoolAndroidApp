@@ -78,33 +78,39 @@ try {
         }
     }
 
-    if (empty($input['exam']) || empty($input['students'])) {
-        echo json_encode(["success" => false, "message" => "Missing data"]);
-        exit;
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (isset($_GET['exam_id'])) {
+            if (empty($input['students'])) {
+                echo json_encode(["success" => false, "message" => "Missing exam_id or students"]);
+                exit;
+            }
+
+            $exam_id = intval($_GET['exam_id']);
+
+            $stmt = $conn->prepare("INSERT INTO student_exam_result (student_id, exam_id, score) VALUES (?, ?, ?)");
+            foreach ($input['students'] as $student) {
+                $student_id = $student['student_id'];
+                $mark = $student['mark'];
+                $stmt->bind_param("iid", $student_id, $exam_id, $mark);
+                $stmt->execute();
+            }
+
+            echo json_encode(["success" => true, "message" => "Student marks submitted"]);
+            exit;
+        } else {
+            $title = $input['title'];
+            $subject_id = $input['subject_id'];
+            $date = $input['date'];
+            $duration = $input['duration'];
+            $percentage = $input['percentage'];
+
+            $stmt = $conn->prepare("INSERT INTO exam (title, subject_id, date, duration, percentage_of_grade) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param("sisid", $title, $subject_id, $date, $duration, $percentage);
+            $stmt->execute();
+            $exam_id = $conn->insert_id;
+        }
     }
 
-    $exam = $input['exam'];
-    $title = $exam['title'];
-    $subject_id = $exam['subject_id'];
-    $date = $exam['date'];
-    $duration = $exam['duration'];
-    $percentage = $exam['percentage'];
-
-    $stmt = $conn->prepare("INSERT INTO exam (title, subject_id, date, duration, percentage_of_grade) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sisid", $title, $subject_id, $date, $duration, $percentage);
-    $stmt->execute();
-    $exam_id = $conn->insert_id;
-
-    $stmt2 = $conn->prepare("INSERT INTO student_exam_result (student_id, exam_id, score) VALUES (?, ?, ?)");
-    foreach ($input['students'] as $student) {
-        $student_id = $student['student_id'];
-        $mark = $student['mark'];
-        $stmt2->bind_param("iid", $student_id, $exam_id, $mark);
-        $stmt2->execute();
-    }
-
-    echo json_encode(["success" => true, "message" => "Exam and student marks inserted"]);
 } catch (Exception $e) {
     echo json_encode(["success" => false, "error" => $e->getMessage()]);
 }
-?>
