@@ -97,7 +97,7 @@ public class NewExamActivity extends AppCompatActivity {
                 examDA.addExam(exam, new IExamDA.CallBack() {
                     @Override
                     public void onSuccess(String message) {
-                        Toast.makeText(NewExamActivity.this, message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NewExamActivity.this, "New Exam Added: " + message, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

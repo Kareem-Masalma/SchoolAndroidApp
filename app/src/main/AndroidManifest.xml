@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
     <application
+        android:icon="@drawable/school_logo"
+        android:label="School App"
         android:allowBackup="true"
         android:theme="@style/Theme.SchoolApp"
         android:usesCleartextTraffic="true"
